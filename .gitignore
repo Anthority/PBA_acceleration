@@ -27,7 +27,7 @@
 *.app
 
 !OpenTimer/ot/
-OpenTimer/
+OpenTimer/*
 
 optimizer/optimizer
 simple/simple
