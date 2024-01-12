@@ -26,10 +26,13 @@
 *.out
 *.app
 
+!OpenTimer/ot/
+OpenTimer/
+
 optimizer/optimizer
 simple/simple
-CmakeLists.txt
+CMakeLists.txt
 
-.idea
-benchmark
-*build*
+.idea/
+benchmark/
+*build*/
