@@ -26,6 +26,10 @@
 *.out
 *.app
 
+optimizer/optimizer
+simple/simple
+CmakeLists.txt
+
 .idea
 benchmark
 *build*
