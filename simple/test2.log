@@ -1,0 +1,139 @@
+"/home/tianly/OpenTimer/simple/OpenTimer/ot/sdc"
+----- Critical Path 0 -----
+Startpoint    : f1:CLK
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------
+       Type       Delay        Time   Dir  Description
+------------------------------------------------------
+        pin      25.000      25.000       0.000  fall  f1:CLK (DFFNEGX1)
+        pin       2.403      27.403       2.636  fall  f1:Q (DFFNEGX1)
+        pin       0.000      27.403       0.000  fall  u5:A (BUFX2)
+        pin       0.166      27.569       0.085  fall  u5:Y (BUFX2)
+        pin       0.000      27.569       0.000  fall  u2:B (NAND2X1)
+        pin       0.069      27.638       0.034  rise  u2:Y (NAND2X1)
+        pin       0.000      27.638       0.000  rise  u3:A (INVX2)
+        pin       3.209      30.847       0.008  fall  u3:Y (INVX2)
+       port       0.000      30.847       0.000  fall  out
+    arrival                  30.847        data arrival time
+
+       port      20.000      20.000        output port delay
+   required                  20.000        data required time
+------------------------------------------------------
+      slack                 -10.847        VIOLATED
+
+----- Critical Path 1 -----
+Startpoint    : f1:CLK
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------
+       Type       Delay        Time   Dir  Description
+------------------------------------------------------
+        pin      25.000      25.000       0.000  fall  f1:CLK (DFFNEGX1)
+        pin       2.403      27.403       2.636  fall  f1:Q (DFFNEGX1)
+        pin       0.000      27.403       0.000  fall  u2:A (NAND2X1)
+        pin       0.174      27.577       0.062  rise  u2:Y (NAND2X1)
+        pin       0.000      27.577       0.000  rise  u3:A (INVX2)
+        pin       3.209      30.787       0.008  fall  u3:Y (INVX2)
+       port       0.000      30.787       0.000  fall  out
+    arrival                  30.787        data arrival time
+
+       port      20.000      20.000        output port delay
+   required                  20.000        data required time
+------------------------------------------------------
+      slack                 -10.787        VIOLATED
+
+----- Critical Path 2 -----
+Startpoint    : f1:CLK
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------
+       Type       Delay        Time   Dir  Description
+------------------------------------------------------
+        pin      25.000      25.000       0.000  fall  f1:CLK (DFFNEGX1)
+        pin       1.496      26.496       1.904  rise  f1:Q (DFFNEGX1)
+        pin       0.000      26.496       0.000  rise  u5:A (BUFX2)
+        pin       0.084      26.580       0.037  rise  u5:Y (BUFX2)
+        pin       0.000      26.580       0.000  rise  u2:B (NAND2X1)
+        pin       0.049      26.629       0.010  fall  u2:Y (NAND2X1)
+        pin       0.000      26.629       0.000  fall  u3:A (INVX2)
+        pin       3.513      30.142       0.074  rise  u3:Y (INVX2)
+       port       0.000      30.142       0.000  rise  out
+    arrival                  30.142        data arrival time
+
+       port      20.000      20.000        output port delay
+   required                  20.000        data required time
+------------------------------------------------------
+      slack                 -10.142        VIOLATED
+
+----- Critical Path 3 -----
+Startpoint    : f1:CLK
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------
+       Type       Delay        Time   Dir  Description
+------------------------------------------------------
+        pin      25.000      25.000       0.000  fall  f1:CLK (DFFNEGX1)
+        pin       1.496      26.496       1.904  rise  f1:Q (DFFNEGX1)
+        pin       0.000      26.496       0.000  rise  u2:A (NAND2X1)
+        pin       0.053      26.549       0.009  fall  u2:Y (NAND2X1)
+        pin       0.000      26.549       0.000  fall  u3:A (INVX2)
+        pin       3.513      30.062       0.074  rise  u3:Y (INVX2)
+       port       0.000      30.062       0.000  rise  out
+    arrival                  30.062        data arrival time
+
+       port      20.000      20.000        output port delay
+   required                  20.000        data required time
+------------------------------------------------------
+      slack                 -10.062        VIOLATED
+
+Arrival time [pins:21]
+-----------------------------------------------------------
+       E/R         E/F         L/R         L/F          Pin
+-----------------------------------------------------------
+     2.786      -0.913       9.581       3.950         u4:A
+    -0.814       2.967      27.499      26.543         u4:Y
+    26.496      27.403      26.496      27.403         u2:A
+    27.577      26.549      27.638      26.629         u2:Y
+    26.580      27.569      26.580      27.569         u2:B
+     0.000       0.000       1.000       1.000         inp2
+     0.000      25.000       0.000      25.000  tau2015_clk
+     2.786      -0.913       9.581       3.950         u1:Y
+    30.061      30.776      30.142      30.847          out
+     0.000       0.000       1.000       1.000         u1:B
+     0.000       0.000       5.000       5.000         u1:A
+    27.577      26.549      27.638      26.629         u3:A
+       n/a         n/a         n/a         n/a          f1:
+    26.496      27.403      26.496      27.403         u4:B
+    30.061      30.776      30.142      30.847         u3:Y
+     0.000       0.000       5.000       5.000         inp1
+    26.496      27.403      26.496      27.403         u5:A
+    26.496      27.403      26.496      27.403         f1:Q
+    -0.814       2.967      27.499      26.543         f1:D
+     0.000      25.000       0.000      25.000       f1:CLK
+    26.580      27.569      26.580      27.569         u5:Y
+-----------------------------------------------------------
+-----------------------------------------------------------
+    switch    internal            Pin
+     0.014       0.198         u4:A
+     0.000       0.000         u4:Y
+     0.012       0.025         u2:A
+     0.000       0.000         u2:Y
+     0.013       0.021         u2:B
+     0.000       0.000         inp2
+     0.000       0.000  tau2015_clk
+     0.000       0.000         u1:Y
+     4.000       0.000          out
+     0.013       2.310         u1:B
+     0.012       1.190         u1:A
+     0.019       0.033         u3:A
+     0.000       0.000          f1:
+     0.015       0.023         u4:B
+     0.000       0.000         u3:Y
+     0.000       0.000         inp1
+     0.009       0.061         u5:A
+     0.000       0.000         f1:Q
+     0.009       0.000         f1:D
+     0.029       1.975       f1:CLK
+     0.000       0.000         u5:Y
+     4.146       5.835        total
