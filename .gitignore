@@ -26,7 +26,8 @@
 *.out
 *.app
 
-!OpenTimer/ot/
+!OpenTimer/ot/*
+OpenTimer/ot/config.hpp
 OpenTimer/*
 
 optimizer/optimizer
