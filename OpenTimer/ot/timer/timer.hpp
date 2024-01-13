@@ -84,6 +84,8 @@ namespace ot
     std::vector<Path> report_timing(size_t, Split, Tran);
     std::vector<Path> report_timing(PathGuide);
 
+    void report_timing_pba(std::vector<Path> &);
+
     // Accessor
     void dump_graph(std::ostream &) const;
     void dump_power(std::ostream &) const;
@@ -184,6 +186,7 @@ namespace ot
     std::vector<Endpoint *> _worst_endpoints(const PathGuide &);
 
     std::vector<Path> _report_timing(std::vector<Endpoint *> &&, size_t);
+    std::vector<Path> _report_timing(std::vector<Path> &);
 
     bool _is_redundant_timing(const Timing &, Split) const;
 

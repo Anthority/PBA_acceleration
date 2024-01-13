@@ -22,14 +22,15 @@ int main(int argc, char *argv[])
       .read_spef("optimizer.spef")
       .read_sdc("optimizer.sdc");
 
-  auto paths = timer.report_timing(500);
+  auto paths = timer.report_timing(100);
+
+  timer.report_timing_pba(paths);
 
   for (size_t i = 0; i < paths.size(); ++i)
   {
     std::cout << "----- Critical Path " << i << " -----\n";
     std::cout << paths[i] << '\n';
   }
-
 
   // dump the timing graph to dot format for debugging
   // timer.dump_graph(std::cout);

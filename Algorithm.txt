@@ -1,0 +1,184 @@
+1. pba分析的基本流程应该是先做gba传播，然后给出gba的最坏k条路径，然后对每条路径进行pba分析。pba不会用dfs或者bfs去遍历路径，这不是它慢的地方，针对每条路径进行精确计算才是pba慢的地方（需要计算每一条路径里的每一个门，可能有重合）。
+2. gba的时序一定比pba更差，因此通过gba生成的路径去找pba违例路径的过程中可以剪枝。
+3. 大家求关键路径的方法都是从最关键路径上生枝发芽，只是表示方式不同，除了UI Timer还有eppstein算法。
+4. opentimer根本没有做pba分析，只是给出了gba下的最坏路径。它根本没有重新更新delay的值，再对每一条路径进行slack计算
+
+
+report_timing(K):
+{    
+    _worst_endpoints:
+    {
+        _update_endpoints:
+        {
+            _update_timing:
+            {
+                wait: _lineage
+
+                _build_prop_tasks:
+                {
+                    _build_prop_cands
+                        for _frontiers
+                            _build_fprop_cands
+                                for _fprop_cands
+                                    _build_bprop_cands
+                    for _fprop_cands
+                        _fprop_rc_timing
+                        _fprop_slew
+                        _fprop_delay
+                        _fprop_at
+                        _fprop_test
+                    for _fprop_cands
+                        from._ftask->precede(to->_ftask)
+
+                    for _bprop_cands
+                        _bprop_rat
+                    for _bprop_cands
+                        pin->_ftask->precede(pin->_btask)
+                }
+                
+                wait: _build_prop_tasks
+                _clear_prop_tasks
+                _clear_frontiers
+                _remove_state
+            }
+
+            FOR_EACH_EL_RF
+                for _pos
+                    _endpoints[el][rf].emplace_back
+                for _tests
+                    _endpoints[el][rf].emplace_back
+            sort(_endpoints)
+
+            wait: all
+        }
+
+        get the worst K endpoints(vector<Endpoint *>)
+    }
+
+    if K == 1
+        // no need to builf prefix tree
+        paths.emplace_back(epts[0]->slack)
+        auto sfxt = _sfxt_cache(*epts[0]);
+        _recover_datapath(paths[0], sfxt);
+    else
+        // parallel
+        for epts
+            head r = _spur(ept(Endpoint *))
+                sfxt = _sfxt_cache(ept):
+                {
+                    // 指定el以及ept的rf
+                    if ept == po :
+                    {    
+                        resize __tree, __link, __dist, __spfa
+                        sfxt.__dist[v] = (el == MIN) ? -(*po._rat[el][rf]) : *po._rat[el][rf]
+
+                        // shortest path dynamic programming
+                        _spdp(sfxt):
+                        {    
+                            // 递归地获得拓补排序，root在最后
+                            _topologize(sfxt, sfxt._T);
+                            for _pins from root
+                                if pin == datapath_source
+                                    // std::unordered_map<size_t, std::optional<float>> _srcs
+                                    sfxt._srcs.try_emplace(v, std::nullopt)
+                                else
+                                    for arc in pin->fanin
+                                        FOR_EACH_RF_IF
+                                            auto u = _encode_pin(arc->_from, urf)
+                                            auto d = (el == MIN) ? *arc->_delay[el][urf][vrf] : -(*arc->_delay[el][urf][vrf])
+                                            sfxt._relax(u, v, _encode_arc(*arc, urf, vrf), d):
+                                            {
+                                                if (!__dist[u] || *__dist[v] + d < *__dist[u])
+                                                    __dist[u] = *__dist[v] + d;
+                                                    __tree[u] = v;
+                                                    __link[u] = e;
+                                            }
+                        }
+                        for s in sfxt._srcs
+                            // 添加虚拟边
+                            v = sfxt._el == MIN ? *at : -*at;
+                            sfxt._relax(S, s, std::nullopt, *v);
+                    }
+                    else if ept == test :
+                    {    
+                        ...
+                        _spdp(sfxt)
+                        ...
+                        if (_cppr_analysis):
+                        {
+                            // 开启CPPR
+                            v = sfxt._el == MIN ? *at + *credit : -(*at) + *credit;
+                            sfxt._relax(S, s, std::nullopt, *v);
+                        }
+                        else :
+                        {
+                            v = sfxt._el == MIN ? *at : -*at;
+                            sfxt._relax(S, s, std::nullopt, *v);
+                        }
+                    }
+                }
+                pfxt = _pfxt_cache(sfxt)：
+                {
+
+                }
+                for i in K
+                    // 从最小堆中弹出一条路径，并将其添加到路径向量中
+                    get the 
+
+
+            l.merge_and_fit(r)
+
+
+}
+ 
+cout<<path[i]
+    path[i].dump
+
+_fprop_rc_timing:
+{
+    for net:
+    net->_update_rc_timing():
+    {
+        make_rct
+
+        if EmptyRct
+            accumulate
+
+        else if Rct
+            // RC树里面的每个node分配上pin
+            for pin in _pins
+                node = rct._node(pin->name())
+                node._pin = pin
+
+            rct.update_rc_timing()
+
+    }
+}
+
+_fprop_slew:
+{
+    if pin == PI
+        reset_slew
+
+    for arc in pin._fanin
+        arc->_fprop_slew():
+        {
+            if Net
+                so = net->_slew(el, rf, *(_from._slew[el][rf])):
+                {
+                    if EmptyRct
+                        return slew_in
+                    else if Rct
+                        return sqrt(slew_in * slew_in + 2 * beta - delay * delay)
+                }
+                
+                _to._relax_slew(this, el, rf, el, rf, *so)
+
+            else if TimingView
+                lc = (_to._net) ? _to._net->_load(el, trf) : 0.0f
+                so = tv[el]->slew(frf, trf, *_from._slew[el][frf], lc)
+                _to._relax_slew(this, el, frf, el, trf, *so)
+        }
+}
+
+_fprop_delay
