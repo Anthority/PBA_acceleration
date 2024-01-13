@@ -3,149 +3,140 @@
 
 #include <ot/headerdef.hpp>
 
-namespace ot
-{
+namespace ot {
 
-	class Pin;
+class Pin;
 
-	class Endpoint;
+class Endpoint;
 
 // ------------------------------------------------------------------------------------------------
 
 // Struct: Point
-	struct Point
-	{
+struct Point {
 
-		const Pin& pin;     // pin reference
-		Tran transition;   // rise/fall
-		float at;           // arrival
-		float ipower;       // internal power
+  const Pin &pin;     // pin reference
+  Tran  transition;   // rise/fall
+  float at;           // arrival
+  float ipower;       // internal power
 
-		Point(const Pin&, Tran, float, float);
-	};
+  Point(const Pin &, Tran, float, float);
+};
 
 // ------------------------------------------------------------------------------------------------
 
 // Struct: Path
-	struct Path : std::list<Point> // 继承自std::list<Point>
-	{
+struct Path : std::list<Point> // 继承自std::list<Point>
+{
 
-		Path(float, const Endpoint*);
+  Path(float, const Endpoint *);
 
-		Path(const Path&) = delete;
+  Path(const Path &) = delete;
 
-		Path(Path&&) = default;
+  Path(Path &&) = default;
 
-		Path& operator=(const Path&) = delete;
+  Path &operator=(const Path &) = delete;
 
-		Path& operator=(Path&&) = default;
+  Path &operator=(Path &&) = default;
 
-		void dump(std::ostream&) const;
+  void dump(std::ostream &) const;
 
-		void dump_tau18(std::ostream&) const;
+  void dump_tau18(std::ostream &) const;
 
-		float slack{ std::numeric_limits<float>::quiet_NaN() };
+  float slack{std::numeric_limits<float>::quiet_NaN()};
 
-		const Endpoint* endpoint{ nullptr };
-	};
+  const Endpoint *endpoint{nullptr};
+};
 
 // Operator << ostream
-	std::ostream& operator<<(std::ostream&, const Path&);
+std::ostream &operator<<(std::ostream &, const Path &);
 
 // ------------------------------------------------------------------------------------------------
 
 // Class: PathHeap
 // A max-heap to maintain the top-k critical paths during the path ranking process.
-	class PathHeap
-	{
+class PathHeap {
 
-		friend class Timer;
+  friend class Timer;
 
-		// max heap
-		struct PathComparator
-		{
-			bool operator()(const std::unique_ptr<Path>& a, const std::unique_ptr<Path>& b) const
-			{
-				return a->slack < b->slack;
-			}
-		};
+  // max heap
+  struct PathComparator {
+	bool operator()(const std::unique_ptr<Path> &a, const std::unique_ptr<Path> &b) const {
+		return a->slack < b->slack;
+	}
+  };
 
-	 public:
+ public:
 
-		PathHeap() = default;
+  PathHeap() = default;
 
-		PathHeap(PathHeap&&) = default;
+  PathHeap(PathHeap &&) = default;
 
-		PathHeap(const PathHeap&) = delete;
+  PathHeap(const PathHeap &) = delete;
 
-		PathHeap& operator=(PathHeap&&) = default;
+  PathHeap &operator=(PathHeap &&) = default;
 
-		PathHeap& operator=(const PathHeap&) = delete;
+  PathHeap &operator=(const PathHeap &) = delete;
 
-		inline size_t num_paths() const;
+  inline size_t num_paths() const;
 
-		inline size_t size() const;
+  inline size_t size() const;
 
-		inline bool empty() const;
+  inline bool empty() const;
 
-		std::vector<Path> extract();
+  std::vector<Path> extract();
 
-		void push(std::unique_ptr<Path>);
+  void push(std::unique_ptr<Path>);
 
-		void fit(size_t);
+  void fit(size_t);
 
-		void pop();
+  void pop();
 
-		void merge_and_fit(PathHeap&&, size_t);
+  void merge_and_fit(PathHeap &&, size_t);
 
-		void heapify();
+  void heapify();
 
-		Path* top() const;
+  Path *top() const;
 
-		std::string dump() const;
+  std::string dump() const;
 
-	 private:
+ private:
 
-		PathComparator _comp;
+  PathComparator _comp;
 
-		std::vector<std::unique_ptr<Path>> _paths;
-	};
+  std::vector<std::unique_ptr<Path>> _paths;
+};
 
 // Function: num_paths
-	inline size_t PathHeap::num_paths() const
-	{
-		return _paths.size();
-	}
+inline size_t PathHeap::num_paths() const {
+	return _paths.size();
+}
 
 // Function: size
-	inline size_t PathHeap::size() const
-	{
-		return _paths.size();
-	}
+inline size_t PathHeap::size() const {
+	return _paths.size();
+}
 
 // Function: empty
-	inline bool PathHeap::empty() const
-	{
-		return _paths.empty();
-	}
+inline bool PathHeap::empty() const {
+	return _paths.empty();
+}
 
 // ----------------------------------------------------------------------------
 
 // Class: PathGuide
-	struct PathGuide
-	{
-		std::optional<size_t> max_paths;
-		std::optional<size_t> num_paths_per_endpoint;
-		std::vector<std::string> from;
-		std::vector<std::string> rise_from;
-		std::vector<std::string> fall_from;
-		std::vector<std::string> to;
-		std::vector<std::string> rise_to;
-		std::vector<std::string> fall_to;
-		std::vector<std::string> through;
-		std::vector<std::string> rise_through;
-		std::vector<std::string> fall_through;
-	};
+struct PathGuide {
+  std::optional<size_t>    max_paths;
+  std::optional<size_t>    num_paths_per_endpoint;
+  std::vector<std::string> from;
+  std::vector<std::string> rise_from;
+  std::vector<std::string> fall_from;
+  std::vector<std::string> to;
+  std::vector<std::string> rise_to;
+  std::vector<std::string> fall_to;
+  std::vector<std::string> through;
+  std::vector<std::string> rise_through;
+  std::vector<std::string> fall_through;
+};
 
 };  // end of namespace ot. ---------------------------------------------------
 

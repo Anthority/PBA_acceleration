@@ -160,7 +160,7 @@ SfxtCache Timer::_sfxt_cache(const PrimaryOutput &po, Split el, Tran rf) const {
 	assert(po._rat[el][rf]);
 
 	// create a cache
-	// _idx2pin.size()：pin的数量 * 2
+	// _idx2pin.size()：pin的数量 * 2，因为每个pin有rise和fall
 	auto S = _idx2pin.size() << 1;
 	// 获得po的index
 	auto v = _encode_pin(po._pin, rf);
@@ -198,8 +198,9 @@ SfxtCache Timer::_sfxt_cache(const Test &test, Split el, Tran rf) const {
 	assert(test._rat[el][rf]);
 
 	// create a cache
-	auto      S = _idx2pin.size() << 1;
-	auto      v = _encode_pin(test._arc._to, rf);
+	auto S = _idx2pin.size() << 1;
+	auto v = _encode_pin(test._arc._to, rf);
+
 	SfxtCache sfxt(el, S, v);
 
 	// Start at the D pin and perform SPFA all the way to the sources of data paths.
