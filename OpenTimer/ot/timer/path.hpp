@@ -22,7 +22,7 @@ namespace ot
 		float at;	  // arrival
 		float ipower; // internal power
 
-		Point(const Pin &, Tran, float, float);
+		Point(const Pin &, Tran, float, float, float);
 	};
 
 	// ------------------------------------------------------------------------------------------------
@@ -42,8 +42,11 @@ namespace ot
 		Path &operator=(Path &&) = default;
 
 		void dump(std::ostream &) const;
+		void dump_pba(std::ostream &) const;
 
 		void dump_tau18(std::ostream &) const;
+
+		bool pba_flag{false};
 
 		float slack{std::numeric_limits<float>::quiet_NaN()};
 
@@ -101,6 +104,11 @@ namespace ot
 		void heapify();
 
 		Path *top() const;
+
+		std::string dump() const;
+
+	private:
+		PathComparator _comp;
 
 		std::vector<std::unique_ptr<Path>> _paths;
 	};

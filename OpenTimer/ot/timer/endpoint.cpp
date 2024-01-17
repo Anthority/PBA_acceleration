@@ -97,7 +97,6 @@ namespace ot
 			epts.push_back(&_endpoints[*mel][*mrf][i[*mel][*mrf]]);
 			++i[*mel][*mrf];
 		}
-
 		std::cout << std::endl;
 		for (auto &ept : epts)
 			std::cout << ept->slack() << std::endl;

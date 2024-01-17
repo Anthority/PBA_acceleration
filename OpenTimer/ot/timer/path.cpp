@@ -5,10 +5,11 @@ namespace ot
 {
 
 	// Constructor
-	Point::Point(const Pin &p, Tran t, float v, float pw) : pin{p},
-															transition{t},
-															at{v},
-															ipower{pw}
+	Point::Point(const Pin &p, Tran t, float v, float s, float pw) : pin{p},
+																	 transition{t},
+																	 slew{s},
+																	 at{v},
+																	 ipower{pw}
 	{
 	}
 
@@ -125,15 +126,17 @@ namespace ot
 		os << "Analysis type : " << to_string(split) << '\n';
 
 		size_t w1 = 11;
+		size_t w_slew = 12;
 		size_t w2 = 12;
 		size_t w3 = 12;
 		size_t w4 = 6;
 		size_t w5 = 13;
-		size_t W = w1 + w2 + w3 + w4 + w5;
+		size_t W = w1 + w_slew + w2 + w3 + w4 + w5;
 
 		std::fill_n(std::ostream_iterator<char>(os), W, '-');
 		os << '\n'
 		   << std::setw(w1) << "Type"
+		   << std::setw(w_slew) << "Slew"
 		   << std::setw(w2) << "Delay"
 		   << std::setw(w3) << "Time"
 		   << std::setw(w4) << "Dir";
@@ -158,6 +161,10 @@ namespace ot
 			{
 				os << std::setw(w1) << "pin";
 			}
+
+			// slew
+			os << std::setw(w_slew);
+			os << p.slew;
 
 			// delay
 			os << std::setw(w2);
@@ -189,7 +196,7 @@ namespace ot
 		}
 
 		os << std::setw(w1) << "arrival"
-		   << std::setw(w2 + w3) << at;
+		   << std::setw(w_slew + w2 + w3) << at;
 		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
 		os << "data arrival time" << '\n';
 
@@ -207,11 +214,11 @@ namespace ot
 								if (auto c = test->_related_at[split][tran]; c)
 								{
 									sum += *c;
-									os << std::setw(w2) << *c << std::setw(w3) << sum;
+									os << std::setw(w_slew + w2) << *c << std::setw(w3) << sum;
 								}
 								else
 								{
-									os << std::setw(w2 + w3) << "n/a";
+									os << std::setw(w_slew + w2 + w3) << "n/a";
 								}
 
 								if (tv && tv->is_rising_edge_triggered())
@@ -243,12 +250,12 @@ namespace ot
 									{
 									case MIN:
 										sum += *c;
-										os << std::setw(w2) << c.value() << std::setw(w3) << sum;
+										os << std::setw(w_slew + w2) << c.value() << std::setw(w3) << sum;
 										break;
 
 									case MAX:
 										sum -= *c;
-										os << std::setw(w2) << -c.value() << std::setw(w3) << sum;
+										os << std::setw(w_slew + w2) << -c.value() << std::setw(w3) << sum;
 										break;
 									}
 
@@ -273,7 +280,7 @@ namespace ot
 								{
 									os << std::setw(w1) << "cppr credit";
 									sum += *c;
-									os << std::setw(w2) << *c << std::setw(w3) << sum << '\n';
+									os << std::setw(w_slew + w2) << *c << std::setw(w3) << sum << '\n';
 								}
 
 								OT_LOGW_IF(
@@ -285,27 +292,246 @@ namespace ot
 								os << std::setw(w1) << "port";
 								if (auto v = po->rat(split, tran); v)
 								{
-									os << std::setw(w2) << *v << std::setw(w3) << *v;
+									os << std::setw(w_slew + w2) << *v << std::setw(w3) << *v;
 									std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
 									os << "output port delay" << '\n';
 								}
 								else
 								{
-									os << std::setw(w2) << "n/a" << '\n';
+									os << std::setw(w_slew + w2) << "n/a" << '\n';
 								}
 							}},
 				   endpoint->_handle);
 
-		os << std::setw(w1) << "required" << std::setw(w2 + w3) << rat;
+		os << std::setw(w1) << "required" << std::setw(w_slew + w2 + w3) << rat;
 		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
 		os << "data required time" << '\n';
 
 		// slack
 		std::fill_n(std::ostream_iterator<char>(os), W, '-');
 		os << '\n'
-		   << std::setw(w1) << "slack" << std::setw(w2 + w3) << slack;
+		   << std::setw(w1) << "slack" << std::setw(w_slew + w2 + w3) << slack;
 		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
 		os << (slack < 0.0f ? "VIOLATED" : "MET") << '\n';
+
+		// restore the format
+		os.flags(fmt);
+	}
+
+	void Path::dump_pba(std::ostream &os) const
+	{
+
+		if (empty())
+		{
+			os << "empty path\n";
+			return;
+		}
+
+		auto fmt = os.flags();
+		auto split = endpoint->split();
+		auto tran = endpoint->transition();
+		auto at = back().at;
+		// auto rat = (split == MIN ? at - slack : at + slack);
+
+		// Print the head
+		os << "Startpoint    : " << front().pin.name() << '\n';
+		os << "Endpoint      : " << back().pin.name() << '\n';
+		os << "Analysis type : " << to_string(split) << '\n';
+
+		size_t w1 = 11;
+		size_t w_slew = 12;
+		size_t w2 = 12;
+		size_t w3 = 12;
+		size_t w4 = 6;
+		size_t w5 = 13;
+		size_t W = w1 + w_slew + w2 + w3 + w4 + w5;
+
+		std::fill_n(std::ostream_iterator<char>(os), W, '-');
+		os << '\n'
+		   << std::setw(w1) << "Type"
+		   << std::setw(w_slew) << "Slew"
+		   << std::setw(w2) << "Delay"
+		   << std::setw(w3) << "Time"
+		   << std::setw(w4) << "Dir";
+		std::fill_n(std::ostream_iterator<char>(os), 2, ' ');
+		os << "Description" << '\n';
+		std::fill_n(std::ostream_iterator<char>(os), W, '-');
+		os << '\n';
+
+		// trace
+		os << std::fixed << std::setprecision(3);
+		std::optional<float> pi_at;
+
+		for (const auto &p : *this)
+		{
+
+			// type
+			if (p.pin.primary_input() || p.pin.primary_output())
+			{
+				os << std::setw(w1) << "port";
+			}
+			else
+			{
+				os << std::setw(w1) << "pin";
+			}
+
+			// slew
+			os << std::setw(w_slew);
+			os << p.slew;
+
+			// delay
+			os << std::setw(w2);
+			if (pi_at)
+				os << p.at - *pi_at;
+			else
+				os << p.at;
+
+			// arrival time
+			// << "/" << *p.pin._at[split][p.transition]
+			os << std::setw(w3) << p.at;
+
+			// internal power
+			// ？？？没输出
+			// os << std::setw(w3) << p.ipower;
+
+			// transition
+			os << std::setw(w4) << to_string(p.transition);
+
+			// pin name
+			std::fill_n(std::ostream_iterator<char>(os), 2, ' ');
+			if (os << p.pin.name(); p.pin.gate())
+			{
+				os << " (" << p.pin.gate()->cell_name() << ')';
+			}
+			os << '\n';
+
+			// cursor
+			pi_at = p.at;
+		}
+
+		os << std::setw(w1) << "arrival"
+		   << std::setw(w_slew + w2 + w3) << at;
+		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
+		os << "data arrival time" << '\n';
+
+		// Print the required arrival time
+		os << '\n';
+
+		auto rat = 0.0f;
+		// test type
+		std::visit(Functors{[&](Test *test)
+							{
+								auto tv = (test->_arc.timing_view())[split];
+								auto sum = 0.0f;
+
+								// related pin latency
+								os << std::setw(w1) << "related pin";
+								if (auto c = test->_related_at[split][tran]; c)
+								{
+									sum += *c;
+									os << std::setw(w_slew + w2) << *c << std::setw(w3) << sum;
+								}
+								else
+								{
+									os << std::setw(w_slew + w2 + w3) << "n/a";
+								}
+
+								if (tv && tv->is_rising_edge_triggered())
+								{
+									os << std::setw(w4) << "rise";
+								}
+								else if (tv && tv->is_falling_edge_triggered())
+								{
+									os << std::setw(w4) << "fall";
+								}
+								else
+								{
+									os << "n/a";
+								}
+
+								std::fill_n(std::ostream_iterator<char>(os), 2, ' ');
+								if (os << test->related_pin().name(); test->related_pin().gate())
+								{
+									os << " (" << test->related_pin().gate()->cell_name() << ')';
+								}
+								os << '\n';
+
+								// constraint value
+								os << std::setw(w1) << "constraint";
+								if (auto c = test->_constraint[split][tran]; c)
+								{
+
+									switch (split)
+									{
+									case MIN:
+										sum += *c;
+										os << std::setw(w_slew + w2) << c.value() << std::setw(w3) << sum;
+										break;
+
+									case MAX:
+										sum -= *c;
+										os << std::setw(w_slew + w2) << -c.value() << std::setw(w3) << sum;
+										break;
+									}
+
+									// timing type
+									if (tv && tv->type)
+									{
+										std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
+										os << "library " << to_string(tv->type.value()) << '\n';
+									}
+									else
+									{
+										os << '\n';
+									}
+								}
+								else
+								{
+									os << std::setw(w2) << "n/a" << '\n';
+								}
+
+								// cppr credit
+								if (auto c = test->_cppr_credit[split][tran]; c)
+								{
+									os << std::setw(w1) << "cppr credit";
+									sum += *c;
+									os << std::setw(w_slew + w2) << *c << std::setw(w3) << sum << '\n';
+								}
+								rat = sum;
+
+								// OT_LOGW_IF(
+								// 	std::fabs(sum - rat) > 1.0f,
+								// 	"unstable numerics in PBA and GBA rats: ", sum, " vs ", rat);
+							},
+							[&](PrimaryOutput *po)
+							{
+								os << std::setw(w1) << "port";
+								if (auto v = po->rat(split, tran); v)
+								{
+									os << std::setw(w_slew + w2) << *v << std::setw(w3) << *v;
+									std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
+									os << "output port delay" << '\n';
+									rat = *v;
+								}
+								else
+								{
+									os << std::setw(w_slew + w2) << "n/a" << '\n';
+								}
+							}},
+				   endpoint->_handle);
+
+		os << std::setw(w1) << "required" << std::setw(w_slew + w2 + w3) << rat;
+		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
+		os << "data required time" << '\n';
+
+		// slack
+		// auto rat = (split == MIN ? at - slack : at + slack);
+		auto new_slack = (split == MIN ? at - rat : rat - at);
+		std::fill_n(std::ostream_iterator<char>(os), W, '-');
+		os << '\n'
+		   << std::setw(w1) << "slack" << std::setw(w_slew + w2 + w3) << new_slack;
+		std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
+		os << (new_slack < 0.0f ? "VIOLATED" : "MET") << '\n';
 
 		// restore the format
 		os.flags(fmt);
@@ -314,7 +540,10 @@ namespace ot
 	// Operator <<
 	std::ostream &operator<<(std::ostream &os, const Path &path)
 	{
-		path.dump(os);
+		if (path.pba_flag)
+			path.dump_pba(os);
+		else
+			path.dump(os);
 		return os;
 	}
 
@@ -521,7 +750,7 @@ namespace ot
 
 		assert(v->_at[el][rf]);
 
-		path.emplace_front(*v, rf, *v->_at[el][rf], 0.0);
+		path.emplace_front(*v, rf, *v->_at[el][rf], *v->_slew[el][rf], 0.0);
 
 		if (auto arc = v->_at[el][rf]->pi_arc; arc)
 		{
@@ -544,7 +773,7 @@ namespace ot
 
 		// data path source
 		assert(upin->_at[sfxt._el][urf]);
-		path.emplace_back(*upin, urf, *upin->_at[sfxt._el][urf], 0.0);
+		path.emplace_back(*upin, urf, *upin->_at[sfxt._el][urf], *upin->_slew[sfxt._el][urf], 0.0);
 
 		// recursive
 		while (u != sfxt._T)
@@ -556,14 +785,13 @@ namespace ot
 			assert(path.back().transition == frf && urf == trf);
 			auto at = path.back().at + *arc->_delay[sfxt._el][frf][trf];
 			auto ip = *arc->_ipower[sfxt._el][frf][trf];
-			path.emplace_back(*upin, urf, at, ip);
+			path.emplace_back(*upin, urf, at, *arc->to().slew(sfxt._el, trf), ip);
 		}
 	}
 
 	// Procedure: _recover_datapath
 	// recover the data path from a given prefix tree node w.r.t. a suffix tree
-	void Timer::_recover_datapath(
-		Path &path, const SfxtCache &sfxt, const PfxtNode *node, size_t v) const
+	void Timer::_recover_datapath(Path &path, const SfxtCache &sfxt, const PfxtNode *node, size_t v) const
 	{
 
 		if (node == nullptr)
@@ -580,7 +808,7 @@ namespace ot
 		if (node->from == sfxt._S)
 		{
 			assert(upin->_at[sfxt._el][urf]);
-			path.emplace_back(*upin, urf, *upin->_at[sfxt._el][urf], 0.0);
+			path.emplace_back(*upin, urf, *upin->_at[sfxt._el][urf], *upin->_slew[sfxt._el][urf], 0.0);
 		}
 
 		// internal deviation
@@ -590,7 +818,8 @@ namespace ot
 			// To Change
 			auto at = path.back().at + *node->arc->_delay[sfxt._el][path.back().transition][urf];
 			auto ip = *node->arc->_ipower[sfxt._el][path.back().transition][urf];
-			path.emplace_back(*upin, urf, at, ip);
+			// ？？？？？？？？？？？
+			path.emplace_back(*upin, urf, at, *node->arc->to().slew(sfxt._el, urf), ip);
 		}
 
 		while (u != v)
@@ -602,7 +831,7 @@ namespace ot
 			assert(path.back().transition == frf && urf == trf);
 			auto at = path.back().at + *arc->_delay[sfxt._el][frf][trf];
 			auto ip = *arc->_ipower[sfxt._el][frf][trf];
-			path.emplace_back(*upin, urf, at, ip);
+			path.emplace_back(*upin, urf, at, *arc->to().slew(sfxt._el, trf), ip);
 		}
 	}
 
@@ -610,9 +839,68 @@ namespace ot
 	{
 		for (auto &path : paths)
 		{
-			for (auto &point : path)
+			path.pba_flag = true;
+			// 如果路径的第一个pin不是data source就报错
+			assert(path.front().pin.is_datapath_source());
+
+			// std::optional<float> pin_slew;
+			auto el = path.endpoint->split();
+
+			auto itr = path.begin();
+			auto next_itr = path.begin();
+			next_itr++;
+
+			std::optional<float> pin_slew = (*itr).pin._slew[el][(*itr).transition];
+			(*itr).slew = *pin_slew;
+			(*itr).at = *(*itr).pin._at[el][(*itr).transition];
+			std::cout << (*itr).pin._name << " " << *pin_slew << " "
+					  << *(*itr).pin._slew[el][(*itr).transition] << " "
+					  << *(*itr).pin._at[el][(*itr).transition] << " "
+					  << *(*itr).pin._at[el][(*itr).transition]
+					  << std::endl;
+
+			while (next_itr != path.end())
 			{
+				// std::cout << (*itr).pin._fanout.size() << std::endl;
+
+				auto valid_pin_slew = pin_slew;
+				for (auto &arc : (*itr).pin._fanout)
+				{
+					// 保留下有返回值的pin_slew
+					if (arc->_to.idx() == (*next_itr).pin.idx())
+					{
+						// 根据上一次的pin_slew查出下一个节点的slew
+						pin_slew = arc->_get_slew(el, (*itr).transition, (*next_itr).transition, *pin_slew);
+						if (pin_slew)
+						{
+							valid_pin_slew = pin_slew;
+							(*next_itr).slew = *pin_slew;
+							// std::cout << (*next_itr).pin._name << " "
+							// 		  << *(*next_itr).pin._slew[el][(*next_itr).transition] << " "
+							// 		  << *pin_slew << " "<<(*next_itr).slew<<" ";
+
+							// std::cout << (*next_itr).at << " ";
+
+							// 要用上一个节点的slew来计算当前弧的delay值
+							(*next_itr).at = (*itr).at + *(arc->_get_delay(el, (*itr).transition, (*next_itr).transition, (*itr).slew));
+
+							// std::cout << (*next_itr).at << " "
+							// 							<< *(*next_itr).pin._at[el][(*next_itr).transition];
+						}
+						else
+						{
+							pin_slew = valid_pin_slew;
+						};
+					}
+				}
+				itr++;
+				next_itr++;
+				// std::cout << std::endl;
+
+				// auto (*itr) = *(itr++);
+				// std::cout << (*itr).pin._name << std::endl;
 			}
+			// std::cout << std::endl;
 		}
 	}
 }; // end of namespace ot. -----------------------------------------------------------------------

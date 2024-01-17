@@ -77,7 +77,7 @@ namespace ot
 			}
 			// MAX: rat - delay - at || s = rat - at
 			// MIN:-rat + delay + at || s = -rat + at
-			else if (auto s = *sfxt.__dist[k] + *v; s < 0.0f)
+			else if (auto s = *sfxt.__dist[k] + *v; s < 1000.0f)
 			{
 				// 虚拟边没有对应的Arc，也没有parent pfxtnode
 				pfxt._push(s, sfxt._S, k, nullptr, nullptr);
@@ -152,7 +152,7 @@ namespace ot
 					auto v = _encode_pin(arc->_to, vrf);
 
 					// skip if the edge goes outside the sfxt
-					if (!pfxt._sfxt.__dist[v])
+					if (!pfxt._sfxt.__dist[v]) // unreachable
 					{
 						continue;
 					}
@@ -166,7 +166,8 @@ namespace ot
 					auto w = (el == MIN) ? *arc->_delay[el][urf][vrf] : -(*arc->_delay[el][urf][vrf]);
 					auto s = *pfxt._sfxt.__dist[v] + w - *pfxt._sfxt.__dist[u] + pfx.slack;
 
-					if (s < 0.0f)
+					// 和违例路径的slack值有关
+					if (s < 1000.0f)
 					{
 						pfxt._push(s, u, v, arc, &pfx);
 					}

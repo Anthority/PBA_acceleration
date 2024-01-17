@@ -4,29 +4,30 @@
 #include <ot/traits.hpp>
 #include <ot/liberty/celllib.hpp>
 
-namespace ot {
+namespace ot
+{
 
-class Pin;
-class Net;
-class Test;
+  class Pin;
+  class Net;
+  class Test;
 
-// ------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
-// Class: Arc
-class Arc {
+  // Class: Arc
+  class Arc
+  {
 
-  friend class Timer;
-  friend class Pin;
-  friend class Gate;
-  friend class Test;
-  friend class SCC;
-  
-  constexpr static int LOOP_BREAKER = 0x01;
+    friend class Timer;
+    friend class Pin;
+    friend class Gate;
+    friend class Test;
+    friend class SCC;
+
+    constexpr static int LOOP_BREAKER = 0x01;
 
   public:
-
-    Arc(Pin&, Pin&, Net&);
-    Arc(Pin&, Pin&, TimingView);
+    Arc(Pin &, Pin &, Net &);
+    Arc(Pin &, Pin &, TimingView);
 
     std::string name() const;
 
@@ -41,29 +42,30 @@ class Arc {
 
     TimingView timing_view() const;
 
-    const Pin& from() const;
-    const Pin& to() const;
+    const Pin &from() const;
+    const Pin &to() const;
 
   private:
-
-    Pin& _from;
-    Pin& _to; 
+    Pin &_from;
+    Pin &_to;
 
     size_t _idx;
 
-    int _state {0};
+    int _state{0};
 
-    std::variant<Net*, TimingView> _handle;
+    std::variant<Net *, TimingView> _handle;
 
     std::optional<std::list<Arc>::iterator> _satellite;
-    std::optional<std::list<Arc*>::iterator> _fanout_satellite;
-    std::optional<std::list<Arc*>::iterator> _fanin_satellite;
-    
+    std::optional<std::list<Arc *>::iterator> _fanout_satellite;
+    std::optional<std::list<Arc *>::iterator> _fanin_satellite;
+
     TimingData<std::optional<float>, MAX_SPLIT, MAX_TRAN, MAX_TRAN> _delay;
     TimingData<std::optional<float>, MAX_SPLIT, MAX_TRAN, MAX_TRAN> _ipower;
 
-    void _remap_timing(Split, const Timing&);
+    void _remap_timing(Split, const Timing &);
+    std::optional<float> _get_slew(Split, Tran, Tran, float);
     void _fprop_slew();
+    std::optional<float> _get_delay(Split, Tran, Tran, float);
     void _fprop_at();
     void _reset_delay();
     void _fprop_delay();
@@ -72,29 +74,26 @@ class Arc {
     void _remove_state(int = 0);
 
     bool _has_state(int) const;
-}; 
+  };
 
-// Function: idx
-inline size_t Arc::idx() const {
-  return _idx;
-}
+  // Function: idx
+  inline size_t Arc::idx() const
+  {
+    return _idx;
+  }
 
-// Function: from
-inline const Pin& Arc::from() const {
-  return _from;
-}
+  // Function: from
+  inline const Pin &Arc::from() const
+  {
+    return _from;
+  }
 
-// Function: to
-inline const Pin& Arc::to() const {
-  return _to;
-}
+  // Function: to
+  inline const Pin &Arc::to() const
+  {
+    return _to;
+  }
 
-};  // end of namespace ot. -----------------------------------------------------------------------
+}; // end of namespace ot. -----------------------------------------------------------------------
 
 #endif
-
-
-
-
-
-
