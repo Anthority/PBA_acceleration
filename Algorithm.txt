@@ -58,12 +58,13 @@ report_timing(K):
     if K == 1
         // no need to builf prefix tree
         paths.emplace_back(epts[0]->slack)
-        auto sfxt = _sfxt_cache(*epts[0]);
+        auto sfxt = _sfxt_cache(*epts[0]); 
         _recover_datapath(paths[0], sfxt);
     else
         // parallel
         for epts
-            head r = _spur(ept(Endpoint *))
+            head r = _spur(ept(Endpoint *)):
+            {
                 sfxt = _sfxt_cache(ept):
                 {
                     // 指定el以及ept的rf
@@ -119,18 +120,61 @@ report_timing(K):
                 }
                 pfxt = _pfxt_cache(sfxt)：
                 {
-
+                    // 构建虚拟边对应的偏离边，同时按照slack大小顺序排列
+                    build the virtual edges
+                    pfxt._push(s, sfxt._S, k, nullptr, nullptr);
                 }
                 for i in K
                     // 从最小堆中弹出一条路径，并将其添加到路径向量中
-                    get the 
+                    get the smallest path's pfxt tree node
+                    if node == nullptr or (heap.num_paths() >= K and heap.top()->slack <= node->slack)
+                        break
+                    else
+                        auto path = std::make_unique<Path>(node->slack, &ept);
+                        
+                        // 从代表source和startpoint连接的node出发
+                        _recover_datapath(*path, sfxt, node, sfxt._T):
+                        {
+                            // 要一直递归到连接source和startpoint的边
+                            _recover_datapath(path, sfxt, node->parent, node->from);
 
+                            // data path source deviation
+                            if (node->from == sfxt._S)
+                                // return之后，从代表source和startpoint的边开始，创建path的point
+                                path.emplace_back(*upin, urf, *upin->_at[sfxt._el][urf], *upin->_slew[sfxt._el][urf], 0.0);
+
+                            // internal deviation
+                            else
+                                ...
+
+                            while (u != v)
+		                    {
+                                // 在最短路径树上恢复，恢复到node->from
+                                
+                            }
+                            
+                        }
+            }
 
             l.merge_and_fit(r)
-
-
 }
- 
+
+
+原有逻辑：
+_spur:
+    构建prefix tree，将虚拟边添加进_pfxt_cache（heap）
+    for i in K
+        auto node = pfxt._pop();
+        auto path = std::make_unique<Path>(node->slack, &ept);
+        _recover_datapath(*path, sfxt, node, sfxt._T);
+        _spur(pfxt, *node);
+
+更改逻辑：
+_spur:
+    _recover_datapath 直到该分叉点
+    find out_arc
+    
+
 cout<<path[i]
     path[i].dump
 
