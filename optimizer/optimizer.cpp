@@ -1,93 +1,101 @@
-// This program demonstrates how to use OpenTimer's API to
-// run a simple timing-driven optimization loop plus
-// incremental timing update.
-
-// Design : optimizer.v
-// SDC    : optimizer.sdc
-// SPEF   : optimizer.spef change_1.spef
-// Library: optimizer_Early.lib (early/ min split)
-// Library: optimizer_Late.lib  (late / max split)
-
 #include <ot/timer/timer.hpp>
+#include <filesystem>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
   ot::Timer timer = ot::Timer();
 
+  std::string case_name = argv[1];
+
+  std::string lib_early = case_name + "_Early.lib";
+  std::string lib_late = case_name + "_Late.lib";
+  std::string verilog_file = case_name + ".v";
+  std::string spef_file = case_name + ".spef";
+  std::string sdc_file = case_name + ".sdc";
+
   // Read design
-  timer.read_celllib("optimizer_Early.lib", ot::MIN)
-	  .read_celllib("optimizer_Late.lib", ot::MAX)
-	  .read_verilog("optimizer.v")
-	  .read_spef("optimizer.spef")
-	  .read_sdc("optimizer.sdc");
+  timer.read_celllib(lib_early, ot::MIN)
+      .read_celllib(lib_late, ot::MAX)
+      .read_verilog(verilog_file)
+      .read_spef(spef_file)
+      .read_sdc(sdc_file);
 
-  // auto paths = timer.report_timing(1000);
-  auto paths = timer.my_report_timing(1000);
+  size_t path_num;
 
-  // for (size_t i = 0; i < paths.size(); ++i) {
-	// std::cout << "----- Critical Path GBA Mode " << i << " -----\n";
-	// std::cout << *paths[i] << '\n';
-  // }
+  if (argv[2])
+    path_num = std::stoi(argv[2]);
+  else
+    path_num = 100;
 
-  // timer.report_timing_pba(paths);
-  timer.new_report_timing_pba_merge(paths);
+  std::fstream file;
+  std::filesystem::create_directory("report");
 
-  for (size_t i = 0; i < paths.size(); ++i) {
-	std::cout << "----- Critical Path PBA Mode " << i << " -----\n";
-	std::cout << *paths[i] << '\n';
+  // ------------------------------------------------------------
+  auto paths = timer.report_timing(path_num);
+  file.open("report/" + case_name + "_GBA.log", std::ios::out);
+  if (file.is_open())
+  {
+    for (size_t i = 0; i < paths.size(); ++i)
+    {
+      file << "----- Critical Path GBA Mode " << i << " -----\n";
+      file << paths[i] << '\n';
+    }
+    file.close();
   }
-  // dump the timing graph to dot format for debugging
-  // timer.dump_graph(std::cout);
-  // timer.dump_at(std::cout);
-  // timer.dump_graph(std::cout);
-  // // Report the TNS and WNS
-  // if(std::optional<float> tns = timer.report_tns(); tns) {
-  //   std::cout << "TNS: " << *tns << '\n';
-  // }
-  // else {
-  //   std::cout << "TNS is not available\n";
+  else
+  {
+    std::cerr << "Failed to open file for writing." << std::endl;
+  }
+  // for (size_t i = 0; i < paths.size(); ++i)
+  // {
+  //   std::cout << "----- Critical Path GBA Mode " << i << " -----\n";
+  //   std::cout << paths[i] << '\n';
   // }
 
-  // if(std::optional<float> wns = timer.report_wns(); wns) {
-  //   std::cout << "WNS: " << *wns << '\n';
+  // ------------------------------------------------------------
+  timer.report_timing_pba(paths);
+  file.open("report/" + case_name + "_PBA_FULL.log", std::ios::out);
+  if (file.is_open())
+  {
+    for (size_t i = 0; i < paths.size(); ++i)
+    {
+      file << "----- Critical Path PBA FULL Mode " << i << " -----\n";
+      file << paths[i] << '\n';
+    }
+    file.close();
+  }
+  else
+  {
+    std::cerr << "Failed to open file for writing." << std::endl;
+  }
+
+  // ------------------------------------------------------------
+  float acceptable_slew;
+  if (argv[3])
+  {
+    acceptable_slew = std::stof(argv[3]);
+    timer.report_timing_pba_merge(paths, acceptable_slew);
+  }
+  file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
+  if (file.is_open())
+  {
+    for (size_t i = 0; i < paths.size(); ++i)
+    {
+      file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
+      file << paths[i] << '\n';
+    }
+    file.close();
+  }
+  else
+  {
+    std::cerr << "Failed to open file for writing." << std::endl;
+  }
+  // for (size_t i = 0; i < paths.size(); ++i)
+  // {
+  //   std::cout << "----- Critical Path PBA Mode " << i << " -----\n";
+  //   std::cout << paths[i] << '\n';
   // }
-  // else {
-  //   std::cout << "WNS is not available\n";
-  // }
-
-  // // repower a gate and insert a buffer
-  // timer.repower_gate("inst_10", "INV_X16")
-  //      .insert_gate("TAUGATE_1", "BUF_X2")
-  //      .insert_net("TAUNET_1")
-  //      .disconnect_pin("inst_3:ZN")
-  //      .connect_pin("inst_3:ZN", "TAUNET_1")
-  //      .connect_pin("TAUGATE_1:A", "TAUNET_1")
-  //      .connect_pin("TAUGATE_1:Z", "net_14")
-  //      .read_spef("change_1.spef");
-
-  // // report the slack at a G17
-  // std::cout << "Late/Fall slack at pin G17: "
-  //           << *timer.report_slack("G17", ot::MAX, ot::FALL)
-  //           << '\n';
-
-  // // report the arrival time at G17
-  // std::cout << "Late/Fall arrival time at pin G17: "
-  //           << *timer.report_at("G17", ot::MAX, ot::FALL)
-  //           << '\n';
-
-  // // report the required arrival time at G17
-  // std::cout << "Late/Fall required arrival time at pin G17: "
-  //           << *timer.report_rat("G17", ot::MAX, ot::FALL)
-  //           << '\n';
-
-  // // report the path after optimization
-  // auto opt_path = timer.report_timing(1);
-
-  // // compare
-  // std::cout << "Critical path after  optimization: \n" << opt_path[0];
-
-  // // dump the slack
-  // timer.dump_slack(std::cout);
 
   return 0;
 }

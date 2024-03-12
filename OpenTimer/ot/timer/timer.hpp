@@ -77,20 +77,14 @@ class Timer {
   std::optional<size_t> report_fep(std::optional<Split> = {}, std::optional<Tran> = {});
 
   std::vector<Path> report_timing(size_t);
-  std::vector<std::unique_ptr<Path>> my_report_timing(size_t);
   std::vector<Path> report_timing(size_t, Split);
   std::vector<Path> report_timing(size_t, Tran);
   std::vector<Path> report_timing(size_t, Split, Tran);
   std::vector<Path> report_timing(PathGuide);
 
   float cal_arc_pba_timing(Point &, Point &, Split);
-  void report_timing_pba(std::vector<std::unique_ptr<Path>> &);
-  void new_report_timing_pba_merge(std::vector<std::unique_ptr<Path>> &);
-  void report_timing_pba_merge(std::vector<std::unique_ptr<Path>> &);
-  float report_timing_pba_merge(Path *,
-								size_t,
-								Path *,
-								std::unordered_map<std::string, std::map<float, std::pair<Path *, size_t>>> &);
+  void report_timing_pba(std::vector<Path> &);
+  void report_timing_pba_merge(std::vector<Path> &, float);
 
   // Accessor
   void dump_graph(std::ostream &) const;
@@ -138,7 +132,7 @@ class Timer {
   mutable std::shared_mutex _mutex;
 
   tf::Taskflow _taskflow;
-  tf::Executor _executor{1};
+  tf::Executor _executor;
 
   int _state{0};
 
@@ -192,7 +186,6 @@ class Timer {
   std::vector<Endpoint *> _worst_endpoints(const PathGuide &);
 
   std::vector<Path> _report_timing(std::vector<Endpoint *> &&, size_t);
-  std::vector<std::unique_ptr<Path>> _my_report_timing(std::vector<Endpoint *> &&, size_t);
   std::vector<Path> _report_timing(std::vector<Path> &);
 
   bool _is_redundant_timing(const Timing &, Split) const;
@@ -331,9 +324,7 @@ class Timer {
   inline auto _encode_pin(const Pin &, Tran) const;
   inline auto _decode_pin(size_t) const;
   inline auto _encode_arc(Arc &, Tran, Tran) const;
-  inline auto _my_encode_arc(Arc &, Tran, Tran, Split) const;
   inline auto _decode_arc(size_t) const;
-  inline auto _my_decode_arc(size_t) const;
   inline auto _has_state(int) const;
   inline auto _insert_state(int);
   inline auto _remove_state(int = 0);
@@ -500,23 +491,6 @@ inline auto Timer::_encode_arc(Arc &arc, Tran frf, Tran trf) const {
   }
 }
 
-// Function: _encode_arc
-inline auto Timer::_my_encode_arc(Arc &arc, Tran frf, Tran trf, Split el) const {
-  if (el == MIN) {
-	if (frf == RISE) {
-	  return arc._idx + (trf == RISE ? 0 : _idx2arc.size());
-	} else {
-	  return arc._idx + (trf == RISE ? _idx2arc.size() * 2 : _idx2arc.size() * 3);
-	}
-  } else {
-	if (frf == RISE) {
-	  return arc._idx + (trf == RISE ? _idx2arc.size() * 4 : _idx2arc.size() * 5);
-	} else {
-	  return arc._idx + (trf == RISE ? _idx2arc.size() * 6 : _idx2arc.size() * 7);
-	}
-  }
-}
-
 // Function: _decode_arc
 inline auto Timer::_decode_arc(size_t idx) const {
   if (auto s = _idx2arc.size(); idx < s) {
@@ -527,27 +501,6 @@ inline auto Timer::_decode_arc(size_t idx) const {
 	return std::make_tuple(_idx2arc[idx % s], FALL, RISE);
   } else {
 	return std::make_tuple(_idx2arc[idx % s], FALL, FALL);
-  }
-}
-
-// Function: _decode_arc
-inline auto Timer::_my_decode_arc(size_t idx) const {
-  if (auto s = _idx2arc.size(); idx < s) {
-	return std::make_tuple(_idx2arc[idx % s], RISE, RISE, MIN);
-  } else if (idx < 2 * s) {
-	return std::make_tuple(_idx2arc[idx % s], RISE, FALL, MIN);
-  } else if (idx < 3 * s) {
-	return std::make_tuple(_idx2arc[idx % s], FALL, RISE, MIN);
-  } else if (idx < 4 * s) {
-	return std::make_tuple(_idx2arc[idx % s], FALL, FALL, MIN);
-  } else if (idx < 5 * s) {
-	return std::make_tuple(_idx2arc[idx % s], RISE, RISE, MAX);
-  } else if (idx < 6 * s) {
-	return std::make_tuple(_idx2arc[idx % s], RISE, FALL, MAX);
-  } else if (idx < 7 * s) {
-	return std::make_tuple(_idx2arc[idx % s], FALL, RISE, MAX);
-  } else {
-	return std::make_tuple(_idx2arc[idx % s], FALL, FALL, MAX);
   }
 }
 

@@ -290,6 +290,12 @@ std::ostream &operator<<(std::ostream &os, const Path &path) {
   return os;
 }
 
+// Operator <<
+std::fstream &operator<<(std::fstream &fs, const Path &path) {
+  path.dump(fs);
+  return fs;
+}
+
 // ------------------------------------------------------------------------------------------------
 
 // Functoin: _extract
@@ -380,11 +386,6 @@ std::vector<Path> Timer::report_timing(size_t K) {
   return _report_timing(_worst_endpoints(K), K);
 }
 
-std::vector<std::unique_ptr<Path>> Timer::my_report_timing(size_t K) {
-  std::scoped_lock lock(_mutex);
-  return _my_report_timing(_worst_endpoints(K), K);
-}
-
 // Function: report_timing
 std::vector<Path> Timer::report_timing(size_t K, Split el) {
   std::scoped_lock lock(_mutex);
@@ -462,38 +463,6 @@ std::vector<Path> Timer::_report_timing(std::vector<Endpoint *> &&epts, size_t K
   _taskflow.clear();
 
   return heap.extract();
-}
-
-std::vector<std::unique_ptr<Path>> Timer::_my_report_timing(std::vector<Endpoint *> &&epts, size_t K) {
-
-  assert(epts.size() <= K);
-
-  // Generate the prefix tree
-  PathHeap heap;
-  _taskflow.transform_reduce(
-	  epts.begin(), epts.end(), heap,
-	  [&](PathHeap l, PathHeap r) mutable {
-		l.merge_and_fit(std::move(r), K);
-		return l;
-	  },
-	  [&](Endpoint *ept) {
-		PathHeap heap;
-		_my_spur(*ept, K, heap);
-		return heap;
-	  });
-
-  _executor.run(_taskflow).wait();
-  _taskflow.clear();
-
-  std::sort_heap(heap._paths.begin(), heap._paths.end(), heap._comp);
-  std::vector<std::unique_ptr<Path>> P;
-  P.reserve(heap._paths.size());
-  std::transform(heap._paths.begin(),
-				 heap._paths.end(),
-				 std::back_inserter(P),
-				 [](auto &ptr) { return std::move(ptr); });
-  heap._paths.clear();
-  return P;
 }
 
 // Procedure: _recover_prefix
@@ -612,11 +581,6 @@ void Timer::_my_recover_datapath(Path &path, const SfxtCache &sfxt, const PfxtNo
 
   path.emplace_front(*upin, _encode_arc(arc, vrf, urf), urf, *upin->_slew[sfxt._el][urf], delay, ip);
 
-  // std::cout << "start: " << upin->name() << " :{" << std::endl;
-  // std::cout << '\t' << "from: " << node->arc->_to.name() << ": " << *sfxt.__dist[u] << " to: "
-  // 		  << node->arc->_from.name() << " delay: " << delay
-  // 		  << std::endl;
-
   size_t i = 0;
   // 在最短路径树上恢复路径
   while (v != stop) {
@@ -673,60 +637,60 @@ float Timer::cal_arc_pba_timing(Point &node_from, Point &node_to, Split el) {
   }
   return slack_credit;
 }
-void Timer::report_timing_pba(std::vector<std::unique_ptr<Path>> &paths) {
+void Timer::report_timing_pba(std::vector<Path> &paths) {
   int path_num = 0;
+  recal_num = 0;
   for (auto &path : paths) {
-	std::cout << path_num++ << std::endl;
-
+	// std::cout << "pba_full:" << path_num++ << std::endl;
 	// 如果路径的第一个pin不是data source就报错
-	assert((*path).front().pin.is_datapath_source());
-	auto el = (*path).endpoint->split();
+	assert(path.front().pin.is_datapath_source());
+	auto el = path.endpoint->split();
 
 	float slack_credit = 0;
-	for (size_t i = 1; i < (*path).size(); i++) {
-	  slack_credit += cal_arc_pba_timing((*path)[i - 1], (*path)[i], el);
+	for (size_t i = 1; i < path.size(); i++) {
+	  slack_credit += cal_arc_pba_timing(path[i - 1], path[i], el);
 	}
-	(*path).slack += (el == MIN) ? -slack_credit : slack_credit;
+	path.slack += (el == MIN) ? -slack_credit : slack_credit;
   }
-  std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA MODE:" << recal_num << std::endl;
+  std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_FULL MODE:" << recal_num << std::endl;
 }
 
-void Timer::new_report_timing_pba_merge(std::vector<std::unique_ptr<Path>> &paths) {
+void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew) {
   //                 path_segment_key      slew             path    start
   std::unordered_map<std::string, std::map<float, std::pair<Path *, size_t>>> path_segments;
   int path_num = 0;
+  recal_num = 0;
   for (auto &path : paths) {
-	std::cout << "pba_merge:" << path_num++ << std::endl;
+	// std::cout << "pba_merge:" << path_num++ << std::endl;
 	// 如果路径的第一个pin不是data source就报错
-	assert((*path).front().pin.is_datapath_source());
-	auto el = (*path).endpoint->split();
+	assert(path.front().pin.is_datapath_source());
+	auto el = path.endpoint->split();
 	float slack_credit = 0;
 
 	size_t last_merge;
 	size_t now_merge = 0;
 
-	for (size_t i = 0; i < (*path).size(); i++) {
-	  if (((*path)[i].pin._fanin.size() > 2) || (i == (*path).size() - 1)) {
+	for (size_t i = 0; i < path.size(); i++) {
+	  if ((path[i].pin._fanin.size() > 2) || (i == path.size() - 1)) {
 		last_merge = now_merge;
 		now_merge = i;
 
-		auto &pathseg_start = (*path)[last_merge];
-		auto &pathseg_end = (*path)[now_merge - 1];
+		auto &pathseg_start = path[last_merge];
+		auto &pathseg_end = path[now_merge - 1];
 
-		/*
-		auto key = to_string(_encode_pin((*path).front().pin, (*path).front().transition)) + "/"
-			+ to_string(_encode_pin((*path)[first_merge_idx ].pin, (*path)[first_merge_idx ].transition)) + "/"
+		auto key = to_string(_encode_pin(pathseg_start.pin, pathseg_start.transition)) + "/"
+			+ to_string(_encode_pin(pathseg_end.pin, pathseg_end.transition)) + "/"
 			+ to_string(el);
+		/*
+		// auto key = to_string(pathseg_start.pin.name()) + "/"
+		// 	+ to_string(pathseg_start.transition) + "/"
+		// 	+ to_string(pathseg_end.pin.name()) + "/"
+		// 	+ to_string(pathseg_end.transition) + "/" + to_string(el);
 		*/
-		auto key = to_string(pathseg_start.pin.name()) + "/"
-			+ to_string(pathseg_start.transition) + "/"
-			+ to_string(pathseg_end.pin.name()) + "/"
-			+ to_string(pathseg_end.transition) + "/" + to_string(el);
 
 		float min_slew_dif = 1000.0f;
 		Path *path_sgement;
 		size_t start_id;
-		// auto [new_parent, parent_start_idx] = merge_points[key].begin()->second;
 		for (auto &psg : path_segments[key]) {
 		  float slew_dif = std::abs(psg.first - pathseg_start.slew);
 		  if (slew_dif < min_slew_dif) {
@@ -735,220 +699,39 @@ void Timer::new_report_timing_pba_merge(std::vector<std::unique_ptr<Path>> &path
 		  }
 		}
 
-		float acceptable_slew = 0.01f;
+		// 计算: last_merge + 1 ->  now_merge
 		// 如果该路径段在该Slew下的时序信息之前没有计算过
 		if (min_slew_dif - acceptable_slew > 1e-9f) {
-		  // 计算: last_merge ->  now_merge - 1
 		  // std::cout << "\trecal:";
 		  for (size_t j = last_merge + 1; j <= now_merge; j++) {
 			// std::cout << '\t' << j;
-			// std::cout << '\t' << (*path)[j + 1].slew;
-			slack_credit += cal_arc_pba_timing((*path)[j - 1], (*path)[j], el);
-			// std::cout << '\t' << (*path)[j + 1].slew;
-			// std::cout << std::endl;
+			slack_credit += cal_arc_pba_timing(path[j - 1], path[j], el);
 		  }
 		  // std::cout << std::endl;
-		  path_segments[key][pathseg_start.slew] = std::make_pair(path.get(), last_merge);
+		  path_segments[key][pathseg_start.slew] = std::make_pair(&path, last_merge);
 		} else {
-		  // auto [path_sgement, start_id] = path_segments[key][pathseg_start.slew];
-		  // 计算: last_merge + 1 ->  now_merge
-		  std::cout << "\tmerge:";
+
+		  // std::cout << "\tmerge:";
 		  for (size_t j = last_merge + 1; j <= now_merge; j++) {
-			std::cout << '\t' << j;
-			assert((*path)[j].pin.name() == (*path_sgement)[++start_id].pin.name());
-			(*path)[j].slew = (*path_sgement)[start_id].slew;
-			slack_credit += (*path)[j].delay - (*path_sgement)[start_id].delay;
-			(*path)[j].delay = (*path_sgement)[start_id].delay;
+			// std::cout << '\t' << j;
+			assert(path[j].pin.name() == (*path_sgement)[++start_id].pin.name());
+			path[j].slew = (*path_sgement)[start_id].slew;
+			slack_credit += path[j].delay - (*path_sgement)[start_id].delay;
+			path[j].delay = (*path_sgement)[start_id].delay;
 		  }
-		  std::cout << std::endl;
+		  // std::cout << std::endl;
 		}
 	  }
 	}
-	(*path).slack += (el == MIN) ? -slack_credit : slack_credit;
+
+	path.slack += (el == MIN) ? -slack_credit : slack_credit;
   }
-  for (auto &mp : path_segments) {
-	std::cout << mp.first << std::endl;
-	for (auto &map : mp.second) { // std::map<float, std::pair<Path *, size_t>>
-	  std::cout << '\t' << map.first << std::endl;
-	}
-  }
-  std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA MODE:" << recal_num << std::endl;
-}
-void Timer::report_timing_pba_merge(std::vector<std::unique_ptr<Path>> &paths) {
-  //                 path_segment_key      slew             path    idx
-  std::unordered_map<std::string, std::map<float, std::pair<Path *, size_t>>> merge_points;
-
-  int path_num = 0;
-  for (auto &path : paths) {
-	std::cout << "pba_merge:" << path_num++ << std::endl;
-	// 如果路径的第一个pin不是data source就报错
-	assert((*path).front().pin.is_datapath_source());
-	auto el = (*path).endpoint->split();
-	float slack_credit = 0;
-
-	size_t first_merge_idx = 0;
-	for (auto &p : (*path)) {
-	  if (p.pin._fanin.size() > 2) {
-		break;
-	  }
-	  first_merge_idx++;
-	}
-	/*
-	  auto key = to_string(_encode_pin((*path).front().pin, (*path).front().transition)) + "/"
-		  + to_string(_encode_pin((*path)[first_merge_idx ].pin, (*path)[first_merge_idx ].transition)) + "/"
-		  + to_string(el);
-	*/
-	auto key = to_string((*path).front().pin.name()) + "/"
-		+ to_string((*path).front().transition) + "/"
-		+ to_string((*path)[first_merge_idx].pin.name()) + "/"
-		+ to_string((*path)[first_merge_idx].transition) + "/" + to_string(el);
-
-	// 如果找到了从datasource开始的这段路径
-	if (merge_points.find(key) != merge_points.end()) {
-	  auto [merge_path, merge_start_idx] = merge_points[key][(*path).front().slew];
-	  assert(merge_start_idx == 0);
-
-	  std::cout << "\tmerging: data source merge" << std::endl;
-	  std::cout << "\t\t" << (*path)[0].pin.name() << " before: " << (*path)[0].slew;
-
-	  // 计算path: 0 -> first_merge_idx
-	  for (size_t i = 0; i <= first_merge_idx; i++) {
-		(*path)[i].slew = (*merge_path)[i].slew;
-		slack_credit += (*path)[i].delay - (*merge_path)[i].delay;
-		(*path)[i].delay = (*merge_path)[i].delay;
-	  }
-	  std::cout << " after: " << (*merge_path)[0].slew << std::endl;
-	  std::cout << "\t\t" << (*path)[first_merge_idx].pin.name() << std::endl;
-
-	} else {
-	  merge_points[key][(*path).front().slew] = (std::make_pair(path.get(), 0));
-	  // 对从datasource开始的这段路径进行计算
-	  auto &seg_endpoint = (*path)[(*path).dev_idx - 1];
-	  for (size_t i = 1; i < (*path).dev_idx; i++) {
-
-		// 计算path: 0 -> dev_idx - 1
-		auto &node_from = (*path)[i - 1];
-		auto &node_to = (*path)[i];
-
-		slack_credit += cal_arc_pba_timing(node_from, node_to, el);
-
-		// 先把这段最短路径树上的合并节点的 Slew 添加进 merge_points
-		if (node_to.pin._fanin.size() > 2) {
-		  /*
-		  auto key = to_string(_encode_pin(node_to.pin, node_to.transition)) + "/"
-			  + to_string(_encode_pin(seg_endpoint.pin, seg_endpoint.transition)) + "/"
-			  + to_string(el);
-		  */
-		  auto key = to_string(node_to.pin.name()) + "/" + to_string(node_to.transition) +
-			  "/" + to_string(seg_endpoint.pin.name()) + "/" + to_string(seg_endpoint.transition) + "/" + to_string(el);
-
-		  if (merge_points[key].find(node_to.slew) == merge_points[key].end())
-			merge_points[key][node_to.slew] = (std::make_pair(path.get(), i));
-		}
-	  }
-
-	}
-
-	if ((*path).parent)
-	  slack_credit += report_timing_pba_merge(path.get(), (*path).dev_idx, path.get(), merge_points);
-	else
-	  // 计算path: new_dev_idx
-	  // 当算到最后一个点时，需要为它单独计算slew和delay，因为不会再进入下一级递归来计算偏离边的属性
-	  slack_credit += cal_arc_pba_timing((*path)[(*path).dev_idx - 1], (*path)[(*path).dev_idx], el);
-
-	(*path).slack += (el == MIN) ? -slack_credit : slack_credit;
-  }
-
-  for (auto &mp : merge_points) {
-	std::cout << mp.first << std::endl;
-	for (auto &map : mp.second) { // std::map<float, std::pair<Path *, size_t>>
-	  std::cout << '\t' << map.first << ":" << map.second.second << std::endl;
-	  auto [path, path_idx] = map.second;
-	  // size_t new_dev_idx = dev_idx + parent->dev_idx - path->parent_idx;
-	  for (auto i = map.second.second; i < map.second.first->dev_idx; i++)
-		std::cout << "\t\t" << (*map.second.first)[i].pin.name() << std::endl;
-	}
-  }
-  std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA MODE:" << recal_num << std::endl;
-}
-float Timer::report_timing_pba_merge(Path *ori_path,
-									 size_t dev_idx,
-									 Path *path,
-									 std::unordered_map<
-										 std::string,
-										 std::map<float, std::pair<Path *, size_t>>>
-									 &merge_points) {
-  /*
-	for (auto &mp : merge_points) {
-	  std::cout << mp.first << std::endl;
-	  for (auto &map : mp.second) {//std::map<float, std::pair<Path *, size_t>>
-		std::cout << '\t' << map.first << ":" << map.second.second << std::endl;
-		for (auto i = map.second.second; i < map.second.first->dev_idx; i++)
-		  std::cout << "\t\t" << (*map.second.first)[i].pin.name() << std::endl;
-	  }
-	}
-  */
-  float slack_credit = 0;
-  auto el = (*ori_path).endpoint->split();
-
-  // 计算path: dev_idx
-  auto &dev_node_from = (*ori_path)[dev_idx - 1];
-  auto &dev_node_to = (*ori_path)[dev_idx];
-  slack_credit += cal_arc_pba_timing(dev_node_from, dev_node_to, el);
-  float now_slew = dev_node_to.slew;
-
-  auto parent = path->parent;
-  auto seg_endpoint = (*parent)[(*parent).dev_idx - 1];
-  /*
-  auto key = to_string(_encode_pin(dev_node_to.pin, dev_node_to.transition)) + "/"
-	  + to_string(_encode_pin(seg_endpoint.pin, seg_endpoint.transition)) + "/"
-	  + to_string(el);
-  */
-  auto key = to_string(dev_node_to.pin.name()) + "/" + to_string(dev_node_to.transition) + "/"
-	  + to_string(seg_endpoint.pin.name()) + "/" + to_string(seg_endpoint.transition) + "/" + to_string(el);
-
-  float min_slew_dif = 1000.0f;
-  Path *merge_path;
-  size_t merge_start_idx;
-  // auto [new_parent, parent_start_idx] = merge_points[key].begin()->second;
-  for (auto &mp : merge_points[key]) {
-	float slew_dif = std::abs(mp.first - now_slew);
-	if (slew_dif < min_slew_dif) {
-	  min_slew_dif = slew_dif;
-	  std::tie(merge_path, merge_start_idx) = mp.second;
-	}
-  }
-
-  // 计算path: dev_idx + 1 -> new_dev_idx - 1
-  float acceptable_slew = 100.0f;
-  size_t new_dev_idx = dev_idx + parent->dev_idx - path->parent_idx;
-  if (min_slew_dif - acceptable_slew <= 1e-9f) { // 能合并
-	std::cout << "\tmerging: " << min_slew_dif << std::endl;
-	std::cout << "\t\t" << (*ori_path)[dev_idx].pin.name() << " before: " << now_slew;
-
-	// 对于dev_idx要重置其slew与delay为merge path上的slew与delay
-	for (size_t i = dev_idx; i < new_dev_idx; i++) {
-	  (*ori_path)[i].slew = (*merge_path)[merge_start_idx].slew;
-
-	  slack_credit += (*ori_path)[i].delay - (*merge_path)[merge_start_idx].delay;
-	  (*ori_path)[i].delay = (*merge_path)[merge_start_idx++].delay;
-	}
-	std::cout << " after: " << (*ori_path)[dev_idx].slew << std::endl;
-	std::cout << "\t\t" << (*ori_path)[new_dev_idx - 1].pin.name() << std::endl;
-  } else {
-	merge_points[key].emplace(now_slew, std::make_pair(ori_path, dev_idx));
-	for (size_t i = dev_idx + 1; i < new_dev_idx; i++) {
-	  slack_credit += cal_arc_pba_timing((*ori_path)[i - 1], (*ori_path)[i], el);
-	}
-  }
-
-  if ((*parent).parent)
-	slack_credit += report_timing_pba_merge(ori_path, new_dev_idx, parent, merge_points);
-  else
-	// 计算path: new_dev_idx
-	// 当算到最后一个点时，需要为它单独计算slew和delay，因为不会再进入下一级递归来计算偏离边的属性
-	slack_credit += cal_arc_pba_timing((*ori_path)[new_dev_idx - 1], (*ori_path)[new_dev_idx], el);
-
-  return slack_credit;
+  std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_MERGE MODE:" << recal_num << std::endl;
+  // for (auto &mp : path_segments) {
+  // std::cout << mp.first << std::endl;
+  // for (auto &map : mp.second) { // std::map<float, std::pair<Path *, size_t>>
+  //   std::cout << '\t' << map.first << std::endl;
+  // }
+  // }
 }
 }; // end of namespace ot. -----------------------------------------------------------------------

@@ -4,5 +4,5 @@ cd cmake-build-debug
 cmake ..
 make -j 8
 cd ..
-./$1 > test.log
+./$1 $1 $2 $3 > test.log
 cd ..
