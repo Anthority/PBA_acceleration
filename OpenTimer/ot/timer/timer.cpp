@@ -1003,7 +1003,7 @@ void Timer::_update_timing() {
 	_build_prop_tasks();
 
 	// debug the graph
-	_taskflow.dump(std::cout);
+	// _taskflow.dump(std::cout);
 
 	// Execute the task
 	_executor.run(_taskflow).wait();

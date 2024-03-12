@@ -63,12 +63,12 @@ namespace ot
 		std::vector<Endpoint *> epts;
 		std::array<std::array<size_t, MAX_TRAN>, MAX_SPLIT> i{{{0, 0}, {0, 0}}};
 
-		FOR_EACH_EL_RF(el, rf)
-		{
-			std::cout << el << " " << rf << std::endl;
-			for (auto endpoint : _endpoints[el][rf])
-				std::cout << endpoint.slack() << std::endl;
-		}
+		// FOR_EACH_EL_RF(el, rf)
+		// {
+		// 	std::cout << el << " " << rf << std::endl;
+		// 	for (auto endpoint : _endpoints[el][rf])
+		// 		std::cout << endpoint.slack() << std::endl;
+		// }
 
 		for (size_t k = 0; k < K; ++k)
 		{
@@ -97,9 +97,9 @@ namespace ot
 			epts.push_back(&_endpoints[*mel][*mrf][i[*mel][*mrf]]);
 			++i[*mel][*mrf];
 		}
-		std::cout << std::endl;
-		for (auto &ept : epts)
-			std::cout << ept->slack() << std::endl;
+		// std::cout << std::endl;
+		// for (auto &ept : epts)
+		// 	std::cout << ept->slack() << std::endl;
 
 		return epts;
 	}

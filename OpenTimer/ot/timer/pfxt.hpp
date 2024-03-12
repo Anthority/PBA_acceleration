@@ -13,15 +13,18 @@ class Arc;
 
 // Class: PfxtNode
 struct PfxtNode {
-  
+
   float slack;
   size_t from;
   size_t to;
 
-  const Arc* arc {nullptr};
-  const PfxtNode* parent {nullptr};
+  const Arc *arc{nullptr};
+  const PfxtNode *parent{nullptr};
+  Path *path{nullptr};
 
-  PfxtNode(float, size_t, size_t, const Arc*, const PfxtNode*);
+  size_t parent_idx{0};
+
+  PfxtNode(float, size_t, size_t, const Arc *, const PfxtNode *, size_t);
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -30,39 +33,39 @@ struct PfxtNode {
 class PfxtCache {
 
   friend class Timer;
-  
+
   // Min-heap comparator
   struct PfxtNodeComparator {
-    bool operator () (std::unique_ptr<PfxtNode>& a, std::unique_ptr<PfxtNode>& b) const {
-      return a->slack > b->slack;
-    }
+	bool operator()(std::unique_ptr<PfxtNode> &a, std::unique_ptr<PfxtNode> &b) const {
+	  return a->slack > b->slack;
+	}
   };
 
-  public:
-    
-    inline size_t num_nodes() const;
+ public:
 
-    PfxtCache(const SfxtCache&);
+  inline size_t num_nodes() const;
 
-    PfxtCache(const PfxtCache&) = delete;
-    PfxtCache(PfxtCache&&);
+  PfxtCache(const SfxtCache &);
 
-    PfxtCache& operator = (const PfxtCache&) = delete;
-    PfxtCache& operator = (PfxtCache&&) = delete;
+  PfxtCache(const PfxtCache &) = delete;
+  PfxtCache(PfxtCache &&);
 
-  private:
+  PfxtCache &operator=(const PfxtCache &) = delete;
+  PfxtCache &operator=(PfxtCache &&) = delete;
 
-    const SfxtCache& _sfxt;
+ private:
 
-    PfxtNodeComparator _comp;
+  const SfxtCache &_sfxt;
 
-    std::vector<std::unique_ptr<PfxtNode>> _paths;
-    std::vector<std::unique_ptr<PfxtNode>> _nodes;
+  PfxtNodeComparator _comp;
 
-    void _push(float, size_t, size_t, const Arc*, const PfxtNode*);
+  std::vector<std::unique_ptr<PfxtNode>> _paths;
+  std::vector<std::unique_ptr<PfxtNode>> _nodes;
 
-    PfxtNode* _pop();
-    PfxtNode* _top() const;
+  void _push(float, size_t, size_t, const Arc *, const PfxtNode *, size_t);
+
+  PfxtNode *_pop();
+  PfxtNode *_top() const;
 };
 
 // Function: num_nodes

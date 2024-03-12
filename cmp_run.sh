@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 cd $1
-cd build
+cd cmake-build-debug
 cmake ..
-make -j64
+make -j 8
 cd ..
 ./$1 > test.log
 cd ..

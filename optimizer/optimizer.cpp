@@ -10,32 +10,31 @@
 
 #include <ot/timer/timer.hpp>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 
   ot::Timer timer = ot::Timer();
 
   // Read design
   timer.read_celllib("optimizer_Early.lib", ot::MIN)
-      .read_celllib("optimizer_Late.lib", ot::MAX)
-      .read_verilog("optimizer.v")
-      .read_spef("optimizer.spef")
-      .read_sdc("optimizer.sdc");
+	  .read_celllib("optimizer_Late.lib", ot::MAX)
+	  .read_verilog("optimizer.v")
+	  .read_spef("optimizer.spef")
+	  .read_sdc("optimizer.sdc");
 
-  auto paths = timer.report_timing(1000);
+  // auto paths = timer.report_timing(1000);
+  auto paths = timer.my_report_timing(1000);
 
-  for (size_t i = 0; i < paths.size(); ++i)
-  {
-    std::cout << "----- Critical Path GBA Mode " << i << " -----\n";
-    std::cout << paths[i] << '\n';
-  }
+  // for (size_t i = 0; i < paths.size(); ++i) {
+	// std::cout << "----- Critical Path GBA Mode " << i << " -----\n";
+	// std::cout << *paths[i] << '\n';
+  // }
 
-  timer.report_timing_pba(paths);
+  // timer.report_timing_pba(paths);
+  timer.new_report_timing_pba_merge(paths);
 
-  for (size_t i = 0; i < paths.size(); ++i)
-  {
-    std::cout << "----- Critical Path PBA Mode " << i << " -----\n";
-    std::cout << paths[i] << '\n';
+  for (size_t i = 0; i < paths.size(); ++i) {
+	std::cout << "----- Critical Path PBA Mode " << i << " -----\n";
+	std::cout << *paths[i] << '\n';
   }
   // dump the timing graph to dot format for debugging
   // timer.dump_graph(std::cout);

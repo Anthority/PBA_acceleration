@@ -1,621 +1,3 @@
-"/home/tianly/OpenTimer/OpenTimer/ot/sdc"
-pba_merge:0
-pba_merge:1
-pba_merge:2
-	merge:	1	2	3	4	5
-pba_merge:3
-	merge:	1	2	3	4	5
-pba_merge:4
-pba_merge:5
-pba_merge:6
-pba_merge:7
-	merge:	8	9	10
-pba_merge:8
-pba_merge:9
-pba_merge:10
-pba_merge:11
-pba_merge:12
-pba_merge:13
-	merge:	7	8
-	merge:	9
-pba_merge:14
-pba_merge:15
-	merge:	11	12
-	merge:	13
-pba_merge:16
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-pba_merge:17
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-pba_merge:18
-pba_merge:19
-	merge:	7	8
-	merge:	9
-pba_merge:20
-pba_merge:21
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-pba_merge:22
-	merge:	1	2	3	4	5
-pba_merge:23
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8
-pba_merge:24
-	merge:	1	2	3	4	5
-pba_merge:25
-	merge:	7	8
-	merge:	9
-pba_merge:26
-	merge:	1	2	3
-pba_merge:27
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-pba_merge:28
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-pba_merge:29
-	merge:	1	2	3
-pba_merge:30
-pba_merge:31
-	merge:	1	2	3	4
-pba_merge:32
-pba_merge:33
-	merge:	1	2	3	4
-pba_merge:34
-	merge:	7	8	9
-pba_merge:35
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-	merge:	12
-pba_merge:36
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-pba_merge:37
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:38
-	merge:	1	2
-	merge:	3	4
-pba_merge:39
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	10
-pba_merge:40
-	merge:	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:41
-	merge:	5	6	7
-pba_merge:42
-	merge:	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:43
-	merge:	1	2
-	merge:	3	4
-pba_merge:44
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-pba_merge:45
-	merge:	7	8	9
-pba_merge:46
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:47
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-pba_merge:48
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:49
-	merge:	9	10
-	merge:	11	12	13
-pba_merge:50
-	merge:	9	10
-	merge:	11	12	13
-pba_merge:51
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11
-pba_merge:52
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:53
-	merge:	5	6
-	merge:	7	8	9
-pba_merge:54
-	merge:	5	6
-	merge:	7	8	9
-pba_merge:55
-pba_merge:56
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	10
-pba_merge:57
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	10
-pba_merge:58
-	merge:	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:59
-	merge:	8	9
-	merge:	10	11
-	merge:	12
-pba_merge:60
-	merge:	8	9
-	merge:	10	11
-	merge:	12
-pba_merge:61
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:62
-	merge:	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:63
-	merge:	1	2
-	merge:	3	4
-	merge:	5
-pba_merge:64
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:65
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11
-pba_merge:66
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11
-pba_merge:67
-	merge:	1	2
-	merge:	3	4
-pba_merge:68
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-pba_merge:69
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8	9
-pba_merge:70
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:71
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:72
-	merge:	1	2
-	merge:	3	4
-pba_merge:73
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-pba_merge:74
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11	12	13
-pba_merge:75
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8	9
-pba_merge:76
-	merge:	1	2
-	merge:	3	4
-pba_merge:77
-	merge:	1	2	3	4
-	merge:	9
-pba_merge:78
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8	9
-pba_merge:79
-	merge:	1	2	3	4
-	merge:	9
-pba_merge:80
-pba_merge:81
-pba_merge:82
-	merge:	8
-pba_merge:83
-	merge:	1	2	3
-	merge:	8
-pba_merge:84
-	merge:	1	2	3
-	merge:	8
-pba_merge:85
-	merge:	8
-pba_merge:86
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8
-pba_merge:87
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8
-pba_merge:88
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8
-pba_merge:89
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:90
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8
-pba_merge:91
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8
-	merge:	9
-pba_merge:92
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7
-pba_merge:93
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8
-	merge:	9
-pba_merge:94
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11	12
-	merge:	13
-pba_merge:95
-	merge:	1	2	3	4
-	merge:	5	6	7	8
-	merge:	9	10
-	merge:	11	12
-	merge:	13
-pba_merge:96
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8
-	merge:	9
-pba_merge:97
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-	merge:	10
-pba_merge:98
-	merge:	1	2
-	merge:	3	4
-	merge:	5	6
-	merge:	7	8
-	merge:	9
-pba_merge:99
-	merge:	1	2
-	merge:	3	4
-	merge:	7
-pba_merge:100
-pba_merge:101
-pba_merge:102
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8	9	10
-pba_merge:103
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8	9	10
-pba_merge:104
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8	9	10
-pba_merge:105
-	merge:	1	2	3	4	5
-pba_merge:106
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-	merge:	10	11	12
-pba_merge:107
-	merge:	1	2	3
-	merge:	4	5
-	merge:	6	7
-	merge:	8	9	10
-pba_merge:108
-	merge:	1	2	3
-	merge:	4	5	6	7
-	merge:	8	9
-	merge:	10	11	12
-pba_merge:109
-	merge:	1	2	3	4	5
-pba_merge:110
-	merge:	1	2	3	4	5
-pba_merge:111
-	merge:	1	2	3	4	5
-inst_16:CK/rise/inst_0:A2/rise/min
-	4.62976
-G2/rise/inst_5:A1/rise/max
-	5
-G2/fall/inst_5:A1/fall/max
-	5
-inst_0:ZN/rise/inst_12:ZN/fall/min
-	14.7544
-	16.2374
-	16.4299
-inst_0:ZN/fall/inst_12:ZN/rise/min
-	2.49841
-	3.38251
-	4.41294
-inst_15:CK/rise/inst_3:A1/fall/min
-	6.63187
-G3/fall/inst_1:A2/fall/max
-	5
-G0/rise/inst_3:A2/rise/max
-	5
-G1/fall/inst_7:A1/rise/max
-	5
-inst_16:CK/rise/inst_0:A2/fall/min
-	4.62976
-G1/rise/inst_7:A1/fall/max
-	5
-G0/fall/inst_4:A2/fall/max
-	5
-inst_0:ZN/fall/inst_0:ZN/fall/min
-	2.49841
-	3.38251
-	4.41294
-inst_15:CK/rise/inst_3:A1/rise/min
-	6.63187
-inst_0:ZN/rise/inst_0:ZN/rise/min
-	14.7544
-	16.2374
-	16.4299
-G0/fall/inst_3:A2/fall/max
-	5
-inst_7:ZN/fall/inst_5:A2/rise/min
-	3.24445
-	3.74234
-inst_3:ZN/fall/inst_1:A1/fall/max
-	2.98395
-	3.78124
-inst_4:ZN/fall/inst_2:A1/fall/min
-	2.68709
-	3.41521
-inst_14:CK/rise/inst_7:A2/rise/min
-	4.05868
-G3/fall/inst_1:A2/fall/min
-	5
-G0/rise/inst_3:A2/rise/min
-	5
-G2/rise/inst_5:A1/rise/min
-	5
-G0/fall/inst_6:A2/rise/min
-	5
-inst_2:ZN/fall/inst_0:A1/fall/max
-	2.23078
-	2.24264
-	2.99926
-inst_2:ZN/rise/inst_0:A1/rise/min
-	6.1763
-	7.3356
-G0/rise/inst_4:A2/rise/max
-	5
-inst_7:ZN/fall/inst_2:A2/rise/max
-	3.59009
-	4.13869
-inst_15:CK/rise/inst_4:A1/fall/max
-	7.04119
-inst_16:CK/rise/inst_0:A2/fall/max
-	5.07485
-G1/fall/inst_7:A1/rise/min
-	5
-inst_0:ZN/rise/inst_6:A1/rise/max
-	16.3092
-	17.9445
-	18.1606
-inst_16:CK/rise/inst_0:A2/rise/max
-	5.07485
-inst_0:ZN/fall/inst_6:A1/fall/min
-	2.49841
-	3.38251
-	4.41294
-inst_6:ZN/rise/inst_6:ZN/rise/min
-	5.96498
-	5.9772
-	7.18798
-inst_15:CK/rise/inst_3:A1/fall/max
-	7.04119
-inst_5:ZN/rise/inst_5:ZN/rise/max
-	6.66932
-	8.00793
-inst_0:ZN/rise/inst_6:A1/rise/min
-	14.7544
-	16.2374
-	16.4299
-inst_1:ZN/fall/inst_0:A3/fall/max
-	2.21538
-	2.22725
-	3.00766
-inst_0:ZN/fall/inst_12:ZN/rise/max
-	2.76648
-	2.77664
-	3.7403
-	4.87323
-	4.88352
-inst_3:ZN/rise/inst_1:A1/rise/max
-	9.51957
-	10.9017
-inst_1:ZN/fall/inst_0:A3/fall/min
-	2.00739
-	2.72101
-inst_4:ZN/rise/inst_2:A1/rise/max
-	9.49217
-	10.8728
-G3/rise/inst_1:A2/rise/min
-	5
-inst_7:ZN/rise/inst_5:A2/fall/max
-	3.95249
-	5.54068
-G0/rise/inst_4:A2/rise/min
-	5
-inst_1:ZN/rise/inst_0:A3/rise/min
-	6.11795
-	7.2878
-inst_0:ZN/fall/inst_0:ZN/fall/max
-	2.76648
-	2.77664
-	3.7403
-	4.87323
-	4.88352
-inst_5:ZN/fall/inst_5:ZN/fall/max
-	2.2949
-	3.10288
-G3/rise/inst_1:A2/rise/max
-	5
-inst_6:ZN/fall/inst_6:ZN/fall/min
-	2.13971
-	2.15128
-	2.79343
-inst_14:CK/rise/inst_7:A2/fall/max
-	4.48533
-G1/rise/inst_7:A1/fall/min
-	5
-inst_2:ZN/rise/inst_0:A1/rise/max
-	6.82358
-	8.10857
-G0/rise/inst_6:A2/fall/max
-	5
-inst_14:CK/rise/inst_7:A2/rise/max
-	4.48533
-inst_1:ZN/rise/inst_0:A3/rise/max
-	6.75916
-	8.05485
-inst_3:ZN/fall/inst_1:A1/fall/min
-	2.69301
-	3.42113
-inst_15:CK/rise/inst_4:A1/rise/max
-	7.04119
-inst_15:CK/rise/inst_3:A1/rise/max
-	7.04119
-inst_4:ZN/fall/inst_2:A1/fall/max
-	2.97741
-	3.77469
-inst_7:ZN/rise/inst_2:A2/fall/min
-	3.57503
-	5.00006
-G2/fall/inst_5:A1/fall/min
-	5
-inst_7:ZN/fall/inst_2:A2/rise/min
-	3.24445
-	3.74234
-inst_2:ZN/fall/inst_0:A1/fall/min
-	2.0213
-	2.71183
-G0/fall/inst_4:A2/fall/min
-	5
-inst_4:ZN/rise/inst_2:A1/rise/min
-	8.57507
-	9.8378
-inst_0:ZN/fall/inst_6:A1/fall/max
-	2.76648
-	2.77664
-	3.7403
-	4.87323
-	4.88352
-inst_6:ZN/rise/inst_6:ZN/rise/max
-	6.60151
-	7.94571
-inst_15:CK/rise/inst_4:A1/fall/min
-	6.63187
-inst_6:ZN/fall/inst_6:ZN/fall/max
-	2.37806
-	2.39398
-	3.08883
-inst_14:CK/rise/inst_7:A2/fall/min
-	4.05868
-G0/fall/inst_3:A2/fall/min
-	5
-inst_3:ZN/rise/inst_1:A1/rise/min
-	8.59986
-	9.86393
-inst_7:ZN/fall/inst_5:A2/rise/max
-	3.59009
-	4.13869
-inst_0:ZN/rise/inst_0:ZN/rise/max
-	16.3092
-	17.9445
-	18.1606
-G0/rise/inst_6:A2/fall/min
-	5
-inst_5:ZN/rise/inst_5:ZN/rise/min
-	6.03425
-	7.24421
-G0/fall/inst_6:A2/rise/max
-	5
-inst_7:ZN/rise/inst_2:A2/fall/max
-	3.95249
-	5.54068
-inst_5:ZN/fall/inst_5:ZN/fall/min
-	2.07638
-	2.80616
-inst_15:CK/rise/inst_4:A1/rise/min
-	6.63187
-inst_0:ZN/rise/inst_12:ZN/fall/max
-	16.3092
-	17.9445
-	18.1606
-inst_7:ZN/rise/inst_5:A2/fall/min
-	3.57503
-	5.00006
-RECALCULATE PATH SEGMENT NUM IN PBA MODE:355
 ----- Critical Path PBA Mode 0 -----
 Startpoint    : inst_16:CK
 Endpoint      : G17
@@ -800,15 +182,15 @@ Analysis type : max
         pin    2.230784    7.347037  265.320374  fall  inst_2:ZN (NOR2_X4)
         pin    2.234558    0.130320  265.450684  fall  inst_0:A1 (NOR3_X4)
         pin   16.304577   20.633068  286.083740  rise  inst_0:ZN (NOR3_X4)
-        pin   16.310955    0.192933  286.276672  rise  inst_12:A (INV_X1)
-        pin    2.942911    7.941088  294.217773  fall  inst_12:ZN (INV_X1)
-       port    2.953858    0.262439  294.480225  fall  G17
-    arrival                          294.480225        data arrival time
+        pin   16.306349    0.192933  286.276672  rise  inst_12:A (INV_X1)
+        pin    2.942862    7.941042  294.217712  fall  inst_12:ZN (INV_X1)
+       port    2.953809    0.262439  294.480164  fall  G17
+    arrival                          294.480164        data arrival time
 
        port               -1.200000   -1.200000        output port delay
    required                           -1.200043        data required time
 ------------------------------------------------------------------
-      slack                         -295.680267        VIOLATED
+      slack                         -295.680206        VIOLATED
 
 ----- Critical Path PBA Mode 8 -----
 Startpoint    : G0
@@ -939,16 +321,16 @@ Analysis type : min
         pin    6.117949   10.029997   21.532887  rise  inst_1:ZN (NOR2_X4)
         pin    6.120827    0.189113   21.722000  rise  inst_0:A3 (NOR3_X4)
         pin    4.404566   12.828732   34.550732  fall  inst_0:ZN (NOR3_X4)
-        pin    4.420124    0.258129   34.808861  fall  inst_6:A1 (NOR2_X2)
-        pin    5.977204   10.254528   45.063389  rise  inst_6:ZN (NOR2_X2)
-        pin    5.977290    0.033029   45.096416  rise  inst_16:D (DFFR_X2)
-    arrival                           45.096416        data arrival time
+        pin    4.411765    0.258129   34.808861  fall  inst_6:A1 (NOR2_X2)
+        pin    5.977150   10.254371   45.063232  rise  inst_6:ZN (NOR2_X2)
+        pin    5.977236    0.033029   45.096260  rise  inst_16:D (DFFR_X2)
+    arrival                           45.096260        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint                2.204330  305.220184        library hold_rising
    required                          305.220215        data required time
 ------------------------------------------------------------------
-      slack                         -260.123810        VIOLATED
+      slack                         -260.123962        VIOLATED
 
 ----- Critical Path PBA Mode 14 -----
 Startpoint    : inst_15:CK
@@ -993,16 +375,16 @@ Analysis type : min
         pin    7.335596   16.462248   32.160591  rise  inst_2:ZN (NOR2_X4)
         pin    7.336745    0.130320   32.290913  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757   41.615669  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511079    0.258129   41.873798  fall  inst_6:A1 (NOR2_X2)
-        pin    5.964979   10.218479   52.092278  rise  inst_6:ZN (NOR2_X2)
-        pin    5.965065    0.033029   52.125305  rise  inst_16:D (DFFR_X2)
-    arrival                           52.125305        data arrival time
+        pin    2.519336    0.258129   41.873798  fall  inst_6:A1 (NOR2_X2)
+        pin    5.965032   10.218635   52.092434  rise  inst_6:ZN (NOR2_X2)
+        pin    5.965118    0.033029   52.125462  rise  inst_16:D (DFFR_X2)
+    arrival                           52.125462        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint                2.204330  305.220184        library hold_rising
    required                          305.220215        data required time
 ------------------------------------------------------------------
-      slack                         -253.094925        VIOLATED
+      slack                         -253.094757        VIOLATED
 
 ----- Critical Path PBA Mode 16 -----
 Startpoint    : inst_14:CK
@@ -1097,16 +479,16 @@ Analysis type : min
         pin    2.021301    6.648148   27.513243  fall  inst_2:ZN (NOR2_X4)
         pin    2.025466    0.130320   27.643562  fall  inst_0:A1 (NOR3_X4)
         pin   14.750642   18.664351   46.307915  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756542    0.258129   46.566044  rise  inst_6:A1 (NOR2_X2)
-        pin    2.139713    6.857354   53.423397  fall  inst_6:ZN (NOR2_X2)
-        pin    2.139954    0.033029   53.456425  fall  inst_16:D (DFFR_X2)
-    arrival                           53.456425        data arrival time
+        pin   14.752793    0.258129   46.566044  rise  inst_6:A1 (NOR2_X2)
+        pin    2.139683    6.857343   53.423386  fall  inst_6:ZN (NOR2_X2)
+        pin    2.139924    0.033029   53.456413  fall  inst_16:D (DFFR_X2)
+    arrival                           53.456413        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint              -28.531124  274.484741        library hold_rising
    required                          274.484741        data required time
 ------------------------------------------------------------------
-      slack                         -221.028320        VIOLATED
+      slack                         -221.028336        VIOLATED
 
 ----- Critical Path PBA Mode 20 -----
 Startpoint    : G3
@@ -1196,7 +578,7 @@ Analysis type : max
         pin    2.230784    7.347037  265.320374  fall  inst_2:ZN (NOR2_X4)
         pin    2.234558    0.130320  265.450684  fall  inst_0:A1 (NOR3_X4)
         pin   16.304577   20.633068  286.083740  rise  inst_0:ZN (NOR3_X4)
-        pin   16.311178    0.300257  286.384003  rise  inst_15:D (DFFR_X2)
+        pin   16.306574    0.300257  286.384003  rise  inst_15:D (DFFR_X2)
     arrival                          286.384003        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -1243,16 +625,16 @@ Analysis type : min
         pin    2.007386    6.613959   27.608295  fall  inst_1:ZN (NOR2_X4)
         pin    2.016139    0.189113   27.797409  fall  inst_0:A3 (NOR3_X4)
         pin   16.235044   40.606361   68.403770  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239372    0.258129   68.661896  rise  inst_6:A1 (NOR2_X2)
-        pin    2.151279    6.861856   75.523750  fall  inst_6:ZN (NOR2_X2)
-        pin    2.151518    0.033029   75.556778  fall  inst_16:D (DFFR_X2)
-    arrival                           75.556778        data arrival time
+        pin   16.237000    0.258129   68.661896  rise  inst_6:A1 (NOR2_X2)
+        pin    2.151260    6.861849   75.523743  fall  inst_6:ZN (NOR2_X2)
+        pin    2.151500    0.033029   75.556770  fall  inst_16:D (DFFR_X2)
+    arrival                           75.556770        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint              -28.531124  274.484741        library hold_rising
    required                          274.484741        data required time
 ------------------------------------------------------------------
-      slack                         -198.927948        VIOLATED
+      slack                         -198.927963        VIOLATED
 
 ----- Critical Path PBA Mode 26 -----
 Startpoint    : inst_14:CK
@@ -1452,9 +834,9 @@ Analysis type : max
         pin    2.227247    7.313835   30.397486  fall  inst_1:ZN (NOR2_X4)
         pin    2.235139    0.189113   30.586599  fall  inst_0:A3 (NOR3_X4)
         pin   17.944496   44.882668   75.469269  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946060    0.192933   75.662201  rise  inst_12:A (INV_X1)
+        pin   17.946106    0.192933   75.662201  rise  inst_12:A (INV_X1)
         pin    2.960440    7.957374   83.619576  fall  inst_12:ZN (INV_X1)
-       port    2.971322    0.262439   83.882011  fall  G17
+       port    2.971323    0.262439   83.882011  fall  G17
     arrival                           83.882011        data arrival time
 
        port               -1.200000   -1.200000        output port delay
@@ -1481,7 +863,7 @@ Analysis type : max
         pin    2.776635   10.306549  319.242828  fall  inst_0:ZN (NOR3_X4)
         pin    2.788040    0.258129  319.500946  fall  inst_6:A1 (NOR2_X2)
         pin    6.594709   11.299705  330.800659  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029  330.833679  rise  inst_16:D (DFFR_X2)
+        pin    6.594787    0.033029  330.833679  rise  inst_16:D (DFFR_X2)
     arrival                          330.833679        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -1531,7 +913,7 @@ Analysis type : min
         pin    2.021301    6.648148   27.513243  fall  inst_2:ZN (NOR2_X4)
         pin    2.025466    0.130320   27.643562  fall  inst_0:A1 (NOR3_X4)
         pin   14.750642   18.664351   46.307915  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756598    0.300257   46.608170  rise  inst_15:D (DFFR_X2)
+        pin   14.752848    0.300257   46.608170  rise  inst_15:D (DFFR_X2)
     arrival                           46.608170        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -1578,7 +960,7 @@ Analysis type : max
         pin   17.944450   44.882534  310.434784  rise  inst_0:ZN (NOR3_X4)
         pin   17.946218    0.258129  310.692902  rise  inst_6:A1 (NOR2_X2)
         pin    2.392119    7.589786  318.282684  fall  inst_6:ZN (NOR2_X2)
-        pin    2.394193    0.033029  318.315704  fall  inst_16:D (DFFR_X2)
+        pin    2.392334    0.033029  318.315704  fall  inst_16:D (DFFR_X2)
     arrival                          318.315704        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -1600,10 +982,10 @@ Analysis type : min
         pin    2.687091    8.280749  207.797211  fall  inst_4:ZN (NOR2_X2)
         pin    2.690787    0.141715  207.938919  fall  inst_2:A1 (NOR2_X4)
         pin    6.171614   10.091496  218.030411  rise  inst_2:ZN (NOR2_X4)
-        pin    6.177662    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
-        pin    2.498411    9.324432  227.485168  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511079    0.258129  227.743301  fall  inst_6:A1 (NOR2_X2)
-        pin    5.964979   10.218479  237.961777  rise  inst_6:ZN (NOR2_X2)
+        pin    6.172979    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
+        pin    2.498377    9.324430  227.485168  fall  inst_0:ZN (NOR3_X4)
+        pin    2.511045    0.258129  227.743301  fall  inst_6:A1 (NOR2_X2)
+        pin    5.964979   10.218478  237.961777  rise  inst_6:ZN (NOR2_X2)
         pin    5.965065    0.033029  237.994812  rise  inst_16:D (DFFR_X2)
     arrival                          237.994812        data arrival time
 
@@ -1625,15 +1007,15 @@ Analysis type : max
         pin    3.007663    9.700548   10.087410  fall  inst_1:ZN (NOR2_X4)
         pin    3.013512    0.189113   10.276523  fall  inst_0:A3 (NOR3_X4)
         pin   17.947392   44.891541   55.168064  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946060    0.192933   55.360996  rise  inst_12:A (INV_X1)
-        pin    2.960440    7.957374   63.318371  fall  inst_12:ZN (INV_X1)
-       port    2.971322    0.262439   63.580811  fall  G17
-    arrival                           63.580811        data arrival time
+        pin   17.949001    0.192933   55.360996  rise  inst_12:A (INV_X1)
+        pin    2.960471    7.957403   63.318398  fall  inst_12:ZN (INV_X1)
+       port    2.971354    0.262439   63.580837  fall  G17
+    arrival                           63.580837        data arrival time
 
        port               -1.200000   -1.200000        output port delay
-   required                           -1.200027        data required time
+   required                           -1.200031        data required time
 ------------------------------------------------------------------
-      slack                          -64.780838        VIOLATED
+      slack                          -64.780869        VIOLATED
 
 ----- Critical Path PBA Mode 42 -----
 Startpoint    : inst_15:CK
@@ -1648,18 +1030,18 @@ Analysis type : min
         pin    2.693009    8.295053  207.789490  fall  inst_3:ZN (NOR2_X2)
         pin    2.701008    0.209211  207.998703  fall  inst_1:A1 (NOR2_X4)
         pin    6.113272   10.016274  218.014984  rise  inst_1:ZN (NOR2_X4)
-        pin    6.120827    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
-        pin    4.404566   12.828732  231.032837  fall  inst_0:ZN (NOR3_X4)
-        pin    4.420124    0.258129  231.290970  fall  inst_6:A1 (NOR2_X2)
-        pin    5.977204   10.254528  241.545502  rise  inst_6:ZN (NOR2_X2)
-        pin    5.977290    0.033029  241.578537  rise  inst_16:D (DFFR_X2)
-    arrival                          241.578537        data arrival time
+        pin    6.116151    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
+        pin    4.404533   12.828722  231.032822  fall  inst_0:ZN (NOR3_X4)
+        pin    4.411731    0.258129  231.290955  fall  inst_6:A1 (NOR2_X2)
+        pin    5.977150   10.254370  241.545319  rise  inst_6:ZN (NOR2_X2)
+        pin    5.977236    0.033029  241.578354  rise  inst_16:D (DFFR_X2)
+    arrival                          241.578354        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint                2.204330  305.220184        library hold_rising
-   required                          305.220245        data required time
+   required                          305.220215        data required time
 ------------------------------------------------------------------
-      slack                          -63.641705        VIOLATED
+      slack                          -63.641872        VIOLATED
 
 ----- Critical Path PBA Mode 43 -----
 Startpoint    : G3
@@ -1719,15 +1101,15 @@ Analysis type : max
         pin    2.242637    7.351584   30.302589  fall  inst_2:ZN (NOR2_X4)
         pin    2.246392    0.130320   30.432909  fall  inst_0:A1 (NOR3_X4)
         pin   16.304649   20.633312   51.066223  rise  inst_0:ZN (NOR3_X4)
-        pin   16.310955    0.192933   51.259155  rise  inst_12:A (INV_X1)
-        pin    2.942911    7.941088   59.200245  fall  inst_12:ZN (INV_X1)
-       port    2.953858    0.262439   59.462685  fall  G17
-    arrival                           59.462685        data arrival time
+        pin   16.306421    0.192933   51.259155  rise  inst_12:A (INV_X1)
+        pin    2.942863    7.941043   59.200199  fall  inst_12:ZN (INV_X1)
+       port    2.953810    0.262439   59.462639  fall  G17
+    arrival                           59.462639        data arrival time
 
        port               -1.200000   -1.200000        output port delay
    required                           -1.200043        data required time
 ------------------------------------------------------------------
-      slack                          -60.662727        VIOLATED
+      slack                          -60.662682        VIOLATED
 
 ----- Critical Path PBA Mode 46 -----
 Startpoint    : G0
@@ -1743,7 +1125,7 @@ Analysis type : min
         pin    6.117949   10.029997   21.532887  rise  inst_1:ZN (NOR2_X4)
         pin    6.120827    0.189113   21.722000  rise  inst_0:A3 (NOR3_X4)
         pin    4.404566   12.828732   34.550732  fall  inst_0:ZN (NOR3_X4)
-        pin    4.420307    0.300257   34.850986  fall  inst_15:D (DFFR_X2)
+        pin    4.411948    0.300257   34.850986  fall  inst_15:D (DFFR_X2)
     arrival                           34.850986        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -1794,7 +1176,7 @@ Analysis type : min
         pin    2.007386    6.613959   27.608295  fall  inst_1:ZN (NOR2_X4)
         pin    2.016139    0.189113   27.797409  fall  inst_0:A3 (NOR3_X4)
         pin   16.235044   40.606361   68.403770  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239422    0.300257   68.704025  rise  inst_15:D (DFFR_X2)
+        pin   16.237049    0.300257   68.704025  rise  inst_15:D (DFFR_X2)
     arrival                           68.704025        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -1819,9 +1201,9 @@ Analysis type : max
         pin    1.927733    5.468101   17.196089  fall  inst_9:ZN (INV_X4)
         pin    1.930933    0.111542   17.307631  fall  inst_2:A2 (NOR2_X4)
         pin    8.108493   18.197794   35.505424  rise  inst_2:ZN (NOR2_X4)
-        pin    8.109612    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
+        pin    8.109532    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
         pin    2.776635   10.306549   45.942295  fall  inst_0:ZN (NOR3_X4)
-        pin    2.787026    0.192933   46.135227  fall  inst_12:A (INV_X1)
+        pin    2.787025    0.192933   46.135227  fall  inst_12:A (INV_X1)
         pin    4.368711    6.096748   52.231976  rise  inst_12:ZN (INV_X1)
        port    4.376092    0.262439   52.494415  rise  G17
     arrival                           52.494415        data arrival time
@@ -1847,7 +1229,7 @@ Analysis type : max
         pin    2.177868    2.902422   13.339894  rise  inst_9:ZN (INV_X4)
         pin    2.180701    0.111542   13.451437  rise  inst_2:A2 (NOR2_X4)
         pin    2.999295    9.725172   23.176609  fall  inst_2:ZN (NOR2_X4)
-        pin    3.002069    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
+        pin    3.002104    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
         pin   16.309183   20.648880   43.955811  rise  inst_0:ZN (NOR3_X4)
         pin   16.310955    0.192933   44.148743  rise  inst_12:A (INV_X1)
         pin    2.942911    7.941088   52.089832  fall  inst_12:ZN (INV_X1)
@@ -1877,7 +1259,7 @@ Analysis type : min
         pin    7.335596   16.462248   32.160591  rise  inst_2:ZN (NOR2_X4)
         pin    7.336745    0.130320   32.290913  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757   41.615669  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511402    0.300257   41.915924  fall  inst_15:D (DFFR_X2)
+        pin    2.519658    0.300257   41.915924  fall  inst_15:D (DFFR_X2)
     arrival                           41.915924        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -1901,16 +1283,16 @@ Analysis type : max
         pin    2.230784    7.347037  265.320374  fall  inst_2:ZN (NOR2_X4)
         pin    2.234558    0.130320  265.450684  fall  inst_0:A1 (NOR3_X4)
         pin   16.304577   20.633068  286.083740  rise  inst_0:ZN (NOR3_X4)
-        pin   16.311129    0.258129  286.341858  rise  inst_6:A1 (NOR2_X2)
-        pin    2.378057    7.584357  293.926208  fall  inst_6:ZN (NOR2_X2)
-        pin    2.378274    0.033029  293.959229  fall  inst_16:D (DFFR_X2)
+        pin   16.306524    0.258129  286.341858  rise  inst_6:A1 (NOR2_X2)
+        pin    2.378017    7.584342  293.926208  fall  inst_6:ZN (NOR2_X2)
+        pin    2.378234    0.033029  293.959229  fall  inst_16:D (DFFR_X2)
     arrival                          293.959229        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
  constraint              -31.105198  246.181824        library setup_rising
-   required                          246.181808        data required time
+   required                          246.181824        data required time
 ------------------------------------------------------------------
-      slack                          -47.777420        VIOLATED
+      slack                          -47.777405        VIOLATED
 
 ----- Critical Path PBA Mode 53 -----
 Startpoint    : G0
@@ -1924,17 +1306,17 @@ Analysis type : max
         pin    3.781242   11.447008   12.384120  fall  inst_3:ZN (NOR2_X2)
         pin    3.786943    0.209211   12.593331  fall  inst_1:A1 (NOR2_X4)
         pin    6.764827   11.093338   23.686668  rise  inst_1:ZN (NOR2_X4)
-        pin    6.761765    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
-        pin    4.873232   14.180496   38.056278  fall  inst_0:ZN (NOR3_X4)
-        pin    4.879160    0.192933   38.249210  fall  inst_12:A (INV_X1)
-        pin    4.384276    6.144282   44.393494  rise  inst_12:ZN (INV_X1)
-       port    4.391632    0.262439   44.655933  rise  G17
-    arrival                           44.655933        data arrival time
+        pin    6.767429    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
+        pin    4.873277   14.180509   38.056290  fall  inst_0:ZN (NOR3_X4)
+        pin    4.879205    0.192933   38.249222  fall  inst_12:A (INV_X1)
+        pin    4.384276    6.144283   44.393505  rise  inst_12:ZN (INV_X1)
+       port    4.391632    0.262439   44.655945  rise  G17
+    arrival                           44.655945        data arrival time
 
        port               -1.200000   -1.200000        output port delay
-   required                           -1.200008        data required time
+   required                           -1.200012        data required time
 ------------------------------------------------------------------
-      slack                          -45.855942        VIOLATED
+      slack                          -45.855957        VIOLATED
 
 ----- Critical Path PBA Mode 54 -----
 Startpoint    : G0
@@ -1948,17 +1330,17 @@ Analysis type : max
         pin    3.774686   11.431821   12.339420  fall  inst_4:ZN (NOR2_X2)
         pin    3.777317    0.141715   12.481135  fall  inst_2:A1 (NOR2_X4)
         pin    6.829247   11.176542   23.657677  rise  inst_2:ZN (NOR2_X4)
-        pin    6.824810    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
-        pin    2.766479   10.306158   34.094154  fall  inst_0:ZN (NOR3_X4)
-        pin    2.776908    0.192933   34.287086  fall  inst_12:A (INV_X1)
+        pin    6.830480    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
+        pin    2.766524   10.306160   34.094154  fall  inst_0:ZN (NOR3_X4)
+        pin    2.776952    0.192933   34.287086  fall  inst_12:A (INV_X1)
         pin    4.368635    6.096519   40.383606  rise  inst_12:ZN (INV_X1)
        port    4.376017    0.262439   40.646046  rise  G17
     arrival                           40.646046        data arrival time
 
        port               -1.200000   -1.200000        output port delay
-   required                           -1.199974        data required time
+   required                           -1.199978        data required time
 ------------------------------------------------------------------
-      slack                          -41.846020        VIOLATED
+      slack                          -41.846024        VIOLATED
 
 ----- Critical Path PBA Mode 55 -----
 Startpoint    : G3
@@ -1999,7 +1381,7 @@ Analysis type : max
         pin    4.873232   14.180496  253.713470  fall  inst_0:ZN (NOR3_X4)
         pin    4.879739    0.258129  253.971603  fall  inst_6:A1 (NOR2_X2)
         pin    6.609525   11.343379  265.314972  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029  265.347992  rise  inst_16:D (DFFR_X2)
+        pin    6.609603    0.033029  265.347992  rise  inst_16:D (DFFR_X2)
     arrival                          265.347992        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -2025,7 +1407,7 @@ Analysis type : max
         pin    2.766479   10.306158  249.802261  fall  inst_0:ZN (NOR3_X4)
         pin    2.777926    0.258129  250.060394  fall  inst_6:A1 (NOR2_X2)
         pin    6.594637   11.299493  261.359894  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029  261.392914  rise  inst_16:D (DFFR_X2)
+        pin    6.594716    0.033029  261.392914  rise  inst_16:D (DFFR_X2)
     arrival                          261.392914        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -2047,18 +1429,18 @@ Analysis type : min
         pin    8.575066   13.742368  234.694168  rise  inst_4:ZN (NOR2_X2)
         pin    8.576224    0.141715  234.835876  rise  inst_2:A1 (NOR2_X4)
         pin    2.011503    6.644361  241.480240  fall  inst_2:ZN (NOR2_X4)
-        pin    2.025466    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
-        pin   14.750642   18.664351  260.274902  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756542    0.258129  260.533020  rise  inst_6:A1 (NOR2_X2)
-        pin    2.139713    6.857354  267.390381  fall  inst_6:ZN (NOR2_X2)
-        pin    2.139954    0.033029  267.423401  fall  inst_16:D (DFFR_X2)
-    arrival                          267.423401        data arrival time
+        pin    2.015688    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
+        pin   14.750588   18.664167  260.274719  rise  inst_0:ZN (NOR3_X4)
+        pin   14.752740    0.258129  260.532837  rise  inst_6:A1 (NOR2_X2)
+        pin    2.139683    6.857342  267.390167  fall  inst_6:ZN (NOR2_X2)
+        pin    2.139924    0.033029  267.423187  fall  inst_16:D (DFFR_X2)
+    arrival                          267.423187        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint              -28.531124  274.484741        library hold_rising
-   required                          274.484711        data required time
+   required                          274.484680        data required time
 ------------------------------------------------------------------
-      slack                           -7.061314        VIOLATED
+      slack                           -7.061508        VIOLATED
 
 ----- Critical Path PBA Mode 59 -----
 Startpoint    : inst_14:CK
@@ -2075,18 +1457,18 @@ Analysis type : min
         pin    1.754201    4.956973  264.258575  fall  inst_9:ZN (INV_X4)
         pin    1.757717    0.111542  264.370117  fall  inst_2:A2 (NOR2_X4)
         pin    7.335655   16.462454  280.832581  rise  inst_2:ZN (NOR2_X4)
-        pin    7.336745    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
+        pin    7.336804    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757  290.287659  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511079    0.258129  290.545776  fall  inst_6:A1 (NOR2_X2)
-        pin    5.964979   10.218479  300.764252  rise  inst_6:ZN (NOR2_X2)
-        pin    5.965065    0.033029  300.797272  rise  inst_16:D (DFFR_X2)
-    arrival                          300.797272        data arrival time
+        pin    2.519337    0.258129  290.545776  fall  inst_6:A1 (NOR2_X2)
+        pin    5.965032   10.218635  300.764404  rise  inst_6:ZN (NOR2_X2)
+        pin    5.965118    0.033029  300.797424  rise  inst_16:D (DFFR_X2)
+    arrival                          300.797424        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint                2.204330  305.220184        library hold_rising
    required                          305.220184        data required time
 ------------------------------------------------------------------
-      slack                           -4.422921        VIOLATED
+      slack                           -4.422766        VIOLATED
 
 ----- Critical Path PBA Mode 60 -----
 Startpoint    : inst_14:CK
@@ -2103,8 +1485,8 @@ Analysis type : min
         pin    1.964652    2.607536  241.260834  rise  inst_9:ZN (INV_X4)
         pin    1.967791    0.111542  241.372375  rise  inst_2:A2 (NOR2_X4)
         pin    2.711802    8.798576  250.170959  fall  inst_2:ZN (NOR2_X4)
-        pin    2.714934    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
-        pin   14.754392   18.677202  268.978485  rise  inst_0:ZN (NOR3_X4)
+        pin    2.714908    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
+        pin   14.754392   18.677200  268.978485  rise  inst_0:ZN (NOR3_X4)
         pin   14.756542    0.258129  269.236603  rise  inst_6:A1 (NOR2_X2)
         pin    2.139713    6.857354  276.093964  fall  inst_6:ZN (NOR2_X2)
         pin    2.139954    0.033029  276.126984  fall  inst_16:D (DFFR_X2)
@@ -2112,9 +1494,9 @@ Analysis type : min
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint              -28.531124  274.484741        library hold_rising
-   required                          274.484741        data required time
+   required                          274.484772        data required time
 ------------------------------------------------------------------
-      slack                            1.642227        MET
+      slack                            1.642225        MET
 
 ----- Critical Path PBA Mode 61 -----
 Startpoint    : G0
@@ -2130,7 +1512,7 @@ Analysis type : max
         pin    2.227247    7.313835   30.397486  fall  inst_1:ZN (NOR2_X4)
         pin    2.235139    0.189113   30.586599  fall  inst_0:A3 (NOR3_X4)
         pin   17.944496   44.882668   75.469269  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946264    0.300257   75.769524  rise  inst_15:D (DFFR_X2)
+        pin   17.946310    0.300257   75.769524  rise  inst_15:D (DFFR_X2)
     arrival                           75.769524        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -2152,18 +1534,18 @@ Analysis type : min
         pin    8.599857   13.774116  234.703873  rise  inst_3:ZN (NOR2_X2)
         pin    8.602365    0.209211  234.913086  rise  inst_1:A1 (NOR2_X4)
         pin    1.997580    6.610168  241.523254  fall  inst_1:ZN (NOR2_X4)
-        pin    2.016139    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
-        pin   16.235044   40.606361  282.318726  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239372    0.258129  282.576843  rise  inst_6:A1 (NOR2_X2)
-        pin    2.151279    6.861856  289.438690  fall  inst_6:ZN (NOR2_X2)
-        pin    2.151518    0.033029  289.471710  fall  inst_16:D (DFFR_X2)
-    arrival                          289.471710        data arrival time
+        pin    2.006375    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
+        pin   16.235012   40.606262  282.318634  rise  inst_0:ZN (NOR3_X4)
+        pin   16.236967    0.258129  282.576752  rise  inst_6:A1 (NOR2_X2)
+        pin    2.151260    6.861849  289.438599  fall  inst_6:ZN (NOR2_X2)
+        pin    2.151500    0.033029  289.471619  fall  inst_16:D (DFFR_X2)
+    arrival                          289.471619        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
  constraint              -28.531124  274.484741        library hold_rising
-   required                          274.484680        data required time
+   required                          274.484711        data required time
 ------------------------------------------------------------------
-      slack                           14.987020        MET
+      slack                           14.986914        MET
 
 ----- Critical Path PBA Mode 63 -----
 Startpoint    : G3
@@ -2177,7 +1559,7 @@ Analysis type : max
         pin    3.007663    9.700548   10.087410  fall  inst_1:ZN (NOR2_X4)
         pin    3.013512    0.189113   10.276523  fall  inst_0:A3 (NOR3_X4)
         pin   17.947392   44.891541   55.168064  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946264    0.300257   55.468319  rise  inst_15:D (DFFR_X2)
+        pin   17.949205    0.300257   55.468319  rise  inst_15:D (DFFR_X2)
     arrival                           55.468319        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -2200,7 +1582,7 @@ Analysis type : max
         pin    2.242637    7.351584   30.302589  fall  inst_2:ZN (NOR2_X4)
         pin    2.246392    0.130320   30.432909  fall  inst_0:A1 (NOR3_X4)
         pin   16.304649   20.633312   51.066223  rise  inst_0:ZN (NOR3_X4)
-        pin   16.311178    0.300257   51.366478  rise  inst_15:D (DFFR_X2)
+        pin   16.306644    0.300257   51.366478  rise  inst_15:D (DFFR_X2)
     arrival                           51.366478        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -2225,9 +1607,9 @@ Analysis type : max
         pin    1.927733    5.468101   17.196089  fall  inst_9:ZN (INV_X4)
         pin    1.930933    0.111542   17.307631  fall  inst_2:A2 (NOR2_X4)
         pin    8.108493   18.197794   35.505424  rise  inst_2:ZN (NOR2_X4)
-        pin    8.109612    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
+        pin    8.109532    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
         pin    2.776635   10.306549   45.942295  fall  inst_0:ZN (NOR3_X4)
-        pin    2.788331    0.300257   46.242550  fall  inst_15:D (DFFR_X2)
+        pin    2.788330    0.300257   46.242550  fall  inst_15:D (DFFR_X2)
     arrival                           46.242550        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -2252,7 +1634,7 @@ Analysis type : max
         pin    2.177868    2.902422   13.339894  rise  inst_9:ZN (INV_X4)
         pin    2.180701    0.111542   13.451437  rise  inst_2:A2 (NOR2_X4)
         pin    2.999295    9.725172   23.176609  fall  inst_2:ZN (NOR2_X4)
-        pin    3.002069    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
+        pin    3.002104    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
         pin   16.309183   20.648880   43.955811  rise  inst_0:ZN (NOR3_X4)
         pin   16.311178    0.300257   44.256065  rise  inst_15:D (DFFR_X2)
     arrival                           44.256065        data arrival time
@@ -2323,15 +1705,15 @@ Analysis type : min
         pin    6.117949   10.029997   21.532887  rise  inst_1:ZN (NOR2_X4)
         pin    6.120827    0.189113   21.722000  rise  inst_0:A3 (NOR3_X4)
         pin    4.404566   12.828732   34.550732  fall  inst_0:ZN (NOR3_X4)
-        pin    4.419484    0.192933   34.743664  fall  inst_12:A (INV_X1)
-        pin    3.963386    5.550079   40.293743  rise  inst_12:ZN (INV_X1)
-       port    3.971521    0.262439   40.556183  rise  G17
-    arrival                           40.556183        data arrival time
+        pin    4.411124    0.192933   34.743664  fall  inst_12:A (INV_X1)
+        pin    3.963329    5.549907   40.293571  rise  inst_12:ZN (INV_X1)
+       port    3.971464    0.262439   40.556011  rise  G17
+    arrival                           40.556011        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.100002        data required time
 ------------------------------------------------------------------
-      slack                           42.656185        MET
+      slack                           42.656013        MET
 
 ----- Critical Path PBA Mode 70 -----
 Startpoint    : G0
@@ -2345,16 +1727,16 @@ Analysis type : max
         pin    3.781242   11.447008   12.384120  fall  inst_3:ZN (NOR2_X2)
         pin    3.786943    0.209211   12.593331  fall  inst_1:A1 (NOR2_X4)
         pin    6.764827   11.093338   23.686668  rise  inst_1:ZN (NOR2_X4)
-        pin    6.761765    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
-        pin    4.873232   14.180496   38.056278  fall  inst_0:ZN (NOR3_X4)
-        pin    4.879905    0.300257   38.356533  fall  inst_15:D (DFFR_X2)
-    arrival                           38.356533        data arrival time
+        pin    6.767429    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
+        pin    4.873277   14.180509   38.056290  fall  inst_0:ZN (NOR3_X4)
+        pin    4.879950    0.300257   38.356544  fall  inst_15:D (DFFR_X2)
+    arrival                           38.356544        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
  constraint              -31.123102   81.043854        library setup_rising
    required                           81.043823        data required time
 ------------------------------------------------------------------
-      slack                           42.687294        MET
+      slack                           42.687283        MET
 
 ----- Critical Path PBA Mode 71 -----
 Startpoint    : G0
@@ -2368,9 +1750,9 @@ Analysis type : max
         pin    3.774686   11.431821   12.339420  fall  inst_4:ZN (NOR2_X2)
         pin    3.777317    0.141715   12.481135  fall  inst_2:A1 (NOR2_X4)
         pin    6.829247   11.176542   23.657677  rise  inst_2:ZN (NOR2_X4)
-        pin    6.824810    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
-        pin    2.766479   10.306158   34.094154  fall  inst_0:ZN (NOR3_X4)
-        pin    2.778217    0.300257   34.394409  fall  inst_15:D (DFFR_X2)
+        pin    6.830480    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
+        pin    2.766524   10.306160   34.094154  fall  inst_0:ZN (NOR3_X4)
+        pin    2.778262    0.300257   34.394409  fall  inst_15:D (DFFR_X2)
     arrival                           34.394409        data arrival time
 
 related pin              112.166954  112.166954  rise  inst_15:CK (DFFR_X2)
@@ -2446,15 +1828,15 @@ Analysis type : min
         pin    7.335596   16.462248   32.160591  rise  inst_2:ZN (NOR2_X4)
         pin    7.336745    0.130320   32.290913  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757   41.615669  fall  inst_0:ZN (NOR3_X4)
-        pin    2.509953    0.192933   41.808601  fall  inst_12:A (INV_X1)
-        pin    3.950479    5.510818   47.319420  rise  inst_12:ZN (INV_X1)
-       port    3.958640    0.262439   47.581860  rise  G17
-    arrival                           47.581860        data arrival time
+        pin    2.518214    0.192933   41.808601  fall  inst_12:A (INV_X1)
+        pin    3.950534    5.510988   47.319588  rise  inst_12:ZN (INV_X1)
+       port    3.958696    0.262439   47.582027  rise  G17
+    arrival                           47.582027        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.099998        data required time
 ------------------------------------------------------------------
-      slack                           49.681858        MET
+      slack                           49.682026        MET
 
 ----- Critical Path PBA Mode 75 -----
 Startpoint    : G0
@@ -2470,15 +1852,15 @@ Analysis type : min
         pin    2.021301    6.648148   27.513243  fall  inst_2:ZN (NOR2_X4)
         pin    2.025466    0.130320   27.643562  fall  inst_0:A1 (NOR3_X4)
         pin   14.750642   18.664351   46.307915  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756351    0.192933   46.500847  rise  inst_12:A (INV_X1)
-        pin    2.647375    7.170858   53.671707  fall  inst_12:ZN (INV_X1)
-       port    2.659539    0.262439   53.934147  fall  G17
-    arrival                           53.934147        data arrival time
+        pin   14.752602    0.192933   46.500847  rise  inst_12:A (INV_X1)
+        pin    2.647339    7.170825   53.671673  fall  inst_12:ZN (INV_X1)
+       port    2.659503    0.262439   53.934113  fall  G17
+    arrival                           53.934113        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.099998        data required time
 ------------------------------------------------------------------
-      slack                           56.034145        MET
+      slack                           56.034111        MET
 
 ----- Critical Path PBA Mode 76 -----
 Startpoint    : G3
@@ -2518,7 +1900,7 @@ Analysis type : max
         pin    1.927733    5.468101   17.196089  fall  inst_9:ZN (INV_X4)
         pin    1.927736    0.003355   17.199444  fall  inst_5:A2 (NOR2_X2)
         pin    8.007851   18.333168   35.532612  rise  inst_5:ZN (NOR2_X2)
-        pin    8.008040    0.043901   35.576511  rise  inst_14:D (DFFR_X2)
+        pin    8.007960    0.043901   35.576511  rise  inst_14:D (DFFR_X2)
     arrival                           35.576511        data arrival time
 
 related pin              143.208054  143.208054  rise  inst_14:CK (DFFR_X2)
@@ -2541,15 +1923,15 @@ Analysis type : min
         pin    2.007386    6.613959   27.608295  fall  inst_1:ZN (NOR2_X4)
         pin    2.016139    0.189113   27.797409  fall  inst_0:A3 (NOR3_X4)
         pin   16.235044   40.606361   68.403770  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239197    0.192933   68.596703  rise  inst_12:A (INV_X1)
-        pin    2.661730    7.184204   75.780907  fall  inst_12:ZN (INV_X1)
-       port    2.673829    0.262439   76.043343  fall  G17
-    arrival                           76.043343        data arrival time
+        pin   16.236824    0.192933   68.596703  rise  inst_12:A (INV_X1)
+        pin    2.661707    7.184183   75.780884  fall  inst_12:ZN (INV_X1)
+       port    2.673806    0.262439   76.043320  fall  G17
+    arrival                           76.043320        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.100014        data required time
 ------------------------------------------------------------------
-      slack                           78.143356        MET
+      slack                           78.143333        MET
 
 ----- Critical Path PBA Mode 79 -----
 Startpoint    : G1
@@ -2567,7 +1949,7 @@ Analysis type : max
         pin    2.177868    2.902422   13.339894  rise  inst_9:ZN (INV_X4)
         pin    2.177871    0.003355   13.343248  rise  inst_5:A2 (NOR2_X2)
         pin    3.102913    9.919666   23.262915  fall  inst_5:ZN (NOR2_X2)
-        pin    3.103162    0.043901   23.306816  fall  inst_14:D (DFFR_X2)
+        pin    3.103197    0.043901   23.306816  fall  inst_14:D (DFFR_X2)
     arrival                           23.306816        data arrival time
 
 related pin              143.208054  143.208054  rise  inst_14:CK (DFFR_X2)
@@ -2629,7 +2011,7 @@ Analysis type : min
         pin    3.382511   11.964094  400.651978  fall  inst_0:ZN (NOR3_X4)
         pin    3.391879    0.258129  400.910095  fall  inst_6:A1 (NOR2_X2)
         pin    5.970619   10.235111  411.145203  rise  inst_6:ZN (NOR2_X2)
-        pin    5.965065    0.033029  411.178223  rise  inst_16:D (DFFR_X2)
+        pin    5.970706    0.033029  411.178223  rise  inst_16:D (DFFR_X2)
     arrival                          411.178223        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
@@ -2653,7 +2035,7 @@ Analysis type : min
         pin    1.754201    4.956973  264.258575  fall  inst_9:ZN (INV_X4)
         pin    1.754204    0.003355  264.261932  fall  inst_5:A2 (NOR2_X2)
         pin    7.244265   16.584410  280.846344  rise  inst_5:ZN (NOR2_X2)
-        pin    7.244328    0.043901  280.890259  rise  inst_14:D (DFFR_X2)
+        pin    7.244387    0.043901  280.890259  rise  inst_14:D (DFFR_X2)
     arrival                          280.890259        data arrival time
 
 related pin              155.551880  155.551880  rise  inst_14:CK (DFFR_X2)
@@ -2677,7 +2059,7 @@ Analysis type : min
         pin    1.964652    2.607536  241.260834  rise  inst_9:ZN (INV_X4)
         pin    1.964655    0.003355  241.264191  rise  inst_5:A2 (NOR2_X2)
         pin    2.806137    8.974127  250.238312  fall  inst_5:ZN (NOR2_X2)
-        pin    2.806477    0.043901  250.282211  fall  inst_14:D (DFFR_X2)
+        pin    2.806451    0.043901  250.282211  fall  inst_14:D (DFFR_X2)
     arrival                          250.282211        data arrival time
 
 related pin              155.551880  155.551880  rise  inst_14:CK (DFFR_X2)
@@ -2701,7 +2083,7 @@ Analysis type : min
         pin   16.429920   30.951185  400.368927  rise  inst_0:ZN (NOR3_X4)
         pin   16.431852    0.258129  400.627045  rise  inst_6:A1 (NOR2_X2)
         pin    2.152780    6.862441  407.489471  fall  inst_6:ZN (NOR2_X2)
-        pin    2.151518    0.033029  407.522491  fall  inst_16:D (DFFR_X2)
+        pin    2.153020    0.033029  407.522491  fall  inst_16:D (DFFR_X2)
     arrival                          407.522491        data arrival time
 
 related pin              303.015869  303.015869  rise  inst_16:CK (DFFR_X2)
@@ -2723,9 +2105,9 @@ Analysis type : min
         pin    2.687091    8.280749  207.797211  fall  inst_4:ZN (NOR2_X2)
         pin    2.690787    0.141715  207.938919  fall  inst_2:A1 (NOR2_X4)
         pin    6.171614   10.091496  218.030411  rise  inst_2:ZN (NOR2_X4)
-        pin    6.177662    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
-        pin    2.498411    9.324432  227.485168  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511402    0.300257  227.785431  fall  inst_15:D (DFFR_X2)
+        pin    6.172979    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
+        pin    2.498377    9.324430  227.485168  fall  inst_0:ZN (NOR3_X4)
+        pin    2.511368    0.300257  227.785431  fall  inst_15:D (DFFR_X2)
     arrival                          227.785431        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -2747,16 +2129,16 @@ Analysis type : min
         pin    8.575066   13.742368  234.694168  rise  inst_4:ZN (NOR2_X2)
         pin    8.576224    0.141715  234.835876  rise  inst_2:A1 (NOR2_X4)
         pin    2.011503    6.644361  241.480240  fall  inst_2:ZN (NOR2_X4)
-        pin    2.025466    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
-        pin   14.750642   18.664351  260.274902  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756598    0.300257  260.575165  rise  inst_15:D (DFFR_X2)
-    arrival                          260.575165        data arrival time
+        pin    2.015688    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
+        pin   14.750588   18.664167  260.274719  rise  inst_0:ZN (NOR3_X4)
+        pin   14.752794    0.300257  260.574982  rise  inst_15:D (DFFR_X2)
+    arrival                          260.574982        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
  constraint                2.400256  123.667564        library hold_rising
    required                          123.667572        data required time
 ------------------------------------------------------------------
-      slack                          136.907593        MET
+      slack                          136.907410        MET
 
 ----- Critical Path PBA Mode 88 -----
 Startpoint    : inst_15:CK
@@ -2771,16 +2153,16 @@ Analysis type : min
         pin    2.693009    8.295053  207.789490  fall  inst_3:ZN (NOR2_X2)
         pin    2.701008    0.209211  207.998703  fall  inst_1:A1 (NOR2_X4)
         pin    6.113272   10.016274  218.014984  rise  inst_1:ZN (NOR2_X4)
-        pin    6.120827    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
-        pin    4.404566   12.828732  231.032837  fall  inst_0:ZN (NOR3_X4)
-        pin    4.420307    0.300257  231.333099  fall  inst_15:D (DFFR_X2)
-    arrival                          231.333099        data arrival time
+        pin    6.116151    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
+        pin    4.404533   12.828722  231.032822  fall  inst_0:ZN (NOR3_X4)
+        pin    4.411915    0.300257  231.333084  fall  inst_15:D (DFFR_X2)
+    arrival                          231.333084        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
  constraint              -28.521088   92.746223        library hold_rising
    required                           92.746231        data required time
 ------------------------------------------------------------------
-      slack                          138.586868        MET
+      slack                          138.586853        MET
 
 ----- Critical Path PBA Mode 89 -----
 Startpoint    : inst_14:CK
@@ -2797,8 +2179,8 @@ Analysis type : min
         pin    1.964652    2.607536  241.260834  rise  inst_9:ZN (INV_X4)
         pin    1.967791    0.111542  241.372375  rise  inst_2:A2 (NOR2_X4)
         pin    2.711802    8.798576  250.170959  fall  inst_2:ZN (NOR2_X4)
-        pin    2.714934    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
-        pin   14.754392   18.677202  268.978485  rise  inst_0:ZN (NOR3_X4)
+        pin    2.714908    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
+        pin   14.754392   18.677200  268.978485  rise  inst_0:ZN (NOR3_X4)
         pin   14.756598    0.300257  269.278748  rise  inst_15:D (DFFR_X2)
     arrival                          269.278748        data arrival time
 
@@ -2821,16 +2203,16 @@ Analysis type : min
         pin    8.599857   13.774116  234.703873  rise  inst_3:ZN (NOR2_X2)
         pin    8.602365    0.209211  234.913086  rise  inst_1:A1 (NOR2_X4)
         pin    1.997580    6.610168  241.523254  fall  inst_1:ZN (NOR2_X4)
-        pin    2.016139    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
-        pin   16.235044   40.606361  282.318726  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239422    0.300257  282.618988  rise  inst_15:D (DFFR_X2)
-    arrival                          282.618988        data arrival time
+        pin    2.006375    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
+        pin   16.235012   40.606262  282.318634  rise  inst_0:ZN (NOR3_X4)
+        pin   16.237017    0.300257  282.618896  rise  inst_15:D (DFFR_X2)
+    arrival                          282.618896        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
  constraint                2.400256  123.667564        library hold_rising
    required                          123.667572        data required time
 ------------------------------------------------------------------
-      slack                          158.951416        MET
+      slack                          158.951324        MET
 
 ----- Critical Path PBA Mode 91 -----
 Startpoint    : G0
@@ -2846,9 +2228,9 @@ Analysis type : max
         pin    2.227247    7.313835   30.397486  fall  inst_1:ZN (NOR2_X4)
         pin    2.235139    0.189113   30.586599  fall  inst_0:A3 (NOR3_X4)
         pin   17.944496   44.882668   75.469269  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946218    0.258129   75.727394  rise  inst_6:A1 (NOR2_X2)
+        pin   17.946264    0.258129   75.727394  rise  inst_6:A1 (NOR2_X2)
         pin    2.392119    7.589786   83.317177  fall  inst_6:ZN (NOR2_X2)
-        pin    2.394193    0.033029   83.350204  fall  inst_16:D (DFFR_X2)
+        pin    2.392335    0.033029   83.350204  fall  inst_16:D (DFFR_X2)
     arrival                           83.350204        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -2869,16 +2251,16 @@ Analysis type : max
         pin    3.007663    9.700548   10.087410  fall  inst_1:ZN (NOR2_X4)
         pin    3.013512    0.189113   10.276523  fall  inst_0:A3 (NOR3_X4)
         pin   17.947392   44.891541   55.168064  rise  inst_0:ZN (NOR3_X4)
-        pin   17.946218    0.258129   55.426193  rise  inst_6:A1 (NOR2_X2)
-        pin    2.392119    7.589786   63.015980  fall  inst_6:ZN (NOR2_X2)
-        pin    2.394193    0.033029   63.049007  fall  inst_16:D (DFFR_X2)
-    arrival                           63.049007        data arrival time
+        pin   17.949160    0.258129   55.426193  rise  inst_6:A1 (NOR2_X2)
+        pin    2.392144    7.589796   63.015987  fall  inst_6:ZN (NOR2_X2)
+        pin    2.392359    0.033029   63.049015  fall  inst_16:D (DFFR_X2)
+    arrival                           63.049015        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
  constraint              -31.105198  246.181824        library setup_rising
-   required                          246.181824        data required time
+   required                          246.181808        data required time
 ------------------------------------------------------------------
-      slack                          183.132812        MET
+      slack                          183.132797        MET
 
 ----- Critical Path PBA Mode 93 -----
 Startpoint    : G0
@@ -2894,16 +2276,16 @@ Analysis type : max
         pin    2.242637    7.351584   30.302589  fall  inst_2:ZN (NOR2_X4)
         pin    2.246392    0.130320   30.432909  fall  inst_0:A1 (NOR3_X4)
         pin   16.304649   20.633312   51.066223  rise  inst_0:ZN (NOR3_X4)
-        pin   16.311129    0.258129   51.324352  rise  inst_6:A1 (NOR2_X2)
-        pin    2.378057    7.584357   58.908710  fall  inst_6:ZN (NOR2_X2)
-        pin    2.378274    0.033029   58.941738  fall  inst_16:D (DFFR_X2)
-    arrival                           58.941738        data arrival time
+        pin   16.306595    0.258129   51.324352  rise  inst_6:A1 (NOR2_X2)
+        pin    2.378018    7.584342   58.908695  fall  inst_6:ZN (NOR2_X2)
+        pin    2.378235    0.033029   58.941723  fall  inst_16:D (DFFR_X2)
+    arrival                           58.941723        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
  constraint              -31.105198  246.181824        library setup_rising
    required                          246.181839        data required time
 ------------------------------------------------------------------
-      slack                          187.240097        MET
+      slack                          187.240112        MET
 
 ----- Critical Path PBA Mode 94 -----
 Startpoint    : G1
@@ -2921,11 +2303,11 @@ Analysis type : max
         pin    1.927733    5.468101   17.196089  fall  inst_9:ZN (INV_X4)
         pin    1.930933    0.111542   17.307631  fall  inst_2:A2 (NOR2_X4)
         pin    8.108493   18.197794   35.505424  rise  inst_2:ZN (NOR2_X4)
-        pin    8.109612    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
+        pin    8.109532    0.130320   35.635746  rise  inst_0:A1 (NOR3_X4)
         pin    2.776635   10.306549   45.942295  fall  inst_0:ZN (NOR3_X4)
-        pin    2.788040    0.258129   46.200424  fall  inst_6:A1 (NOR2_X2)
+        pin    2.788039    0.258129   46.200424  fall  inst_6:A1 (NOR2_X2)
         pin    6.594709   11.299705   57.500130  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029   57.533157  rise  inst_16:D (DFFR_X2)
+        pin    6.594787    0.033029   57.533157  rise  inst_16:D (DFFR_X2)
     arrival                           57.533157        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -2950,7 +2332,7 @@ Analysis type : max
         pin    2.177868    2.902422   13.339894  rise  inst_9:ZN (INV_X4)
         pin    2.180701    0.111542   13.451437  rise  inst_2:A2 (NOR2_X4)
         pin    2.999295    9.725172   23.176609  fall  inst_2:ZN (NOR2_X4)
-        pin    3.002069    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
+        pin    3.002104    0.130320   23.306929  fall  inst_0:A1 (NOR3_X4)
         pin   16.309183   20.648880   43.955811  rise  inst_0:ZN (NOR3_X4)
         pin   16.311129    0.258129   44.213940  rise  inst_6:A1 (NOR2_X2)
         pin    2.378057    7.584357   51.798298  fall  inst_6:ZN (NOR2_X2)
@@ -2975,18 +2357,18 @@ Analysis type : max
         pin    3.781242   11.447008   12.384120  fall  inst_3:ZN (NOR2_X2)
         pin    3.786943    0.209211   12.593331  fall  inst_1:A1 (NOR2_X4)
         pin    6.764827   11.093338   23.686668  rise  inst_1:ZN (NOR2_X4)
-        pin    6.761765    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
-        pin    4.873232   14.180496   38.056278  fall  inst_0:ZN (NOR3_X4)
-        pin    4.879739    0.258129   38.314407  fall  inst_6:A1 (NOR2_X2)
-        pin    6.609525   11.343379   49.657787  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029   49.690815  rise  inst_16:D (DFFR_X2)
-    arrival                           49.690815        data arrival time
+        pin    6.767429    0.189113   23.875782  rise  inst_0:A3 (NOR3_X4)
+        pin    4.873277   14.180509   38.056290  fall  inst_0:ZN (NOR3_X4)
+        pin    4.879784    0.258129   38.314419  fall  inst_6:A1 (NOR2_X2)
+        pin    6.609526   11.343380   49.657799  rise  inst_6:ZN (NOR2_X2)
+        pin    6.609603    0.033029   49.690826  rise  inst_16:D (DFFR_X2)
+    arrival                           49.690826        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
  constraint              -30.219301  247.067719        library setup_rising
    required                          247.067703        data required time
 ------------------------------------------------------------------
-      slack                          197.376892        MET
+      slack                          197.376877        MET
 
 ----- Critical Path PBA Mode 97 -----
 Startpoint    : inst_14:CK
@@ -3003,9 +2385,9 @@ Analysis type : min
         pin    1.754201    4.956973  264.258575  fall  inst_9:ZN (INV_X4)
         pin    1.757717    0.111542  264.370117  fall  inst_2:A2 (NOR2_X4)
         pin    7.335655   16.462454  280.832581  rise  inst_2:ZN (NOR2_X4)
-        pin    7.336745    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
+        pin    7.336804    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757  290.287659  fall  inst_0:ZN (NOR3_X4)
-        pin    2.511402    0.300257  290.587921  fall  inst_15:D (DFFR_X2)
+        pin    2.519658    0.300257  290.587921  fall  inst_15:D (DFFR_X2)
     arrival                          290.587921        data arrival time
 
 related pin              121.267311  121.267311  rise  inst_15:CK (DFFR_X2)
@@ -3026,16 +2408,16 @@ Analysis type : max
         pin    3.774686   11.431821   12.339420  fall  inst_4:ZN (NOR2_X2)
         pin    3.777317    0.141715   12.481135  fall  inst_2:A1 (NOR2_X4)
         pin    6.829247   11.176542   23.657677  rise  inst_2:ZN (NOR2_X4)
-        pin    6.824810    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
-        pin    2.766479   10.306158   34.094154  fall  inst_0:ZN (NOR3_X4)
-        pin    2.777926    0.258129   34.352283  fall  inst_6:A1 (NOR2_X2)
-        pin    6.594637   11.299493   45.651775  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029   45.684803  rise  inst_16:D (DFFR_X2)
-    arrival                           45.684803        data arrival time
+        pin    6.830480    0.130320   23.787996  rise  inst_0:A1 (NOR3_X4)
+        pin    2.766524   10.306160   34.094154  fall  inst_0:ZN (NOR3_X4)
+        pin    2.777970    0.258129   34.352283  fall  inst_6:A1 (NOR2_X2)
+        pin    6.594638   11.299494   45.651779  rise  inst_6:ZN (NOR2_X2)
+        pin    6.594716    0.033029   45.684807  rise  inst_16:D (DFFR_X2)
+    arrival                           45.684807        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
  constraint              -30.219301  247.067719        library setup_rising
-   required                          247.067703        data required time
+   required                          247.067719        data required time
 ------------------------------------------------------------------
       slack                          201.382904        MET
 
@@ -3053,7 +2435,7 @@ Analysis type : max
         pin    4.883523   14.183191   32.923328  fall  inst_0:ZN (NOR3_X4)
         pin    4.890016    0.258129   33.181458  fall  inst_6:A1 (NOR2_X2)
         pin    6.609598   11.343594   44.525051  rise  inst_6:ZN (NOR2_X2)
-        pin    6.601592    0.033029   44.558079  rise  inst_16:D (DFFR_X2)
+        pin    6.609676    0.033029   44.558079  rise  inst_16:D (DFFR_X2)
     arrival                           44.558079        data arrival time
 
 related pin              277.287018  277.287018  rise  inst_16:CK (DFFR_X2)
@@ -3117,10 +2499,10 @@ Analysis type : min
         pin    2.687091    8.280749  207.797211  fall  inst_4:ZN (NOR2_X2)
         pin    2.690787    0.141715  207.938919  fall  inst_2:A1 (NOR2_X4)
         pin    6.171614   10.091496  218.030411  rise  inst_2:ZN (NOR2_X4)
-        pin    6.177662    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
-        pin    2.498411    9.324432  227.485168  fall  inst_0:ZN (NOR3_X4)
-        pin    2.509953    0.192933  227.678101  fall  inst_12:A (INV_X1)
-        pin    3.950479    5.510818  233.188919  rise  inst_12:ZN (INV_X1)
+        pin    6.172979    0.130320  218.160736  rise  inst_0:A1 (NOR3_X4)
+        pin    2.498377    9.324430  227.485168  fall  inst_0:ZN (NOR3_X4)
+        pin    2.509920    0.192933  227.678101  fall  inst_12:A (INV_X1)
+        pin    3.950478    5.510817  233.188919  rise  inst_12:ZN (INV_X1)
        port    3.958640    0.262439  233.451355  rise  G17
     arrival                          233.451355        data arrival time
 
@@ -3142,17 +2524,17 @@ Analysis type : min
         pin    2.693009    8.295053  207.789490  fall  inst_3:ZN (NOR2_X2)
         pin    2.701008    0.209211  207.998703  fall  inst_1:A1 (NOR2_X4)
         pin    6.113272   10.016274  218.014984  rise  inst_1:ZN (NOR2_X4)
-        pin    6.120827    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
-        pin    4.404566   12.828732  231.032837  fall  inst_0:ZN (NOR3_X4)
-        pin    4.419484    0.192933  231.225769  fall  inst_12:A (INV_X1)
-        pin    3.963386    5.550079  236.775848  rise  inst_12:ZN (INV_X1)
-       port    3.971521    0.262439  237.038284  rise  G17
-    arrival                          237.038284        data arrival time
+        pin    6.116151    0.189113  218.204102  rise  inst_0:A3 (NOR3_X4)
+        pin    4.404533   12.828722  231.032822  fall  inst_0:ZN (NOR3_X4)
+        pin    4.411090    0.192933  231.225754  fall  inst_12:A (INV_X1)
+        pin    3.963329    5.549907  236.775665  rise  inst_12:ZN (INV_X1)
+       port    3.971464    0.262439  237.038101  rise  G17
+    arrival                          237.038101        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.100006        data required time
 ------------------------------------------------------------------
-      slack                          239.138290        MET
+      slack                          239.138107        MET
 
 ----- Critical Path PBA Mode 104 -----
 Startpoint    : inst_15:CK
@@ -3167,17 +2549,17 @@ Analysis type : min
         pin    8.575066   13.742368  234.694168  rise  inst_4:ZN (NOR2_X2)
         pin    8.576224    0.141715  234.835876  rise  inst_2:A1 (NOR2_X4)
         pin    2.011503    6.644361  241.480240  fall  inst_2:ZN (NOR2_X4)
-        pin    2.025466    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
-        pin   14.750642   18.664351  260.274902  rise  inst_0:ZN (NOR3_X4)
-        pin   14.756351    0.192933  260.467834  rise  inst_12:A (INV_X1)
-        pin    2.647375    7.170858  267.638702  fall  inst_12:ZN (INV_X1)
-       port    2.659539    0.262439  267.901154  fall  G17
-    arrival                          267.901154        data arrival time
+        pin    2.015688    0.130320  241.610565  fall  inst_0:A1 (NOR3_X4)
+        pin   14.750588   18.664167  260.274719  rise  inst_0:ZN (NOR3_X4)
+        pin   14.752548    0.192933  260.467651  rise  inst_12:A (INV_X1)
+        pin    2.647339    7.170825  267.638489  fall  inst_12:ZN (INV_X1)
+       port    2.659503    0.262439  267.900940  fall  G17
+    arrival                          267.900940        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.100006        data required time
 ------------------------------------------------------------------
-      slack                          270.001160        MET
+      slack                          270.000946        MET
 
 ----- Critical Path PBA Mode 105 -----
 Startpoint    : inst_16:CK
@@ -3216,8 +2598,8 @@ Analysis type : min
         pin    1.964652    2.607536  241.260834  rise  inst_9:ZN (INV_X4)
         pin    1.967791    0.111542  241.372375  rise  inst_2:A2 (NOR2_X4)
         pin    2.711802    8.798576  250.170959  fall  inst_2:ZN (NOR2_X4)
-        pin    2.714934    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
-        pin   14.754392   18.677202  268.978485  rise  inst_0:ZN (NOR3_X4)
+        pin    2.714908    0.130320  250.301285  fall  inst_0:A1 (NOR3_X4)
+        pin   14.754392   18.677200  268.978485  rise  inst_0:ZN (NOR3_X4)
         pin   14.756351    0.192933  269.171417  rise  inst_12:A (INV_X1)
         pin    2.647375    7.170858  276.342285  fall  inst_12:ZN (INV_X1)
        port    2.659539    0.262439  276.604736  fall  G17
@@ -3241,17 +2623,17 @@ Analysis type : min
         pin    8.599857   13.774116  234.703873  rise  inst_3:ZN (NOR2_X2)
         pin    8.602365    0.209211  234.913086  rise  inst_1:A1 (NOR2_X4)
         pin    1.997580    6.610168  241.523254  fall  inst_1:ZN (NOR2_X4)
-        pin    2.016139    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
-        pin   16.235044   40.606361  282.318726  rise  inst_0:ZN (NOR3_X4)
-        pin   16.239197    0.192933  282.511658  rise  inst_12:A (INV_X1)
-        pin    2.661730    7.184204  289.695862  fall  inst_12:ZN (INV_X1)
-       port    2.673829    0.262439  289.958313  fall  G17
-    arrival                          289.958313        data arrival time
+        pin    2.006375    0.189113  241.712372  fall  inst_0:A3 (NOR3_X4)
+        pin   16.235012   40.606262  282.318634  rise  inst_0:ZN (NOR3_X4)
+        pin   16.236792    0.192933  282.511566  rise  inst_12:A (INV_X1)
+        pin    2.661707    7.184183  289.695740  fall  inst_12:ZN (INV_X1)
+       port    2.673805    0.262439  289.958191  fall  G17
+    arrival                          289.958191        data arrival time
 
        port               -2.100000   -2.100000        output port delay
    required                           -2.100006        data required time
 ------------------------------------------------------------------
-      slack                          292.058319        MET
+      slack                          292.058197        MET
 
 ----- Critical Path PBA Mode 108 -----
 Startpoint    : inst_14:CK
@@ -3268,17 +2650,17 @@ Analysis type : min
         pin    1.754201    4.956973  264.258575  fall  inst_9:ZN (INV_X4)
         pin    1.757717    0.111542  264.370117  fall  inst_2:A2 (NOR2_X4)
         pin    7.335655   16.462454  280.832581  rise  inst_2:ZN (NOR2_X4)
-        pin    7.336745    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
+        pin    7.336804    0.130320  280.962891  rise  inst_0:A1 (NOR3_X4)
         pin    2.506710    9.324757  290.287659  fall  inst_0:ZN (NOR3_X4)
-        pin    2.509953    0.192933  290.480591  fall  inst_12:A (INV_X1)
-        pin    3.950479    5.510818  295.991394  rise  inst_12:ZN (INV_X1)
-       port    3.958640    0.262439  296.253845  rise  G17
-    arrival                          296.253845        data arrival time
+        pin    2.518214    0.192933  290.480591  fall  inst_12:A (INV_X1)
+        pin    3.950534    5.510988  295.991577  rise  inst_12:ZN (INV_X1)
+       port    3.958696    0.262439  296.254028  rise  G17
+    arrival                          296.254028        data arrival time
 
        port               -2.100000   -2.100000        output port delay
-   required                           -2.100006        data required time
+   required                           -2.099976        data required time
 ------------------------------------------------------------------
-      slack                          298.353851        MET
+      slack                          298.354004        MET
 
 ----- Critical Path PBA Mode 109 -----
 Startpoint    : inst_16:CK
