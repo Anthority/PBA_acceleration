@@ -24,10 +24,10 @@ wire tau2015_clk;
 wire out;
 
 // Start cells
-NAND2X1 u1 ( .A(inp1), .B(inp2), .Y(n1) );
-DFFNEGX1 f1 ( .D(n2), .CLK(tau2015_clk), .Q(n3) );
-INVX1 u2 ( .A(n3), .Y(n4) );
-INVX2 u3 ( .A(n4), .Y(out) );
-NOR2X1 u4 ( .A(n1), .B(n3), .Y(n2) );
+NAND2_X1 u1 ( .a(inp1), .b(inp2), .o(n1) );
+DFF_X80 f1 ( .d(n2), .ck(tau2015_clk), .q(n3) );
+INV_X1 u2 ( .a(n3), .o(n4) );
+INV_X2 u3 ( .a(n4), .o(out) );
+NOR2_X1 u4 ( .a(n1), .b(n3), .o(n2) );
 
 endmodule

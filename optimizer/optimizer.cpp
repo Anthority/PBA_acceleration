@@ -76,20 +76,20 @@ int main(int argc, char *argv[])
   {
     acceptable_slew = std::stof(argv[3]);
     timer.report_timing_pba_merge(paths, acceptable_slew);
-  }
-  file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
-  if (file.is_open())
-  {
-    for (size_t i = 0; i < paths.size(); ++i)
+    file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
+    if (file.is_open())
     {
-      file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
-      file << paths[i] << '\n';
+      for (size_t i = 0; i < paths.size(); ++i)
+      {
+        file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
+        file << paths[i] << '\n';
+      }
+      file.close();
     }
-    file.close();
-  }
-  else
-  {
-    std::cerr << "Failed to open file for writing." << std::endl;
+    else
+    {
+      std::cerr << "Failed to open file for writing." << std::endl;
+    }
   }
   // for (size_t i = 0; i < paths.size(); ++i)
   // {

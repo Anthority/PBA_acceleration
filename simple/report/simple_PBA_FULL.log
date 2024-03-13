@@ -1,0 +1,208 @@
+----- Critical Path PBA FULL Mode 0 -----
+Startpoint    : inp2
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+       port   40.000000    1.000000    1.000000  rise  inp2
+        pin   40.000000    0.000000    1.000000  rise  u1:b (NAND2_X1)
+        pin   60.000000   62.802002   63.802002  fall  u1:o (NAND2_X1)
+        pin   60.000000    0.000000   63.802002  fall  u4:a (NOR2_X1)
+        pin   97.383659  100.326019  164.128021  rise  u4:o (NOR2_X1)
+        pin   97.383659    0.000000  164.128021  rise  f1:d (DFF_X80)
+    arrival                          164.128021        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -1.500000   48.500000        library setup_rising
+   required                           48.500000        data required time
+------------------------------------------------------------------
+      slack                         -115.628021        VIOLATED
+
+----- Critical Path PBA FULL Mode 1 -----
+Startpoint    : inp1
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+       port   20.000000    5.000000    5.000000  rise  inp1
+        pin   20.000000    0.000000    5.000000  rise  u1:a (NAND2_X1)
+        pin   60.000000   56.402401   61.402401  fall  u1:o (NAND2_X1)
+        pin   60.000000    0.000000   61.402401  fall  u4:a (NOR2_X1)
+        pin   97.383659  100.326019  161.728424  rise  u4:o (NOR2_X1)
+        pin   97.383659    0.000000  161.728424  rise  f1:d (DFF_X80)
+    arrival                          161.728424        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -1.500000   48.500000        library setup_rising
+   required                           48.500000        data required time
+------------------------------------------------------------------
+      slack                         -113.228424        VIOLATED
+
+----- Critical Path PBA FULL Mode 2 -----
+Startpoint    : f1:ck
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   19.293751   19.293751   19.293751  rise  f1:q (DFF_X80)
+        pin   19.293751    0.000000   19.293751  rise  u2:a (INV_X1)
+        pin   30.061749   31.015650   50.309402  fall  u2:o (INV_X1)
+        pin   30.061749    0.000000   50.309402  fall  u3:a (INV_X2)
+        pin   23.047226   28.135153   78.444557  rise  u3:o (INV_X2)
+       port   23.047226    0.000000   78.444557  rise  out
+    arrival                           78.444557        data arrival time
+
+       port               20.000000   20.000000        output port delay
+   required                           20.000004        data required time
+------------------------------------------------------------------
+      slack                          -58.444553        VIOLATED
+
+----- Critical Path PBA FULL Mode 3 -----
+Startpoint    : f1:ck
+Endpoint      : out
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   19.293751   19.293751   19.293751  fall  f1:q (DFF_X80)
+        pin   19.293751    0.000000   19.293751  fall  u2:a (INV_X1)
+        pin   30.061749   31.015650   50.309402  rise  u2:o (INV_X1)
+        pin   30.061749    0.000000   50.309402  rise  u3:a (INV_X2)
+        pin   23.047226   28.135153   78.444557  fall  u3:o (INV_X2)
+       port   23.047226    0.000000   78.444557  fall  out
+    arrival                           78.444557        data arrival time
+
+       port               20.000000   20.000000        output port delay
+   required                           20.000004        data required time
+------------------------------------------------------------------
+      slack                          -58.444553        VIOLATED
+
+----- Critical Path PBA FULL Mode 4 -----
+Startpoint    : f1:ck
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   19.293751   19.293751   19.293751  fall  f1:q (DFF_X80)
+        pin   19.293751    0.000000   19.293751  fall  u4:b (NOR2_X1)
+        pin   97.349998   87.300560  106.594315  rise  u4:o (NOR2_X1)
+        pin   97.349998    0.000000  106.594315  rise  f1:d (DFF_X80)
+    arrival                          106.594315        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -1.500000   48.500000        library setup_rising
+   required                           48.500004        data required time
+------------------------------------------------------------------
+      slack                          -58.094311        VIOLATED
+
+----- Critical Path PBA FULL Mode 5 -----
+Startpoint    : inp2
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+       port   40.000000    1.000000    1.000000  fall  inp2
+        pin   40.000000    0.000000    1.000000  fall  u1:b (NAND2_X1)
+        pin   30.990000   37.158001   38.158001  rise  u1:o (NAND2_X1)
+        pin   30.990000    0.000000   38.158001  rise  u4:a (NOR2_X1)
+        pin   48.692440   49.984638   88.142639  fall  u4:o (NOR2_X1)
+        pin   48.692440    0.000000   88.142639  fall  f1:d (DFF_X80)
+    arrival                           88.142639        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -2.500000   47.500000        library setup_rising
+   required                           47.500000        data required time
+------------------------------------------------------------------
+      slack                          -40.642639        VIOLATED
+
+----- Critical Path PBA FULL Mode 6 -----
+Startpoint    : inp1
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+       port   25.000000    5.000000    5.000000  fall  inp1
+        pin   25.000000    0.000000    5.000000  fall  u1:a (NAND2_X1)
+        pin   30.105600   32.596802   37.596802  rise  u1:o (NAND2_X1)
+        pin   30.105600    0.000000   37.596802  rise  u4:a (NOR2_X1)
+        pin   48.676861   49.715603   87.312408  fall  u4:o (NOR2_X1)
+        pin   48.676861    0.000000   87.312408  fall  f1:d (DFF_X80)
+    arrival                           87.312408        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -2.500000   47.500000        library setup_rising
+   required                           47.500004        data required time
+------------------------------------------------------------------
+      slack                          -39.812405        VIOLATED
+
+----- Critical Path PBA FULL Mode 7 -----
+Startpoint    : f1:ck
+Endpoint      : f1:d
+Analysis type : max
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   19.293751   19.293751   19.293751  rise  f1:q (DFF_X80)
+        pin   19.293751    0.000000   19.293751  rise  u4:b (NOR2_X1)
+        pin   48.674999   46.430492   65.724243  fall  u4:o (NOR2_X1)
+        pin   48.674999    0.000000   65.724243  fall  f1:d (DFF_X80)
+    arrival                           65.724243        data arrival time
+
+related pin               50.000000   50.000000  rise  f1:ck (DFF_X80)
+ constraint               -2.500000   47.500000        library setup_rising
+   required                           47.500000        data required time
+------------------------------------------------------------------
+      slack                          -18.224243        VIOLATED
+
+----- Critical Path PBA FULL Mode 8 -----
+Startpoint    : f1:ck
+Endpoint      : out
+Analysis type : min
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   12.862500   12.862500   12.862500  rise  f1:q (DFF_X80)
+        pin   12.862500    0.000000   12.862500  rise  u2:a (INV_X1)
+        pin   20.022644   19.339399   32.201900  fall  u2:o (INV_X1)
+        pin   20.022644    0.000000   32.201900  fall  u3:a (INV_X2)
+        pin   15.216326   16.668709   48.870609  rise  u3:o (INV_X2)
+       port   15.216326    0.000000   48.870609  rise  out
+    arrival                           48.870609        data arrival time
+
+       port               10.000000   10.000000        output port delay
+   required                           10.000000        data required time
+------------------------------------------------------------------
+      slack                           38.870609        MET
+
+----- Critical Path PBA FULL Mode 9 -----
+Startpoint    : f1:ck
+Endpoint      : out
+Analysis type : min
+------------------------------------------------------------------
+       Type        Slew       Delay        Time   Dir  Description
+------------------------------------------------------------------
+        pin   10.000000    0.000000    0.000000  rise  f1:ck (DFF_X80)
+        pin   12.862500   12.862500   12.862500  fall  f1:q (DFF_X80)
+        pin   12.862500    0.000000   12.862500  fall  u2:a (INV_X1)
+        pin   20.022644   19.339399   32.201900  rise  u2:o (INV_X1)
+        pin   20.022644    0.000000   32.201900  rise  u3:a (INV_X2)
+        pin   15.216326   16.668709   48.870609  fall  u3:o (INV_X2)
+       port   15.216326    0.000000   48.870609  fall  out
+    arrival                           48.870609        data arrival time
+
+       port               10.000000   10.000000        output port delay
+   required                           10.000000        data required time
+------------------------------------------------------------------
+      slack                           38.870609        MET
+
