@@ -30,15 +30,12 @@
 OpenTimer/ot/config.hpp
 OpenTimer/*
 
-main
-optimizer/optimizer
-simple/simple
 vga_lcd/
 CMakeLists.txt
 
 .idea/
 .vscode/
-benchmark/
+*benchmark/
 *build*/
 backup/
 */report/
