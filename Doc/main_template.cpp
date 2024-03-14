@@ -33,10 +33,24 @@ int main(int argc, char *argv[])
 
   // ------------------------------------------------------------
   auto paths = timer.report_timing(path_num);
+
+  // timer.dump_graph(std::cout);
+
+  std::cout << case_name << " has " << paths.size() << " paths" << std::endl;
+  size_t path_gap;
+  if (paths.size() < 1000)
+    path_gap = 1;
+  else if (paths.size() < 10000)
+    path_gap = 10;
+  else if (paths.size() < 100000)
+    path_gap = 100;
+  else
+    path_gap = 1000;
+
   file.open("report/" + case_name + "_GBA.log", std::ios::out);
   if (file.is_open())
   {
-    for (size_t i = 0; i < paths.size(); ++i)
+    for (size_t i = 0; i < paths.size(); i += path_gap)
     {
       file << "----- Critical Path GBA Mode " << i << " -----\n";
       file << paths[i] << '\n';
@@ -47,18 +61,21 @@ int main(int argc, char *argv[])
   {
     std::cerr << "Failed to open file for writing." << std::endl;
   }
-  // for (size_t i = 0; i < paths.size(); ++i)
-  // {
-  //   std::cout << "----- Critical Path GBA Mode " << i << " -----\n";
-  //   std::cout << paths[i] << '\n';
-  // }
 
   // ------------------------------------------------------------
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   timer.report_timing_pba(paths);
+
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+  std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
+
   file.open("report/" + case_name + "_PBA_FULL.log", std::ios::out);
   if (file.is_open())
   {
-    for (size_t i = 0; i < paths.size(); ++i)
+    for (size_t i = 0; i < paths.size(); i += path_gap)
     {
       file << "----- Critical Path PBA FULL Mode " << i << " -----\n";
       file << paths[i] << '\n';
@@ -75,11 +92,21 @@ int main(int argc, char *argv[])
   if (argv[3])
   {
     acceptable_slew = std::stof(argv[3]);
+    std::cout << "acceptable_slew:" << acceptable_slew << std::endl;
+
+    auto start_time_2 = std::chrono::high_resolution_clock::now();
+
     timer.report_timing_pba_merge(paths, acceptable_slew);
+
+    auto end_time_2 = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
+
+    std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
+
     file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
     if (file.is_open())
     {
-      for (size_t i = 0; i < paths.size(); ++i)
+      for (size_t i = 0; i < paths.size(); i += path_gap)
       {
         file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
         file << paths[i] << '\n';
@@ -91,11 +118,6 @@ int main(int argc, char *argv[])
       std::cerr << "Failed to open file for writing." << std::endl;
     }
   }
-  // for (size_t i = 0; i < paths.size(); ++i)
-  // {
-  //   std::cout << "----- Critical Path PBA Mode " << i << " -----\n";
-  //   std::cout << paths[i] << '\n';
-  // }
 
   return 0;
 }

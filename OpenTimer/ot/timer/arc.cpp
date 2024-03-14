@@ -101,11 +101,12 @@ namespace ot
 	std::optional<float> Arc::_get_slew(Split el, Tran frf, Tran trf, float si)
 	{
 
+		std::optional<float> slew;
 		std::visit(Functors{// Case 1: Net arc
 							[&](Net *net)
 							{
 								// std::cout << "	net: " << si << std::endl;
-								return net->_slew(el, frf, si, _to);
+								slew = net->_slew(el, frf, si, _to);
 							},
 							// Case 2: Cell arc
 							[&](TimingView tv)
@@ -115,9 +116,10 @@ namespace ot
 								// std::cout << "	gate: " << si << " " << lc << std::endl;
 
 								if ((tv[el] && _from._slew[el][frf]))
-									return tv[el]->slew(frf, trf, si, lc);
+									slew = tv[el]->slew(frf, trf, si, lc);
 							}},
 				   _handle);
+		return slew;
 	}
 
 	// Procedure: _fprop_slew
@@ -160,12 +162,13 @@ namespace ot
 
 	std::optional<float> Arc::_get_delay(Split el, Tran frf, Tran trf, float si)
 	{
+		std::optional<float> delay;
 
 		std::visit(Functors{// Case 1: Net arc
 							[&](Net *net)
 							{
 								// std::cout << "	net: " << si << std::endl;
-								return net->_delay(el, frf, _to);
+								delay = net->_delay(el, frf, _to);
 							},
 							// Case 2: Cell arc
 							[&](TimingView tv)
@@ -175,9 +178,10 @@ namespace ot
 								// std::cout << "\n\tgate: new_slew " << si << " old_slew " << *_from._slew[el][frf]<<" ";
 
 								if ((tv[el] && _from._slew[el][frf]))
-									return tv[el]->delay(frf, trf, si, lc);
+									delay = tv[el]->delay(frf, trf, si, lc);
 							}},
 				   _handle);
+		return delay;
 	}
 
 	// Procedure: _fprop_delay

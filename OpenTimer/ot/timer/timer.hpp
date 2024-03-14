@@ -132,7 +132,7 @@ class Timer {
   mutable std::shared_mutex _mutex;
 
   tf::Taskflow _taskflow;
-  tf::Executor _executor{1};
+  tf::Executor _executor;
 
   int _state{0};
 
