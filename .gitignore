@@ -30,7 +30,6 @@
 OpenTimer/ot/config.hpp
 OpenTimer/*
 
-vga_lcd/
 CMakeLists.txt
 
 .idea/
@@ -39,3 +38,4 @@ CMakeLists.txt
 *build*/
 backup/
 */report/
+*log

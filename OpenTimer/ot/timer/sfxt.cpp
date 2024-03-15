@@ -111,9 +111,6 @@ void Timer::_spdp(SfxtCache &sfxt) const {
 
 		// Relax on fanin
 		for (auto arc : pin->_fanin) {
-			// #define FOR_EACH_RF_IF(rf, c) \
-			//   for (auto rf : TRAN)        \
-			//     if (c)
 			// 建图,建立所有的边
 			FOR_EACH_RF_IF(urf, arc->_delay[el][urf][vrf]) {
 					auto u = _encode_pin(arc->_from, urf);

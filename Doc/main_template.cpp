@@ -32,20 +32,23 @@ int main(int argc, char *argv[])
   std::filesystem::create_directory("report");
 
   // ------------------------------------------------------------
+  auto start_time = std::chrono::high_resolution_clock::now();
+
   auto paths = timer.report_timing(path_num);
+
+  auto end_time = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+  std::cout << case_name << " has " << paths.size() << " paths" << std::endl;
+  std::cout << "GBA Execution Time: " << duration.count() << " milliseconds" << std::endl;
 
   // timer.dump_graph(std::cout);
 
-  std::cout << case_name << " has " << paths.size() << " paths" << std::endl;
   size_t path_gap;
-  if (paths.size() < 1000)
-    path_gap = 1;
-  else if (paths.size() < 10000)
-    path_gap = 10;
-  else if (paths.size() < 100000)
-    path_gap = 100;
+  if (paths.size() > 1000)
+    path_gap = paths.size() / 1000;
   else
-    path_gap = 1000;
+    path_gap = 1;
 
   file.open("report/" + case_name + "_GBA.log", std::ios::out);
   if (file.is_open())
@@ -63,12 +66,12 @@ int main(int argc, char *argv[])
   }
 
   // ------------------------------------------------------------
-  auto start_time = std::chrono::high_resolution_clock::now();
+  auto start_time_1 = std::chrono::high_resolution_clock::now();
 
   timer.report_timing_pba(paths);
 
-  auto end_time = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+  auto end_time_1 = std::chrono::high_resolution_clock::now();
+  duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_1 - start_time_1);
 
   std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
 
@@ -92,11 +95,12 @@ int main(int argc, char *argv[])
   if (argv[3])
   {
     acceptable_slew = std::stof(argv[3]);
-    std::cout << "acceptable_slew:" << acceptable_slew << std::endl;
+    size_t min_length = std::stoi(argv[4]);
+    std::cout << "acceptable_slew:" << acceptable_slew << "\tmin_length:" << min_length << std::endl;
 
     auto start_time_2 = std::chrono::high_resolution_clock::now();
 
-    timer.report_timing_pba_merge(paths, acceptable_slew);
+    timer.report_timing_pba_merge(paths, acceptable_slew, min_length);
 
     auto end_time_2 = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
