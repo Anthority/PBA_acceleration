@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
   }
 
   // ------------------------------------------------------------
-  float acceptable_slew;
-  if (argv[3])
+  float acceptable_slew = std::stof(argv[3]);
+  if (acceptable_slew > 0)
   {
     acceptable_slew = std::stof(argv[3]);
     size_t min_length = std::stoi(argv[4]);

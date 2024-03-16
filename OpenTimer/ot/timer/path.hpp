@@ -27,7 +27,7 @@ struct Point {
 // ------------------------------------------------------------------------------------------------
 
 // Struct: Path
-struct Path : std::deque<Point> // 继承自std::list<Point>
+struct Path : std::vector<Point> // 继承自std::list<Point>
 {
 
   Path(float, const Endpoint *);
