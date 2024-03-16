@@ -1,7 +1,8 @@
 #include <ot/timer/timer.hpp>
 #include <ot/taskflow/algorithm/reduce.hpp>
 
-// #define DEBUG
+// #define _DEBUG
+#define _CAL_ARC_TIMING
 
 namespace ot
 {
@@ -691,33 +692,44 @@ namespace ot
 	}
 
 	size_t recal_num = 0;
+	size_t pba_timing_elapsed_time = 0;
 	float Timer::cal_arc_pba_timing(Point &node_from, Point &node_to, Split el)
 	{
+
 		recal_num++;
 		float slack_credit = 0;
 
 		auto frf = node_from.transition;
 		auto trf = node_to.transition;
-		for (auto &arc : node_to.pin._fanin)
-		{
-			assert(node_to.arc != INTMAX_MAX);
-			if (_encode_arc(*arc, frf, trf) == node_to.arc)
-			{
-				auto pin_slew = arc->_get_slew(el, frf, trf, node_from.slew);
-				assert(pin_slew);
-				node_to.slew = *pin_slew;
 
-				float origin_delay = node_to.delay;
-				node_to.delay = *arc->_get_delay(el, frf, trf, node_from.slew);
-				slack_credit += (origin_delay - node_to.delay);
+		// for (int i = 0; i < 10; i++)
+		{
+			for (auto &arc : node_to.pin._fanin)
+			{
+				assert(node_to.arc != INTMAX_MAX);
+				if (_encode_arc(*arc, frf, trf) == node_to.arc)
+				{
+					auto pin_slew = arc->_get_slew(el, frf, trf, node_from.slew);
+					assert(pin_slew);
+					node_to.slew = *pin_slew;
+
+					float origin_delay = node_to.delay;
+					node_to.delay = *arc->_get_delay(el, frf, trf, node_from.slew);
+					slack_credit += (origin_delay - node_to.delay);
+				}
 			}
 		}
+
 		return slack_credit;
 	}
+
+	size_t copy_timing_elapsed_time = 0;
 	void Timer::report_timing_pba(std::vector<Path> &paths)
 	{
-		int path_num = 0;
 		recal_num = 0;
+		pba_timing_elapsed_time = 0;
+
+		int path_num = 0;
 		for (auto &path : paths)
 		{
 			path_num++;
@@ -729,19 +741,40 @@ namespace ot
 			float slack_credit = 0;
 			for (size_t i = 1; i < path.size(); i++)
 			{
+#ifdef _CAL_ARC_TIMING
+				auto start = std::chrono::high_resolution_clock::now();
+#endif
+				// std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 				slack_credit += cal_arc_pba_timing(path[i - 1], path[i], el);
+#ifdef _CAL_ARC_TIMING
+				auto end = std::chrono::high_resolution_clock::now();
+				auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+				pba_timing_elapsed_time += duration.count();
+#endif
 			}
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
 		std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_FULL MODE:" << recal_num << std::endl;
+#ifdef _CAL_ARC_TIMING
+		std::cout << "PBA TIMING ELAPSED TIME IN PBA_FULL MODE:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "PBA TIMING ELAPSED TIME PER ARC:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl;
+#endif
 	}
 
+	size_t copy_num;
+	size_t copy_recal_num;
 	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew, size_t min_length)
 	{
+		copy_num = 0;
+		copy_recal_num = 0;
+		recal_num = 0;
+		pba_timing_elapsed_time = 0;
+
+		size_t hash_map_elapsed_time = 0;
 		//                 path_segment_key      slew             path    start
 		std::unordered_map<std::string, std::map<float, std::pair<Path *, size_t>>> path_segments;
+
 		int path_num = 0;
-		recal_num = 0;
 		for (auto &path : paths)
 		{
 			path_num++;
@@ -774,6 +807,7 @@ namespace ot
 						Path *path_segment = &path;
 						size_t start_id = last_merge;
 
+						auto start = std::chrono::high_resolution_clock::now();
 						for (auto &psg : path_segments[key])
 						{
 							float slew_dif = psg.first - pathseg_start.slew;
@@ -788,6 +822,9 @@ namespace ot
 								}
 							}
 						}
+						auto end = std::chrono::high_resolution_clock::now();
+						auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+						hash_map_elapsed_time += duration.count();
 
 						// 如果该路径段在该Slew下的时序信息之前没有计算过
 						if (min_slew_dif - acceptable_slew > 1e-9f)
@@ -797,25 +834,56 @@ namespace ot
 							for (size_t j = last_merge + 1; j <= now_merge; j++)
 							{
 								// std::cout << '\t' << j;
+#ifdef _CAL_ARC_TIMING
+								auto start = std::chrono::high_resolution_clock::now();
+#endif
+								// std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 								slack_credit += cal_arc_pba_timing(path[j - 1], path[j], el);
+#ifdef _CAL_ARC_TIMING
+								auto end = std::chrono::high_resolution_clock::now();
+								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+								pba_timing_elapsed_time += duration.count();
+#endif
 							}
 							// std::cout << std::endl;
+							auto start = std::chrono::high_resolution_clock::now();
 							path_segments[key][pathseg_start.slew] = std::make_pair(&path, last_merge);
+							auto end = std::chrono::high_resolution_clock::now();
+							auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+							hash_map_elapsed_time += duration.count();
 						}
 						else
 						{
+							auto copy_start = std::chrono::high_resolution_clock::now();
 							// std::cout << "\tmerge:";
+							copy_recal_num += 1;
 							for (size_t j = last_merge + 1; j < now_merge; j++)
 							{
+
+								copy_num += 1;
 								// std::cout << '\t' << j;
-								assert(path[j].pin.name() == (*path_segment)[++start_id].pin.name());
+								start_id += 1;
+								assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
 								// if (!(path[j].pin.name() == (*path_segment)[++start_id].pin.name()))
 								// 	std::cout << std::endl;
 								path[j].slew = (*path_segment)[start_id].slew;
 								slack_credit += path[j].delay - (*path_segment)[start_id].delay;
 								path[j].delay = (*path_segment)[start_id].delay;
 							}
+							auto copy_end = std::chrono::high_resolution_clock::now();
+							auto copy_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(copy_end - copy_start);
+							copy_timing_elapsed_time += copy_duration.count();
+
+#ifdef _CAL_ARC_TIMING
+							auto start = std::chrono::high_resolution_clock::now();
+#endif
+							// std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 							slack_credit += cal_arc_pba_timing(path[now_merge - 1], path[now_merge], el);
+#ifdef _CAL_ARC_TIMING
+							auto end = std::chrono::high_resolution_clock::now();
+							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+							pba_timing_elapsed_time += duration.count();
+#endif
 							// std::cout << std::endl;
 						}
 						key = "";
@@ -825,7 +893,20 @@ namespace ot
 
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
+		std::cout << "HASH MAP ELAPSED TIME:" << float(hash_map_elapsed_time) / 1000 << " milliseconds" << std::endl
+				  << std::endl;
+
 		std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_MERGE MODE:" << recal_num << std::endl;
+#ifdef _CAL_ARC_TIMING
+		std::cout << "PBA TIMING ELAPSED TIME IN PBA_MERGE MODE:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "PBA TIMING ELAPSED TIME PER ARC:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl
+				  << std::endl;
+#endif
+		std::cout << "COPY RECAL PATH SEGMENT NUM IN PBA_MERGE MODE:" << copy_recal_num << std::endl;
+		std::cout << "COPY PATH SEGMENT NUM IN PBA_MERGE MODE:" << copy_num << std::endl;
+		std::cout << "COPY TIMING ELAPSED TIME IN PBA_MERGE MODE:" << float(copy_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "COPY TIMING ELAPSED TIME PER ARC:" << float(copy_timing_elapsed_time) / copy_num << " nanoseconds" << std::endl;
+
 		// for (auto &mp : path_segments) {
 		// std::cout << mp.first << std::endl;
 		// for (auto &map : mp.second) { // std::map<float, std::pair<Path *, size_t>>

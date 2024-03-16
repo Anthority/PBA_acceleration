@@ -84,7 +84,7 @@ namespace ot
     std::vector<Path> report_timing(size_t, Split, Tran);
     std::vector<Path> report_timing(PathGuide);
 
-    float cal_arc_pba_timing(Point &, Point &, Split);
+    float cal_arc_pba_timing(Point &, Point &, Split) __attribute__((optimize("O0")));
     void report_timing_pba(std::vector<Path> &);
     void report_timing_pba_merge(std::vector<Path> &, float, size_t);
 

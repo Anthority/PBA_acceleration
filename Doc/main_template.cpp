@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
   size_t path_num;
 
-  if (argv[2] != 0)
+  if (std::stoi(argv[2]) != 0)
     path_num = std::stoi(argv[2]);
   else
     path_num = INTMAX_MAX;
@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
   std::cout << case_name << " has " << paths.size() << " paths" << std::endl;
-  std::cout << "GBA Execution Time: " << duration.count() << " milliseconds" << std::endl;
+  std::cout << "GBA Execution Time: " << duration.count() << " milliseconds" << std::endl
+            << std::endl;
 
   // timer.dump_graph(std::cout);
 
@@ -73,7 +74,8 @@ int main(int argc, char *argv[])
   auto end_time_1 = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_1 - start_time_1);
 
-  std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
+  std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl
+            << std::endl;
 
   file.open("report/" + case_name + "_PBA_FULL.log", std::ios::out);
   if (file.is_open())
@@ -106,7 +108,6 @@ int main(int argc, char *argv[])
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
 
     std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
-
     file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
     if (file.is_open())
     {
@@ -122,6 +123,9 @@ int main(int argc, char *argv[])
       std::cerr << "Failed to open file for writing." << std::endl;
     }
   }
+  std::cout << std::endl
+            << "---------------------------------------------------------------------" << std::endl
+            << std::endl;
 
   return 0;
 }

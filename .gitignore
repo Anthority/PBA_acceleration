@@ -32,6 +32,8 @@ OpenTimer/*
 
 CMakeLists.txt
 
+main
+test.cpp
 .idea/
 .vscode/
 *benchmark/
