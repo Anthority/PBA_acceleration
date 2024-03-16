@@ -603,7 +603,7 @@ namespace ot
 		else
 		{
 			assert(!path.empty());
-			// To Change: 没必要记录at，需要保留的是每一段时序弧的delay
+			// To Change: 没必要记录at，需要保留的是每一段ARC的delay
 			auto delay = *node->arc->_delay[sfxt._el][path.back().transition][urf];
 			auto ip = *node->arc->_ipower[sfxt._el][path.back().transition][urf];
 			// ？？？？？？？？？？？
@@ -754,19 +754,21 @@ namespace ot
 			}
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
-		std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_FULL MODE:" << recal_num << std::endl;
+		std::cout << "FULL PBA 重新计算ARC数目:" << recal_num << std::endl;
 #ifdef _CAL_ARC_TIMING
-		std::cout << "PBA TIMING ELAPSED TIME IN PBA_FULL MODE:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
-		std::cout << "PBA TIMING ELAPSED TIME PER ARC:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl;
+		std::cout << "FULL PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "FULL PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl;
 #endif
 	}
 
-	size_t copy_num;
-	size_t copy_recal_num;
+	size_t copy_seg_num = 0;
+	size_t real_merge_happen_num = 0;
+	size_t hashmap_find_num = 0;
+	size_t through_seg_num = 0;
+
 	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew, size_t min_length)
 	{
-		copy_num = 0;
-		copy_recal_num = 0;
+
 		recal_num = 0;
 		pba_timing_elapsed_time = 0;
 
@@ -790,6 +792,7 @@ namespace ot
 			std::string key;
 			for (size_t i = 0; i < path.size(); i++)
 			{
+				through_seg_num += 1;
 				if ((path[i].pin._fanin.size() > 2) || (i == path.size() - 1))
 				{
 					key += to_string(_encode_pin(path[i - 1].pin, path[i - 1].transition)) + "|";
@@ -808,17 +811,22 @@ namespace ot
 						size_t start_id = last_merge;
 
 						auto start = std::chrono::high_resolution_clock::now();
-						for (auto &psg : path_segments[key])
+						if (path_segments.find(key) != path_segments.end())
 						{
-							float slew_dif = psg.first - pathseg_start.slew;
-							if (slew_dif < 0)
-								break;
-							else
+							hashmap_find_num += 1;
+
+							for (auto &psg : path_segments[key])
 							{
-								if (slew_dif < min_slew_dif)
+								float slew_dif = psg.first - pathseg_start.slew;
+								if (slew_dif < 0)
+									break;
+								else
 								{
-									min_slew_dif = slew_dif;
-									std::tie(path_segment, start_id) = psg.second;
+									if (slew_dif < min_slew_dif)
+									{
+										min_slew_dif = slew_dif;
+										std::tie(path_segment, start_id) = psg.second;
+									}
 								}
 							}
 						}
@@ -833,6 +841,7 @@ namespace ot
 							// 计算: last_merge + 1 ->  now_merge
 							for (size_t j = last_merge + 1; j <= now_merge; j++)
 							{
+								through_seg_num += 1;
 								// std::cout << '\t' << j;
 #ifdef _CAL_ARC_TIMING
 								auto start = std::chrono::high_resolution_clock::now();
@@ -856,11 +865,11 @@ namespace ot
 						{
 							auto copy_start = std::chrono::high_resolution_clock::now();
 							// std::cout << "\tmerge:";
-							copy_recal_num += 1;
+							real_merge_happen_num += 1;
 							for (size_t j = last_merge + 1; j < now_merge; j++)
 							{
-
-								copy_num += 1;
+								through_seg_num += 1;
+								copy_seg_num += 1;
 								// std::cout << '\t' << j;
 								start_id += 1;
 								assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
@@ -893,20 +902,22 @@ namespace ot
 
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
-		std::cout << "HASH MAP ELAPSED TIME:" << float(hash_map_elapsed_time) / 1000 << " milliseconds" << std::endl
-				  << std::endl;
 
-		std::cout << "RECALCULATE PATH SEGMENT NUM IN PBA_MERGE MODE:" << recal_num << std::endl;
+		std::cout << "MERGE PBA 重新计算ARC数目:" << recal_num << std::endl;
 #ifdef _CAL_ARC_TIMING
-		std::cout << "PBA TIMING ELAPSED TIME IN PBA_MERGE MODE:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
-		std::cout << "PBA TIMING ELAPSED TIME PER ARC:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl
+		std::cout << "MERGE PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "MERGE PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " nanoseconds" << std::endl
 				  << std::endl;
 #endif
-		std::cout << "COPY RECAL PATH SEGMENT NUM IN PBA_MERGE MODE:" << copy_recal_num << std::endl;
-		std::cout << "COPY PATH SEGMENT NUM IN PBA_MERGE MODE:" << copy_num << std::endl;
-		std::cout << "COPY TIMING ELAPSED TIME IN PBA_MERGE MODE:" << float(copy_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
-		std::cout << "COPY TIMING ELAPSED TIME PER ARC:" << float(copy_timing_elapsed_time) / copy_num << " nanoseconds" << std::endl;
+		std::cout << "MERGE PBA 复制路径ARC数目:" << copy_seg_num << std::endl;
+		std::cout << "MERGE PBA 复制路径总用时:" << float(copy_timing_elapsed_time) / 1000000 << " milliseconds" << std::endl;
+		std::cout << "MERGE PBA 复制路径单条ARC用时:" << float(copy_timing_elapsed_time) / copy_seg_num << " nanoseconds" << std::endl
+				  << std::endl;
 
+		std::cout << "哈希表用时:" << float(hash_map_elapsed_time) / 1000 << " milliseconds" << std::endl;
+		std::cout << "遍历路径段数目:" << through_seg_num << std::endl;
+		std::cout << "潜在合并路径段数目:" << hashmap_find_num << std::endl;
+		std::cout << "真正合并路径段数目 / 重新计算复制路径段末尾ARC数目:" << real_merge_happen_num << std::endl;
 		// for (auto &mp : path_segments) {
 		// std::cout << mp.first << std::endl;
 		// for (auto &map : mp.second) { // std::map<float, std::pair<Path *, size_t>>
