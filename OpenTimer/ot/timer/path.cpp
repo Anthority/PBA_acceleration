@@ -866,6 +866,7 @@ namespace ot
 							auto copy_start = std::chrono::high_resolution_clock::now();
 							// std::cout << "\tmerge:";
 							real_merge_happen_num += 1;
+							through_seg_num += 1;
 							for (size_t j = last_merge + 1; j < now_merge; j++)
 							{
 								through_seg_num += 1;
