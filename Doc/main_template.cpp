@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   // ------------------------------------------------------------
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  auto paths = timer.report_timing(path_num);
+  auto paths = timer.report_timing(path_num, ot::MAX);
 
   auto end_time = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);

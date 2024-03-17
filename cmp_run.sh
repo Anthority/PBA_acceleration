@@ -21,7 +21,7 @@ else
     cmake .. -DBENCHMARK:STRING=$1 -DCASE:STRING=$2
 fi
 
-make -j 8
+make -j 64
 cd ..
 cd $1/$2/
 ./$2.exe $2 $3 $4 $5 > test.log
