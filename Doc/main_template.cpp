@@ -1,5 +1,35 @@
 #include <ot/timer/timer.hpp>
 #include <filesystem>
+#include <cmath>
+
+double calculateR2Score(const std::vector<float> &y_true, const std::vector<float> &y_pred)
+{
+  // Calculate the mean of y_true
+  float mean = 0.0;
+  for (float value : y_true)
+  {
+    mean += value;
+  }
+  mean /= y_true.size();
+
+  // Calculate the total sum of squares (TSS)
+  float tss = 0.0;
+  for (float value : y_true)
+  {
+    tss += std::pow(value - mean, 2);
+  }
+
+  // Calculate the residual sum of squares (RSS)
+  float rss = 0.0;
+  for (size_t i = 0; i < y_true.size(); i++)
+  {
+    rss += std::pow(y_true[i] - y_pred[i], 2);
+  }
+
+  // Calculate the R-squared score
+  double r2_score = 1.0 - (rss / tss);
+  return r2_score;
+}
 
 int main(int argc, char *argv[])
 {
@@ -51,13 +81,18 @@ int main(int argc, char *argv[])
   else
     path_gap = 1;
 
+  std::vector<float> gba_slack(paths.size());
   file.open("report/" + case_name + "_GBA.log", std::ios::out);
   if (file.is_open())
   {
-    for (size_t i = 0; i < paths.size(); i += path_gap)
+    for (size_t i = 0; i < paths.size(); i++)
     {
-      file << "----- Critical Path GBA Mode " << i << " -----\n";
-      file << paths[i] << '\n';
+      gba_slack[i] = paths[i].slack;
+      if (i % path_gap == 0)
+      {
+        file << "----- Critical Path GBA Mode " << i << " -----\n";
+        file << paths[i] << '\n';
+      }
     }
     file.close();
   }
@@ -73,17 +108,21 @@ int main(int argc, char *argv[])
 
   auto end_time_1 = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_1 - start_time_1);
-
   std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl
             << std::endl;
 
+  std::vector<float> pba_full_slack(paths.size());
   file.open("report/" + case_name + "_PBA_FULL.log", std::ios::out);
   if (file.is_open())
   {
-    for (size_t i = 0; i < paths.size(); i += path_gap)
+    for (size_t i = 0; i < paths.size(); i++)
     {
-      file << "----- Critical Path PBA FULL Mode " << i << " -----\n";
-      file << paths[i] << '\n';
+      pba_full_slack[i] = paths[i].slack;
+      if (i % path_gap == 0)
+      {
+        file << "----- Critical Path PBA FULL Mode " << i << " -----\n";
+        file << paths[i] << '\n';
+      }
     }
     file.close();
   }
@@ -94,6 +133,7 @@ int main(int argc, char *argv[])
 
   // ------------------------------------------------------------
   float acceptable_slew = std::stof(argv[3]);
+  std::vector<float> pba_merge_slack(paths.size());
   if (acceptable_slew > 0)
   {
     acceptable_slew = std::stof(argv[3]);
@@ -106,15 +146,19 @@ int main(int argc, char *argv[])
 
     auto end_time_2 = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
-
     std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
+
     file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
     if (file.is_open())
     {
-      for (size_t i = 0; i < paths.size(); i += path_gap)
+      for (size_t i = 0; i < paths.size(); i++)
       {
-        file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
-        file << paths[i] << '\n';
+        pba_merge_slack[i] = paths[i].slack;
+        if (i % path_gap == 0)
+        {
+          file << "----- Critical Path PBA MERGE Mode " << i << " -----\n";
+          file << paths[i] << '\n';
+        }
       }
       file.close();
     }
@@ -123,6 +167,26 @@ int main(int argc, char *argv[])
       std::cerr << "Failed to open file for writing." << std::endl;
     }
   }
+
+  file.open("report/" + case_name + "_slack.csv", std::ios::out);
+  if (file.is_open())
+  {
+    file << std::fixed << std::setprecision(6);
+    file << "NUM,GBA,MERGE_PBA,FULL_PBA,PBA-GBA,FULL-MERGE\n";
+    for (size_t i = 0; i < paths.size(); i++)
+    {
+      file << i << "," << gba_slack[i] << "," << pba_merge_slack[i] << "," << pba_full_slack[i] << "," << pba_full_slack[i] - gba_slack[i] << "," << pba_full_slack[i] - pba_merge_slack[i] << std::endl;
+    }
+    file.close();
+  }
+  else
+  {
+    std::cerr << "Failed to open file for writing." << std::endl;
+  }
+
+  double r2_score = calculateR2Score(pba_merge_slack, pba_full_slack);
+  std::cout << "R2 Score: " << r2_score << std::endl;
+
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
             << std::endl;

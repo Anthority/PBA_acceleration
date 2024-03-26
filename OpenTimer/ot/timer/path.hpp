@@ -14,14 +14,14 @@ class Endpoint;
 // Struct: Point
 struct Point {
 
-  const Pin &pin;     // pin reference
+   Pin &pin;     // pin reference
   size_t arc;
   Tran transition; // rise/fall
   float slew;
   float delay;
   float ipower; // internal power
 
-  Point(const Pin &, size_t, Tran, float, float, float);
+  Point( Pin &, size_t, Tran, float, float, float);
 };
 
 // ------------------------------------------------------------------------------------------------
