@@ -3,143 +3,153 @@
 
 #include <ot/headerdef.hpp>
 
-namespace ot {
-
-class Pin;
-
-class Endpoint;
-
-// ------------------------------------------------------------------------------------------------
-
-// Struct: Point
-struct Point {
-
-   Pin &pin;     // pin reference
-  size_t arc;
-  Tran transition; // rise/fall
-  float slew;
-  float delay;
-  float ipower; // internal power
-
-  Point( Pin &, size_t, Tran, float, float, float);
-};
-
-// ------------------------------------------------------------------------------------------------
-
-// Struct: Path
-struct Path : std::vector<Point> // 继承自std::list<Point>
+namespace ot
 {
 
-  Path(float, const Endpoint *);
+  class Pin;
 
-  Path(const Path &) = delete;
+  class Endpoint;
 
-  Path(Path &&) = default;
+  // ------------------------------------------------------------------------------------------------
 
-  Path &operator=(const Path &) = delete;
+  // Struct: Point
+  struct Point
+  {
 
-  Path &operator=(Path &&) = default;
+    Pin &pin; // pin reference
+    size_t arc;
+    Tran transition; // rise/fall
+    float slew;
+    float delay;
+    float ipower; // internal power
+    bool is_seg = false;
 
-  void dump(std::ostream &) const;
-
-  void dump_tau18(std::ostream &) const;
-
-  float slack{std::numeric_limits<float>::quiet_NaN()};
-
-  const Endpoint *endpoint{nullptr};
-  Path *parent{nullptr};
-  size_t dev_idx{0};
-  size_t parent_idx{0};
-};
-
-// Operator << ostream
-std::ostream &operator<<(std::ostream &, const Path &);
-
-// ------------------------------------------------------------------------------------------------
-
-// Class: PathHeap
-// A max-heap to maintain the top-k critical paths during the path ranking process.
-class PathHeap {
-
-  friend class Timer;
-
-  // max heap
-  struct PathComparator {
-	bool operator()(const std::unique_ptr<Path> &a, const std::unique_ptr<Path> &b) const {
-	  return a->slack < b->slack;
-	}
+    Point(Pin &, size_t, Tran, float, float, float);
   };
 
- public:
-  PathHeap() = default;
+  // ------------------------------------------------------------------------------------------------
 
-  PathHeap(PathHeap &&) = default;
+  // Struct: Path
+  struct Path : std::vector<Point> // 继承自std::list<Point>
+  {
 
-  PathHeap(const PathHeap &) = delete;
+    Path(float, const Endpoint *);
 
-  PathHeap &operator=(PathHeap &&) = default;
+    Path(const Path &) = delete;
 
-  PathHeap &operator=(const PathHeap &) = delete;
+    Path(Path &&) = default;
 
-  inline size_t num_paths() const;
+    Path &operator=(const Path &) = delete;
 
-  inline size_t size() const;
+    Path &operator=(Path &&) = default;
 
-  inline bool empty() const;
+    void dump(std::ostream &) const;
 
-  std::vector<Path> extract();
+    void dump_tau18(std::ostream &) const;
 
-  void push(std::unique_ptr<Path>);
+    float slack{std::numeric_limits<float>::quiet_NaN()};
 
-  void fit(size_t);
+    const Endpoint *endpoint{nullptr};
+    Path *parent{nullptr};
+    size_t dev_idx{0};
+    size_t parent_idx{0};
+  };
 
-  void pop();
+  // Operator << ostream
+  std::ostream &operator<<(std::ostream &, const Path &);
 
-  void merge_and_fit(PathHeap &&, size_t);
+  // ------------------------------------------------------------------------------------------------
 
-  void heapify();
+  // Class: PathHeap
+  // A max-heap to maintain the top-k critical paths during the path ranking process.
+  class PathHeap
+  {
 
-  Path *top() const;
+    friend class Timer;
 
-  std::string dump() const;
+    // max heap
+    struct PathComparator
+    {
+      bool operator()(const std::unique_ptr<Path> &a, const std::unique_ptr<Path> &b) const
+      {
+        return a->slack < b->slack;
+      }
+    };
 
- private:
-  PathComparator _comp;
+  public:
+    PathHeap() = default;
 
-  std::vector<std::unique_ptr<Path>> _paths;
-};
+    PathHeap(PathHeap &&) = default;
 
-// Function: num_paths
-inline size_t PathHeap::num_paths() const {
-  return _paths.size();
-}
+    PathHeap(const PathHeap &) = delete;
 
-// Function: size
-inline size_t PathHeap::size() const {
-  return _paths.size();
-}
+    PathHeap &operator=(PathHeap &&) = default;
 
-// Function: empty
-inline bool PathHeap::empty() const {
-  return _paths.empty();
-}
+    PathHeap &operator=(const PathHeap &) = delete;
 
-// ----------------------------------------------------------------------------
+    inline size_t num_paths() const;
 
-// Class: PathGuide
-struct PathGuide {
-  std::optional<size_t> max_paths;
-  std::optional<size_t> num_paths_per_endpoint;
-  std::vector<std::string> from;
-  std::vector<std::string> rise_from;
-  std::vector<std::string> fall_from;
-  std::vector<std::string> to;
-  std::vector<std::string> rise_to;
-  std::vector<std::string> fall_to;
-  std::vector<std::string> through;
-  std::vector<std::string> rise_through;
-  std::vector<std::string> fall_through;
-};
+    inline size_t size() const;
+
+    inline bool empty() const;
+
+    std::vector<Path> extract();
+
+    void push(std::unique_ptr<Path>);
+
+    void fit(size_t);
+
+    void pop();
+
+    void merge_and_fit(PathHeap &&, size_t);
+
+    void heapify();
+
+    Path *top() const;
+
+    std::string dump() const;
+
+  private:
+    PathComparator _comp;
+
+    std::vector<std::unique_ptr<Path>> _paths;
+  };
+
+  // Function: num_paths
+  inline size_t PathHeap::num_paths() const
+  {
+    return _paths.size();
+  }
+
+  // Function: size
+  inline size_t PathHeap::size() const
+  {
+    return _paths.size();
+  }
+
+  // Function: empty
+  inline bool PathHeap::empty() const
+  {
+    return _paths.empty();
+  }
+
+  // ----------------------------------------------------------------------------
+
+  // Class: PathGuide
+  struct PathGuide
+  {
+    std::optional<size_t> max_paths;
+    std::optional<size_t> num_paths_per_endpoint;
+    std::vector<std::string> from;
+    std::vector<std::string> rise_from;
+    std::vector<std::string> fall_from;
+    std::vector<std::string> to;
+    std::vector<std::string> rise_to;
+    std::vector<std::string> fall_to;
+    std::vector<std::string> through;
+    std::vector<std::string> rise_through;
+    std::vector<std::string> fall_through;
+  };
 
 }; // end of namespace ot. ---------------------------------------------------
 

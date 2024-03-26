@@ -184,8 +184,9 @@ int main(int argc, char *argv[])
     std::cerr << "Failed to open file for writing." << std::endl;
   }
 
-  double r2_score = calculateR2Score(pba_merge_slack, pba_full_slack);
-  std::cout << "R2 Score: " << r2_score << std::endl;
+  // double r2_score = calculateR2Score(pba_merge_slack, pba_full_slack);
+
+  // std::cout << "R2 Score: " << r2_score << std::endl;
 
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl

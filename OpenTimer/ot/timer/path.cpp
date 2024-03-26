@@ -696,6 +696,7 @@ namespace ot
 
 	size_t recal_num = 0;
 	size_t pba_timing_elapsed_time = 0;
+
 	float Timer::cal_arc_pba_timing(Point &node_from, Point &node_to, Split el)
 	{
 
@@ -743,27 +744,42 @@ namespace ot
 			float slack_credit = 0;
 			for (int i = path.size() - 1; i > 0; i--)
 			{
-#ifdef _CAL_ARC_TIMING
+
 				auto start = std::chrono::high_resolution_clock::now();
-#endif
 
 				slack_credit += cal_arc_pba_timing(path[i], path[i - 1], el);
-#ifdef _CAL_ARC_TIMING
+
 				auto end = std::chrono::high_resolution_clock::now();
 				auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 				pba_timing_elapsed_time += duration.count();
-#endif
 			}
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
 		std::cout << "FULL PBA 重新计算ARC数目:" << recal_num << std::endl;
-#ifdef _CAL_ARC_TIMING
+
 		std::cout << "FULL PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " ms"
 				  << std::endl;
 		std::cout << "FULL PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " ns"
 				  << std::endl;
-#endif
 	}
+
+	struct HashFunc
+	{
+
+		size_t operator()(const std::pair<size_t, size_t> &p) const
+		{
+			return std::hash<size_t>()(p.first) ^ std::hash<size_t>()(p.second << 32);
+		}
+	};
+
+	// 键值比较，哈希碰撞的比较定义，需要直到两个自定义对象是否相等
+	struct EqualKey
+	{
+		bool operator()(const std::pair<size_t, size_t> &p1, const std::pair<size_t, size_t> &p2) const
+		{
+			return p1.first == p2.first && p1.second == p2.second;
+		}
+	};
 
 	size_t copy_seg_num = 0;
 	size_t real_merge_happen_num = 0;
@@ -785,7 +801,7 @@ namespace ot
 		pba_timing_elapsed_time = 0;
 
 		//                 path_segment_key      slew             path    start
-		std::unordered_map<std::string, std::map<float, std::pair<Path *, size_t>, std::greater<float>>> path_segments;
+		std::unordered_map<std::pair<size_t, size_t>, std::map<float, std::pair<Path *, size_t>, std::greater<float>>, HashFunc, EqualKey> path_segments;
 
 		int path_num = 0;
 		for (auto &path : paths)
@@ -800,10 +816,6 @@ namespace ot
 			int last_merge = path.size() - 1;
 			int now_merge = path.size() - 1;
 
-			std::string key;
-			// std::string key = to_string(_encode_pin(path[last_merge].pin, path[last_merge].transition)) + "|";
-			// std::string key = path[last_merge].pin.name() + "|" + to_string(path[last_merge].transition) + "|";
-
 			for (int i = path.size() - 1; i >= 0; i--)
 			{
 				through_seg_num += 1;
@@ -815,145 +827,110 @@ namespace ot
 					auto end_if1 = std::chrono::high_resolution_clock::now();
 					auto duration_if1 = std::chrono::duration_cast<std::chrono::nanoseconds>(end_if1 - start_if1);
 					first_if_elapsed_time += duration_if1.count();
-					// std::cout << "first if: " << first_if_elapsed_time << " us" << std::endl;
 
+					inquire_min_length_num += 1;
+					total_seg_num += 1;
+
+					last_merge = now_merge;
+					now_merge = i;
+
+					path[last_merge].pin.is_merge_pin = true;
+
+					// 生成Key
+					std::pair<size_t, size_t> key;
 					{
 						auto start = std::chrono::high_resolution_clock::now();
+						key.first = _encode_pin(path[last_merge].pin, path[last_merge].transition);
+
 						if (i == 0)
-							// key += to_string(_encode_pin(path[i].pin, path[i].transition)) + "|";
-							key += path[i].pin.name() + "|" + to_string(path[i].transition) + "|";
+							key.second = _encode_pin(path[i].pin, path[i].transition);
+						// key += to_string(_encode_pin(path[i].pin, path[i].transition)) + "|";
+						// key += path[i].pin.name() + "|" + to_string(path[i].transition) + "|";
 						else
-							// key += to_string(_encode_pin(path[i + 1].pin, path[i + 1].transition)) + "|";
-							key += path[i + 1].pin.name() + "|" + to_string(path[i + 1].transition) + "|";
+							key.second = _encode_pin(path[i + 1].pin, path[i + 1].transition);
+						// key += to_string(_encode_pin(path[i + 1].pin, path[i + 1].transition)) + "|";
+						// key += path[i + 1].pin.name() + "|" + to_string(path[i + 1].transition) + "|";
 						auto end = std::chrono::high_resolution_clock::now();
 						auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 						key_elapsed_time += duration.count();
 					}
 
-					inquire_min_length_num += 1;
-					auto start_if2 = std::chrono::high_resolution_clock::now();
-					if ((last_merge - i + 1 >= min_length) || (i == 0))
+					auto &pathseg_start = path[last_merge];
+
+					Path *path_segment = nullptr;
+					size_t start_id = 0;
+
+					// 查找是否有可以合并的路径段
 					{
-						auto end_if2 = std::chrono::high_resolution_clock::now();
-						auto duration_if2 = std::chrono::duration_cast<std::chrono::nanoseconds>(end_if2 - start_if2);
-						second_if_elapsed_time += duration_if2.count();
-						// std::cout << "second if: " << duration_if2.count() << " us" << std::endl;
-
-						total_seg_num += 1;
-
-						last_merge = now_merge;
-						now_merge = i;
-
-						auto &pathseg_start = path[last_merge];
-						pathseg_start.pin.is_merge_pin = true;
-
+						auto start = std::chrono::high_resolution_clock::now();
+						if (path_segments.find(key) != path_segments.end())
 						{
-							auto start = std::chrono::high_resolution_clock::now();
-							if (i != 0)
-								// key += to_string(_encode_pin(path[now_merge].pin, path[now_merge].transition)) + "|";
-								key += path[now_merge].pin.name() + "|" + to_string(path[now_merge].transition) + "|";
-							key += to_string(el);
-							auto end = std::chrono::high_resolution_clock::now();
-							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-							key_elapsed_time += duration.count();
-						}
+							hashmap_find_num += 1;
 
-						// float min_slew_dif = 1000.0f;
-						Path *path_segment = nullptr;
-						size_t start_id = 0;
-
-						{
-							auto start = std::chrono::high_resolution_clock::now();
-							if (path_segments.find(key) != path_segments.end())
+							for (auto &psg : path_segments[key])
 							{
-								hashmap_find_num += 1;
+								// MAX下，psg.first按照从大到小排列
+								float slew_dif = std::abs(psg.first - pathseg_start.slew);
+								// if (slew_dif < 1e-9f)
+								// 	break;
 
-								for (auto &psg : path_segments[key])
+								if (slew_dif < acceptable_slew + 1e-9f)
 								{
-									// MAX下，psg.first按照从大到小排列
-									float slew_dif = std::abs(psg.first - pathseg_start.slew);
-									// if (slew_dif < 1e-9f)
-									// 	break;
-
-									if (slew_dif < acceptable_slew + 1e-9f)
-									{
-										std::tie(path_segment, start_id) = psg.second;
-										break;
-									}
+									std::tie(path_segment, start_id) = psg.second;
+									break;
 								}
 							}
+						}
+						auto end = std::chrono::high_resolution_clock::now();
+						auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+						hash_map_elapsed_time += duration.count();
+					}
+
+					// 如果该路径段在该Slew下的时序信息之前没有计算过
+					if (!path_segment)
+					{
+						// 重新计算: last_merge + 1 ->  now_merge
+						for (int j = last_merge - 1; j >= now_merge; j--)
+						{
+							through_seg_num += 1;
+
+							auto start = std::chrono::high_resolution_clock::now();
+							slack_credit += cal_arc_pba_timing(path[j + 1], path[j], el);
+							auto end = std::chrono::high_resolution_clock::now();
+							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+							pba_timing_elapsed_time += duration.count();
+						}
+
+						// 插入unordered map
+						{
+							auto start = std::chrono::high_resolution_clock::now();
+							path_segments[key][pathseg_start.slew] = std::make_pair(&path, last_merge);
 							auto end = std::chrono::high_resolution_clock::now();
 							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
 							hash_map_elapsed_time += duration.count();
 						}
+					}
+					else
+					{
+						auto copy_start = std::chrono::high_resolution_clock::now();
+						real_merge_happen_num += 1;
+						pathseg_start.pin.is_real_merge_pin = true;
 
-						// 如果该路径段在该Slew下的时序信息之前没有计算过
-						if (!path_segment)
+						for (int j = last_merge - 1; j >= now_merge; j--)
 						{
-							// std::cout << "\trecal:";
-							// 计算: last_merge + 1 ->  now_merge
-							for (int j = last_merge - 1; j >= now_merge; j--)
-							{
-								through_seg_num += 1;
-								// std::cout << '\t' << j;
-#ifdef _CAL_ARC_TIMING
-								auto start = std::chrono::high_resolution_clock::now();
-#endif
-
-								slack_credit += cal_arc_pba_timing(path[j + 1], path[j], el);
-#ifdef _CAL_ARC_TIMING
-								auto end = std::chrono::high_resolution_clock::now();
-								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-								pba_timing_elapsed_time += duration.count();
-#endif
-							}
-							// std::cout << std::endl;
-							{
-								auto start = std::chrono::high_resolution_clock::now();
-								path_segments[key][pathseg_start.slew] = std::make_pair(&path, last_merge);
-								auto end = std::chrono::high_resolution_clock::now();
-								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-								hash_map_elapsed_time += duration.count();
-							}
+							through_seg_num += 1;
+							copy_seg_num += 1;
+							// std::cout << '\t' << j;
+							start_id -= 1;
+							assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
+							path[j].slew = (*path_segment)[start_id].slew;
+							slack_credit += path[j].delay - (*path_segment)[start_id].delay;
+							path[j].delay = (*path_segment)[start_id].delay;
 						}
-						else
-						{
-							auto copy_start = std::chrono::high_resolution_clock::now();
-							// std::cout << "\tmerge:";
-							real_merge_happen_num += 1;
-							// through_seg_num += 1;
-							pathseg_start.pin.is_real_merge_pin = true;
 
-							for (int j = last_merge - 1; j >= now_merge; j--)
-							{
-								through_seg_num += 1;
-								copy_seg_num += 1;
-								// std::cout << '\t' << j;
-								start_id -= 1;
-								assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
-								path[j].slew = (*path_segment)[start_id].slew;
-								slack_credit += path[j].delay - (*path_segment)[start_id].delay;
-								path[j].delay = (*path_segment)[start_id].delay;
-							}
-
-							auto copy_end = std::chrono::high_resolution_clock::now();
-							auto copy_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(copy_end - copy_start);
-							copy_timing_elapsed_time += copy_duration.count();
-
-							// #ifdef _CAL_ARC_TIMING
-							// 							auto start = std::chrono::high_resolution_clock::now();
-							// #endif
-							// 							slack_credit += cal_arc_pba_timing(path[now_merge + 1], path[now_merge], el);
-
-							// #ifdef _CAL_ARC_TIMING
-							// 							auto end = std::chrono::high_resolution_clock::now();
-							// 							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-							// 							pba_timing_elapsed_time += duration.count();
-							// #endif
-						}
-						key = "";
-						// key = to_string(_encode_pin(path[i].pin, path[i].transition)) + "|";
-						// key = path[i].pin.name() + "|" + to_string(path[i].transition) + "|";
+						auto copy_end = std::chrono::high_resolution_clock::now();
+						auto copy_duration = std::chrono::duration_cast<std::chrono::nanoseconds>(copy_end - copy_start);
+						copy_timing_elapsed_time += copy_duration.count();
 					}
 				}
 
@@ -962,13 +939,13 @@ namespace ot
 		}
 
 		std::cout << "MERGE PBA 重新计算ARC数目:" << recal_num << std::endl;
-#ifdef _CAL_ARC_TIMING
+
 		std::cout << "MERGE PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " ms"
 				  << std::endl;
 		std::cout << "MERGE PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " ns"
 				  << std::endl
 				  << std::endl;
-#endif
+
 		std::cout << "MERGE PBA 复制路径ARC数目:" << copy_seg_num << std::endl;
 		std::cout << "MERGE PBA 复制路径总用时:" << float(copy_timing_elapsed_time) / 1000000 << " ms" << std::endl;
 		std::cout << "MERGE PBA 复制路径单条ARC用时:" << float(copy_timing_elapsed_time) / copy_seg_num << " ns"
@@ -998,19 +975,17 @@ namespace ot
 		// std::cout << "}" << std::endl;
 
 		size_t data_pin_num = 0;
-		size_t fan_in_pin_num = 0;
+		size_t no_data_fan_in_pin_num = 0;
 		size_t potential_merge_pin_num = 0;
 		size_t real_merge_pin_num = 0;
 
 		for (const auto &pin : _pins)
 		{
-			if (pin.second._fanin.size() > 2)
-			{
-				fan_in_pin_num++;
-				// std::cout << pin.second._name << std::endl;
-			}
+
 			if (pin.second.is_data_pin)
+			{
 				data_pin_num++;
+			}
 			if (pin.second.is_merge_pin)
 			{
 				potential_merge_pin_num++;
@@ -1024,7 +999,6 @@ namespace ot
 		}
 		std::cout << "电路中Pin总数目:" << _pins.size() << std::endl;
 		std::cout << "数据路径Pin数目:" << data_pin_num << std::endl;
-		std::cout << "fan-in Pin数目:" << fan_in_pin_num << std::endl;
 		std::cout << "潜在合并Pin数目:" << potential_merge_pin_num << std::endl;
 		std::cout << "真正合并Pin数目:" << real_merge_pin_num << std::endl;
 	}
