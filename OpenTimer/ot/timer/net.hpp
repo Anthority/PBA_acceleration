@@ -180,6 +180,7 @@ class Net {
     std::optional<float> _slew(Split, Tran, float, Pin&) const;
     std::optional<float> _delay(Split, Tran, Pin&) const;
     
+    void _recal_rc_pba_timing();
     void _update_rc_timing();
     void _attach(spef::Net&&);
     void _make_rct();

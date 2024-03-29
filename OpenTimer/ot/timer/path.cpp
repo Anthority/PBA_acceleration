@@ -114,12 +114,12 @@ namespace ot
 		auto fmt = os.flags();
 		auto split = endpoint->split();
 		auto tran = endpoint->transition();
-		// auto at    = back().pin.;
+		// auto at    =
 		// auto rat   = (split == MIN ? at - slack : at + slack);
 
 		// Print the head
-		os << "Startpoint    : " << front().pin.name() << '\n';
-		os << "Endpoint      : " << back().pin.name() << '\n';
+		os << "Startpoint    : " << back().pin.name() << '\n';
+		os << "Endpoint      : " << front().pin.name() << '\n';
 		os << "Analysis type : " << to_string(split) << '\n';
 
 		size_t w1 = 11;
@@ -144,9 +144,9 @@ namespace ot
 
 		// trace
 		os << std::fixed << std::setprecision(6);
+
 		// std::optional<float> pi_at;
 		float at = 0;
-
 		// for (const auto &p : *this)
 		for (int i = this->size() - 1; i >= 0; i--)
 		{
@@ -694,13 +694,13 @@ namespace ot
 		}
 	}
 
-	size_t recal_num = 0;
-	size_t pba_timing_elapsed_time = 0;
+	size_t net_recal_num = 0;
+	size_t cell_recal_num = 0;
+	size_t net_pba_timing_elapsed_time = 0;
+	size_t cell_pba_timing_elapsed_time = 0;
 
 	float Timer::cal_arc_pba_timing(Point &node_from, Point &node_to, Split el)
 	{
-
-		recal_num++;
 		float slack_credit = 0;
 
 		auto frf = node_from.transition;
@@ -713,13 +713,14 @@ namespace ot
 				assert(node_to.arc != INTMAX_MAX);
 				if (_encode_arc(*arc, frf, trf) == node_to.arc)
 				{
-					auto pin_slew = arc->_get_slew(el, frf, trf, node_from.slew);
-					assert(pin_slew);
-					node_to.slew = *pin_slew;
+					auto [slew, delay] = arc->_get_pba_timing(el, frf, trf, node_from.slew);
 
-					float origin_delay = node_to.delay;
-					node_to.delay = *arc->_get_delay(el, frf, trf, node_from.slew);
-					slack_credit += (origin_delay - node_to.delay);
+					assert(slew);
+					assert(delay);
+
+					node_to.slew = *slew;
+					slack_credit += (node_to.delay - *delay);
+					node_to.delay = *delay;
 				}
 			}
 		}
@@ -729,8 +730,10 @@ namespace ot
 
 	void Timer::report_timing_pba(std::vector<Path> &paths)
 	{
-		recal_num = 0;
-		pba_timing_elapsed_time = 0;
+		net_recal_num = 0;
+		cell_recal_num = 0;
+		net_pba_timing_elapsed_time = 0;
+		cell_pba_timing_elapsed_time = 0;
 
 		int path_num = 0;
 		for (auto &path : paths)
@@ -744,22 +747,19 @@ namespace ot
 			float slack_credit = 0;
 			for (int i = path.size() - 1; i > 0; i--)
 			{
-
-				auto start = std::chrono::high_resolution_clock::now();
-
 				slack_credit += cal_arc_pba_timing(path[i], path[i - 1], el);
-
-				auto end = std::chrono::high_resolution_clock::now();
-				auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-				pba_timing_elapsed_time += duration.count();
 			}
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
-		std::cout << "FULL PBA 重新计算ARC数目:" << recal_num << std::endl;
+		std::cout << "FULL PBA 重新计算 Net ARC 数目:" << net_recal_num << std::endl;
+		std::cout << "FULL PBA 重新计算 Cell ARC 数目:" << cell_recal_num << std::endl;
 
-		std::cout << "FULL PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " ms"
+		std::cout << "FULL PBA 重新计算单条 Net ARC用时:" << float(net_pba_timing_elapsed_time) / (net_recal_num) << " ns"
 				  << std::endl;
-		std::cout << "FULL PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " ns"
+		std::cout << "FULL PBA 重新计算单条 Cell ARC用时:" << float(cell_pba_timing_elapsed_time) / (cell_recal_num) << " ns"
+				  << std::endl;
+
+		std::cout << "FULL PBA 重新计算ARC总用时:" << float(net_pba_timing_elapsed_time + cell_pba_timing_elapsed_time) / 1000000 << " ms"
 				  << std::endl;
 	}
 
@@ -796,9 +796,10 @@ namespace ot
 
 	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew, int min_length)
 	{
-
-		recal_num = 0;
-		pba_timing_elapsed_time = 0;
+		net_recal_num = 0;
+		cell_recal_num = 0;
+		net_pba_timing_elapsed_time = 0;
+		cell_pba_timing_elapsed_time = 0;
 
 		//                 path_segment_key      slew             path    start
 		std::unordered_map<std::pair<size_t, size_t>, std::map<float, std::pair<Path *, size_t>, std::greater<float>>, HashFunc, EqualKey> path_segments;
@@ -893,12 +894,7 @@ namespace ot
 						for (int j = last_merge - 1; j >= now_merge; j--)
 						{
 							through_seg_num += 1;
-
-							auto start = std::chrono::high_resolution_clock::now();
 							slack_credit += cal_arc_pba_timing(path[j + 1], path[j], el);
-							auto end = std::chrono::high_resolution_clock::now();
-							auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-							pba_timing_elapsed_time += duration.count();
 						}
 
 						// 插入unordered map
@@ -920,7 +916,6 @@ namespace ot
 						{
 							through_seg_num += 1;
 							copy_seg_num += 1;
-							// std::cout << '\t' << j;
 							start_id -= 1;
 							assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
 							path[j].slew = (*path_segment)[start_id].slew;
@@ -938,11 +933,15 @@ namespace ot
 			}
 		}
 
-		std::cout << "MERGE PBA 重新计算ARC数目:" << recal_num << std::endl;
+		std::cout << "MERGE PBA 重新计算 Net ARC 数目:" << net_recal_num << std::endl;
+		std::cout << "MERGE PBA 重新计算 Cell ARC 数目:" << cell_recal_num << std::endl;
 
-		std::cout << "MERGE PBA 重新计算ARC总用时:" << float(pba_timing_elapsed_time) / 1000000 << " ms"
+		std::cout << "MERGE PBA 重新计算单条 Net ARC用时:" << float(net_pba_timing_elapsed_time) / (net_recal_num) << " ns"
 				  << std::endl;
-		std::cout << "MERGE PBA 重新计算单条ARC用时:" << float(pba_timing_elapsed_time) / recal_num << " ns"
+		std::cout << "MERGE PBA 重新计算单条 Cell ARC用时:" << float(cell_pba_timing_elapsed_time) / (cell_recal_num) << " ns"
+				  << std::endl;
+
+		std::cout << "MERGE PBA 重新计算ARC总用时:" << float(net_pba_timing_elapsed_time + cell_pba_timing_elapsed_time) / 1000000 << " ms"
 				  << std::endl
 				  << std::endl;
 
@@ -975,7 +974,6 @@ namespace ot
 		// std::cout << "}" << std::endl;
 
 		size_t data_pin_num = 0;
-		size_t no_data_fan_in_pin_num = 0;
 		size_t potential_merge_pin_num = 0;
 		size_t real_merge_pin_num = 0;
 
@@ -998,7 +996,7 @@ namespace ot
 			}
 		}
 		std::cout << "电路中Pin总数目:" << _pins.size() << std::endl;
-		std::cout << "数据路径Pin数目:" << data_pin_num << std::endl;
+		std::cout << "关键路径上Pin的数目:" << data_pin_num << std::endl;
 		std::cout << "潜在合并Pin数目:" << potential_merge_pin_num << std::endl;
 		std::cout << "真正合并Pin数目:" << real_merge_pin_num << std::endl;
 	}

@@ -63,9 +63,8 @@ namespace ot
     TimingData<std::optional<float>, MAX_SPLIT, MAX_TRAN, MAX_TRAN> _ipower;
 
     void _remap_timing(Split, const Timing &);
-    std::optional<float> _get_slew(Split, Tran, Tran, float);
+    std::pair<std::optional<float>, std::optional<float>> _get_pba_timing(Split, Tran, Tran, float);
     void _fprop_slew();
-    std::optional<float> _get_delay(Split, Tran, Tran, float);
     void _fprop_at();
     void _reset_delay();
     void _fprop_delay();

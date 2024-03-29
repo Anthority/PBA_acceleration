@@ -301,6 +301,38 @@ void Net::_scale_resistance(float s) {
 }
 
 // Procedure: _update_rc_timing
+void Net::_recal_rc_pba_timing() {	
+
+	// update the corresponding handle
+	std::visit(Functors{[&](EmptyRct &rct) {
+				 FOR_EACH_EL_RF(el, rf) {
+					 rct.load[el][rf] = std::accumulate(_pins.begin(), _pins.end(), 0.0f,
+														[this, el = el, rf = rf](float v, Pin *pin) {
+														  return pin == _root ? v : v + pin->cap(el, rf);
+														});
+				 }
+			   },
+				   [&](Rct &rct) {
+					 for (auto pin : _pins) {
+						 if (auto node = rct._node(pin->name()); node == nullptr) {
+							 OT_LOGE("pin ", pin->name(), " not found in rctree ", _name);
+						 }
+						 else {
+							 if (pin == _root) {
+								 rct._root = node;
+							 }
+							 else {
+								 node->_pin = pin;
+							 }
+						 }
+					 }
+					 rct.update_rc_timing();
+				   }},
+			   _rct);
+
+}
+
+// Procedure: _update_rc_timing
 void Net::_update_rc_timing() {
 
 	if (_rc_timing_updated) {

@@ -98,28 +98,49 @@ namespace ot
 		}
 	}
 
-	std::optional<float> Arc::_get_slew(Split el, Tran frf, Tran trf, float si)
-	{
+	extern size_t net_recal_num;
+	extern size_t cell_recal_num;
+	extern size_t net_pba_timing_elapsed_time;
+	extern size_t cell_pba_timing_elapsed_time;
 
-		std::optional<float> slew;
+	std::pair<std::optional<float>, std::optional<float>> Arc::_get_pba_timing(Split el, Tran frf, Tran trf, float si)
+	{
+		std::optional<float> slew, delay;
 		std::visit(Functors{// Case 1: Net arc
 							[&](Net *net)
 							{
-								// std::cout << "	net: " << si << std::endl;
+								net_recal_num += 1;
+								auto start = std::chrono::high_resolution_clock::now();
+
+								for (int i = 0; i < 3; i++)
+									net->_recal_rc_pba_timing();
+
 								slew = net->_slew(el, frf, si, _to);
+								delay = net->_delay(el, frf, _to);
+
+								auto end = std::chrono::high_resolution_clock::now();
+								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+								net_pba_timing_elapsed_time += duration.count();
 							},
 							// Case 2: Cell arc
 							[&](TimingView tv)
 							{
+								cell_recal_num += 1;
+								auto start = std::chrono::high_resolution_clock::now();
+
 								auto lc = (_to._net) ? _to._net->_load(el, trf) : 0.0f;
-
-								// std::cout << "	gate: " << si << " " << lc << std::endl;
-
 								if ((tv[el] && _from._slew[el][frf]))
+								{
 									slew = tv[el]->slew(frf, trf, si, lc);
+									delay = tv[el]->delay(frf, trf, si, lc);
+								}
+
+								auto end = std::chrono::high_resolution_clock::now();
+								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+								cell_pba_timing_elapsed_time += duration.count();
 							}},
 				   _handle);
-		return slew;
+		return std::make_pair(slew, delay);
 	}
 
 	// Procedure: _fprop_slew
@@ -158,30 +179,6 @@ namespace ot
 								}
 							}},
 				   _handle);
-	}
-
-	std::optional<float> Arc::_get_delay(Split el, Tran frf, Tran trf, float si)
-	{
-		std::optional<float> delay;
-
-		std::visit(Functors{// Case 1: Net arc
-							[&](Net *net)
-							{
-								// std::cout << "	net: " << si << std::endl;
-								delay = net->_delay(el, frf, _to);
-							},
-							// Case 2: Cell arc
-							[&](TimingView tv)
-							{
-								auto lc = (_to._net) ? _to._net->_load(el, trf) : 0.0f;
-
-								// std::cout << "\n\tgate: new_slew " << si << " old_slew " << *_from._slew[el][frf]<<" ";
-
-								if ((tv[el] && _from._slew[el][frf]))
-									delay = tv[el]->delay(frf, trf, si, lc);
-							}},
-				   _handle);
-		return delay;
 	}
 
 	// Procedure: _fprop_delay
