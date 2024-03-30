@@ -3,9 +3,10 @@
 # Remember the first argument is the benchmark path
 
 FILE=$1/$2/main.cpp
-if [ -f "$FILE" ]; then
+diff $FILE Doc/main_template.cpp > /dev/null
+
+if [ $? == 0 ]; then
     echo "$FILE exists."
-    cp Doc/main_template.cpp $1/$2/main.cpp
 else
     echo "$FILE does not exist."
     cp Doc/main_template.cpp $1/$2/main.cpp

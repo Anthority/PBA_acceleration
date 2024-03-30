@@ -98,6 +98,7 @@ namespace ot
 		}
 	}
 
+	extern size_t net_size;
 	extern size_t net_recal_num;
 	extern size_t cell_recal_num;
 	extern size_t net_pba_timing_elapsed_time;
@@ -109,6 +110,7 @@ namespace ot
 		std::visit(Functors{// Case 1: Net arc
 							[&](Net *net)
 							{
+								net_size += net->rct()->num_nodes();
 								net_recal_num += 1;
 								auto start = std::chrono::high_resolution_clock::now();
 

@@ -694,11 +694,6 @@ namespace ot
 		}
 	}
 
-	size_t net_recal_num = 0;
-	size_t cell_recal_num = 0;
-	size_t net_pba_timing_elapsed_time = 0;
-	size_t cell_pba_timing_elapsed_time = 0;
-
 	float Timer::cal_arc_pba_timing(Point &node_from, Point &node_to, Split el)
 	{
 		float slack_credit = 0;
@@ -728,8 +723,17 @@ namespace ot
 		return slack_credit;
 	}
 
+	size_t net_size = 0;
+	size_t net_recal_num = 0;
+	size_t cell_recal_num = 0;
+	size_t net_pba_timing_elapsed_time = 0;
+	size_t cell_pba_timing_elapsed_time = 0;
+
 	void Timer::report_timing_pba(std::vector<Path> &paths)
 	{
+		OT_LOGI("start PBA full mode");
+
+		net_size = 0;
 		net_recal_num = 0;
 		cell_recal_num = 0;
 		net_pba_timing_elapsed_time = 0;
@@ -751,6 +755,7 @@ namespace ot
 			}
 			path.slack += (el == MIN) ? -slack_credit : slack_credit;
 		}
+		std::cout << "FULL PBA 重新计算 Net 的平均大小:" << float(net_size) / net_recal_num << std::endl;
 		std::cout << "FULL PBA 重新计算 Net ARC 数目:" << net_recal_num << std::endl;
 		std::cout << "FULL PBA 重新计算 Cell ARC 数目:" << cell_recal_num << std::endl;
 
@@ -762,24 +767,6 @@ namespace ot
 		std::cout << "FULL PBA 重新计算ARC总用时:" << float(net_pba_timing_elapsed_time + cell_pba_timing_elapsed_time) / 1000000 << " ms"
 				  << std::endl;
 	}
-
-	struct HashFunc
-	{
-
-		size_t operator()(const std::pair<size_t, size_t> &p) const
-		{
-			return std::hash<size_t>()(p.first) ^ std::hash<size_t>()(p.second << 32);
-		}
-	};
-
-	// 键值比较，哈希碰撞的比较定义，需要直到两个自定义对象是否相等
-	struct EqualKey
-	{
-		bool operator()(const std::pair<size_t, size_t> &p1, const std::pair<size_t, size_t> &p2) const
-		{
-			return p1.first == p2.first && p1.second == p2.second;
-		}
-	};
 
 	size_t copy_seg_num = 0;
 	size_t real_merge_happen_num = 0;
@@ -796,13 +783,17 @@ namespace ot
 
 	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew, int min_length)
 	{
+		OT_LOGI("start PBA merge mode");
+
+		net_size = 0;
 		net_recal_num = 0;
 		cell_recal_num = 0;
 		net_pba_timing_elapsed_time = 0;
 		cell_pba_timing_elapsed_time = 0;
 
 		//                 path_segment_key      slew             path    start
-		std::unordered_map<std::pair<size_t, size_t>, std::map<float, std::pair<Path *, size_t>, std::greater<float>>, HashFunc, EqualKey> path_segments;
+		// std::unordered_map<std::pair<size_t, size_t>, std::map<float, std::pair<Path *, size_t>, std::greater<float>>, HashFunc, EqualKey> path_segments;
+		std::unordered_map<size_t, std::map<float, std::pair<Path *, size_t>, std::greater<float>>> path_segments;
 
 		int path_num = 0;
 		for (auto &path : paths)
@@ -837,27 +828,8 @@ namespace ot
 
 					path[last_merge].pin.is_merge_pin = true;
 
-					// 生成Key
-					std::pair<size_t, size_t> key;
-					{
-						auto start = std::chrono::high_resolution_clock::now();
-						key.first = _encode_pin(path[last_merge].pin, path[last_merge].transition);
-
-						if (i == 0)
-							key.second = _encode_pin(path[i].pin, path[i].transition);
-						// key += to_string(_encode_pin(path[i].pin, path[i].transition)) + "|";
-						// key += path[i].pin.name() + "|" + to_string(path[i].transition) + "|";
-						else
-							key.second = _encode_pin(path[i + 1].pin, path[i + 1].transition);
-						// key += to_string(_encode_pin(path[i + 1].pin, path[i + 1].transition)) + "|";
-						// key += path[i + 1].pin.name() + "|" + to_string(path[i + 1].transition) + "|";
-						auto end = std::chrono::high_resolution_clock::now();
-						auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-						key_elapsed_time += duration.count();
-					}
-
+					size_t key = path[now_merge].arc;
 					auto &pathseg_start = path[last_merge];
-
 					Path *path_segment = nullptr;
 					size_t start_id = 0;
 
@@ -918,6 +890,7 @@ namespace ot
 							copy_seg_num += 1;
 							start_id -= 1;
 							assert(path[j].pin.name() == (*path_segment)[start_id].pin.name());
+							assert(path[j].transition == (*path_segment)[start_id].transition);
 							path[j].slew = (*path_segment)[start_id].slew;
 							slack_credit += path[j].delay - (*path_segment)[start_id].delay;
 							path[j].delay = (*path_segment)[start_id].delay;
@@ -933,6 +906,7 @@ namespace ot
 			}
 		}
 
+		std::cout << "MERGE PBA 重新计算 Net 的平均大小:" << float(net_size) / net_recal_num << std::endl;
 		std::cout << "MERGE PBA 重新计算 Net ARC 数目:" << net_recal_num << std::endl;
 		std::cout << "MERGE PBA 重新计算 Cell ARC 数目:" << cell_recal_num << std::endl;
 

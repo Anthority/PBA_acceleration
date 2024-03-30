@@ -1,34 +1,37 @@
 #include <ot/timer/timer.hpp>
 #include <filesystem>
 #include <cmath>
+#include <time.h>
 
-double calculateR2Score(const std::vector<float> &y_true, const std::vector<float> &y_pred)
+std::pair<double, double> calculateR2Score(const std::vector<double> &y_true, const std::vector<double> &y_pred)
 {
   // Calculate the mean of y_true
-  float mean = 0.0;
-  for (float value : y_true)
+  double mean = 0.0;
+  for (double value : y_true)
   {
     mean += value;
   }
   mean /= y_true.size();
 
   // Calculate the total sum of squares (TSS)
-  float tss = 0.0;
-  for (float value : y_true)
+  double tss = 0.0;
+  for (double value : y_true)
   {
     tss += std::pow(value - mean, 2);
   }
 
   // Calculate the residual sum of squares (RSS)
-  float rss = 0.0;
+  double rss = 0.0;
+  double mae = 0.0;
   for (size_t i = 0; i < y_true.size(); i++)
   {
     rss += std::pow(y_true[i] - y_pred[i], 2);
+    mae = std::max(std::abs(y_true[i] - y_pred[i]), mae);
   }
 
   // Calculate the R-squared score
   double r2_score = 1.0 - (rss / tss);
-  return r2_score;
+  return std::make_pair(r2_score, mae);
 }
 
 int main(int argc, char *argv[])
@@ -52,7 +55,6 @@ int main(int argc, char *argv[])
       .read_sdc(sdc_file);
 
   size_t path_num;
-
   if (std::stoi(argv[2]) != 0)
     path_num = std::stoi(argv[2]);
   else
@@ -81,7 +83,8 @@ int main(int argc, char *argv[])
   else
     path_gap = 1;
 
-  std::vector<float> gba_slack(paths.size());
+  // ------------------------------------------------------------
+  std::vector<double> gba_slack(paths.size());
   file.open("report/" + case_name + "_GBA.log", std::ios::out);
   if (file.is_open())
   {
@@ -111,7 +114,8 @@ int main(int argc, char *argv[])
   std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl
             << std::endl;
 
-  std::vector<float> pba_full_slack(paths.size());
+  // ------------------------------------------------------------
+  std::vector<double> pba_full_slack(paths.size());
   file.open("report/" + case_name + "_PBA_FULL.log", std::ios::out);
   if (file.is_open())
   {
@@ -132,8 +136,8 @@ int main(int argc, char *argv[])
   }
 
   // ------------------------------------------------------------
-  float acceptable_slew = std::stof(argv[3]);
-  std::vector<float> pba_merge_slack(paths.size());
+  double acceptable_slew = std::stof(argv[3]);
+  std::vector<double> pba_merge_slack(paths.size());
   if (acceptable_slew > 0)
   {
     acceptable_slew = std::stof(argv[3]);
@@ -148,6 +152,7 @@ int main(int argc, char *argv[])
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
     std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
 
+    // ------------------------------------------------------------
     file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
     if (file.is_open())
     {
@@ -168,6 +173,7 @@ int main(int argc, char *argv[])
     }
   }
 
+  // ------------------------------------------------------------
   file.open("report/" + case_name + "_slack.csv", std::ios::out);
   if (file.is_open())
   {
@@ -184,9 +190,9 @@ int main(int argc, char *argv[])
     std::cerr << "Failed to open file for writing." << std::endl;
   }
 
-  double r2_score = calculateR2Score(pba_merge_slack, pba_full_slack);
+  auto [r2_score, mae] = calculateR2Score(pba_merge_slack, pba_full_slack);
 
-  std::cout << "R2 Score: " << r2_score << std::endl;
+  std::cout << "R2 Score: " << r2_score << " | Max Abosulute Error: " << mae << std::endl;
 
   std::cout << std::endl
             << "---------------------------------------------------------------------" << std::endl
