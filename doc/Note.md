@@ -1,3 +1,5 @@
+[gates:5285]
+
 1. required arrival time与哪些量有关？data的slew发生变化，是否会导致required time发生变化？
    slew变化不会导致rat发生变化，只会导致at发生变化，从而影响到slack。rat只与外部constraint、到达endpoint上的clock tree的slew和at有关
 2. 在pba下，所有的路径的slack都有可能变好。因为在gba下，所有路径段都采用了最差slew，所以即使是slack最差的一条路径，它的路径段也可能被其他路径上的悲观slew干扰，造成gba下的at变坏。
@@ -14,11 +16,11 @@ des_perf.exe [gates:105371]
 
 vga_lcd.exe [gates:139529]
 
-sdc "tv80.sdc" doesn't exist
+sdc "tv80.sdc" doesn't exist [gates:5285]
 
-sdc "usb_phy_ispd.sdc" doesn't exist
+sdc "usb_phy_ispd.sdc" doesn't exist [gates:923]
 
-sdc "wb_dma.sdc" doesn't exist
+sdc "wb_dma.sdc" doesn't exist [gates:4195]
 
 benchmark
 

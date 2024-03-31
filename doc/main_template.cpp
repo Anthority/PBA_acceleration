@@ -111,6 +111,7 @@ int main(int argc, char *argv[])
 
   auto end_time_1 = std::chrono::high_resolution_clock::now();
   duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_1 - start_time_1);
+  auto pba_full_elapsed_time = duration.count();
   std::cout << "PBA FULL Mode Execution Time: " << duration.count() << " milliseconds" << std::endl
             << std::endl;
 
@@ -150,8 +151,11 @@ int main(int argc, char *argv[])
 
     auto end_time_2 = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);
-    std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl;
+    auto pba_merge_elapsed_time = duration.count();
+    std::cout << "PBA MERGE Mode Execution Time: " << duration.count() << " milliseconds" << std::endl
+              << std::endl;
 
+    std::cout << "Acceleration Ratio: " << float(pba_full_elapsed_time) / float(pba_merge_elapsed_time) << std::endl;
     // ------------------------------------------------------------
     file.open("report/" + case_name + "_PBA_MERGE.log", std::ios::out);
     if (file.is_open())

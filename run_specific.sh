@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+dir="benchmark"
 case="
 c6288
 c7552
@@ -19,5 +20,5 @@ simple
 for file in $case
     do
         echo $file
-        ./cmp_run.sh $1 $file 1000000 1.0f 10 $2
+        ./cmp_run.sh $dir $file 1000000 0.01f 10 $2
     done

@@ -32,8 +32,6 @@ OpenTimer/*
 
 CMakeLists.txt
 
-main
-test*.cpp
 
 .idea/
 .vscode/
@@ -42,3 +40,4 @@ test*.cpp
 backup/
 */report/
 *log
+*test*
