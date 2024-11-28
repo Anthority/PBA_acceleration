@@ -44,4 +44,4 @@ README
 *.log
 *.png
 *.txt
-
+cmp_run.sh
