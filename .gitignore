@@ -26,19 +26,22 @@
 *.out
 *.app
 
-!OpenTimer/ot/*
-OpenTimer/ot/config.hpp
 OpenTimer/*
+!OpenTimer/ot
+OpenTimer/ot/config.hpp
 
 CMakeLists.txt
 
-
-.idea/
-.vscode/
-*benchmark/
-*build*/
-backup/
-*/report/
+.idea
+.vscode
+*benchmark
+*backup*
+*build*
+log
+test
+*/report
+README
 *.log
 *.png
 *.txt
+
