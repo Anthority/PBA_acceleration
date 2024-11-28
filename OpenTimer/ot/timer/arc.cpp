@@ -114,11 +114,105 @@ namespace ot
 								net_recal_num += 1;
 								auto start = std::chrono::high_resolution_clock::now();
 
-								for (int i = 0; i < 3; i++)
-									net->_recal_rc_pba_timing();
+								/* *************************************************************************************************************** */
 
+								std::unordered_set<std::string> pin_names;
+								int N = net->num_pins();
+								N = 2;
+								Rct *rct = std::get_if<Rct>(&net->_rct); // #nodes, +1是加上了input port的数量,不考虑电感的情况下
+								int n = rct->num_nodes() + 1;
+
+								MatrixXd C(n, n); // capacitance matrix
+								MatrixXd G(n, n); // conductance matrix
+								MatrixXd B(n, N); // input port-to-node connectivity matrix
+								MatrixXd D(n, N); // output port-to-node connectivity matrix
+								C.setZero();
+								G.setZero();
+								B.setZero();
+								D.setZero();
+
+								std::unordered_map<const RctNode *, size_t> node_idx;
+								node_idx[rct->_root] = 0;
+
+								for (auto &[name, node] : rct->_nodes)
+								{
+									if (&node == rct->_root)
+										continue;
+									size_t temp = node_idx.size();
+									node_idx[&node] = temp;
+									C(temp, temp) = node.cap(el, frf);
+								}
+								for (auto &[name, node] : rct->_nodes)
+								{
+									size_t temp = node_idx[&node];
+									for (auto &edge : node._fanout)
+									{
+										G(temp, temp) += 0.001 / edge->res();
+										size_t net_to = node_idx[&(edge->_to)];
+										G(temp, net_to) += -0.001 / edge->res();
+									}
+								}
+								G(n - 1, 0) = -1.0;
+								G(0, n - 1) = 1.0;
+								// std::cout
+								// 	<< C << std::endl
+								// 	<< std::endl
+								// 	<< G << std::endl;
+
+								B(n - 1, 0) = -1.0; // 设置最后一行的第一个元素为-1，对应电压输入
+								size_t arc_to = node_idx[rct->node(_to._name)];
+								B(arc_to, 1) = 1.0;
+								D = B;
+								// std::cout << std::endl
+								// 		  << B << std::endl
+								// 		  << std::endl
+								// 		  << D << std::endl;
+
+								// 仿真求解
+								float voltage = 1;
+								// 仿真两倍的si时间，精度是si的单位的1/1000
+								size_t time_size = std::ceil(si * 1000);
+								// std::cout << time_size << std::endl;
+
+								MatrixXd u(N, 2 * time_size); // input vector, 电压的时间序列
+								u.setZero();
+								float dv = 1.0 / time_size * voltage;
+								for (size_t i = 0; i < 2 * time_size; ++i)
+								{
+									u(0, i) = i * dv <= voltage ? i * dv : voltage;
+								}
+								// printMatrixXd(u);
+
+								std::vector<double> y(2 * time_size);
+								if (n / 2 >= 4 * N)
+								{
+									MatrixXd C_r, G_r, B_r, D_r; // reduced system matrices
+									Prima(C_r, G_r, B_r, D_r, C, G, B, D, 4);
+
+									// rc_tr_sim_d(C_r, G_r, B_r, D_r, u, 1, y);
+								}
+								else
+								{
+									// rc_tr_sim_d(C, G, B, D, u, 1, y);
+								}
+								// size_t t_10 = std::lower_bound(y.begin(), y.end(), 0.1 * voltage) - y.begin();
+								// size_t t_90 = std::lower_bound(y.begin(), y.end(), 0.9 * voltage) - y.begin();
+								// slew = (t_90 - t_10) / 1000.0;
+
+								// size_t t_50 = std::lower_bound(y.begin(), y.end(), 0.5 * voltage) - y.begin();
+								// delay = (t_50 - time_size / 2) / 1000.0;
+
+								// std::cout<<"Slew ELM:"<< *(net->_slew(el, frf, si, _to))<<" Arnoldi:"<<*slew<<std::endl;
+								// std::cout<<"Delay ELM:"<< *(net->_delay(el, frf, _to))<<" Arnoldi:"<<*delay<<std::endl;
+
+								/* *************************************************************************************************************** */
+
+								// for (int i = 0; i < 3; i++)
+								net->_recal_rc_pba_timing();
 								slew = net->_slew(el, frf, si, _to);
 								delay = net->_delay(el, frf, _to);
+
+								/* *************************************************************************************************************** */
 
 								auto end = std::chrono::high_resolution_clock::now();
 								auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
@@ -148,7 +242,6 @@ namespace ot
 	// Procedure: _fprop_slew
 	void Arc::_fprop_slew()
 	{
-
 		if (_has_state(LOOP_BREAKER))
 		{
 			return;
@@ -186,7 +279,6 @@ namespace ot
 	// Procedure: _fprop_delay
 	void Arc::_fprop_delay()
 	{
-
 		if (_has_state(LOOP_BREAKER))
 		{
 			return;
@@ -221,7 +313,6 @@ namespace ot
 	// Procedure: _fprop_at
 	void Arc::_fprop_at()
 	{
-
 		if (_has_state(LOOP_BREAKER))
 		{
 			return;
@@ -236,7 +327,6 @@ namespace ot
 	// Procedure: _bprop_rat
 	void Arc::_bprop_rat()
 	{
-
 		if (_has_state(LOOP_BREAKER))
 		{
 			return;
@@ -320,5 +410,4 @@ namespace ot
 	{
 		return _state & s;
 	}
-
 }; // end of namespace ot. -----------------------------------------------------------------------

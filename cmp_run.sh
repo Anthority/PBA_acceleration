@@ -22,7 +22,7 @@ else
     cmake .. -DBENCHMARK:STRING=$1 -DCASE:STRING=$2
 fi
 
-make -j 64
+make -j 12
 cd ..
 cd $1/$2/
 ./$2.exe $2 $3 $4 $5 > ../../log/$2.log

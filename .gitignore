@@ -39,5 +39,6 @@ CMakeLists.txt
 *build*/
 backup/
 */report/
-*log
-*test*
+*.log
+*.png
+*.txt

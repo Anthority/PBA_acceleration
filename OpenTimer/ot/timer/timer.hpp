@@ -217,7 +217,7 @@ namespace ot
     void _build_prop_tasks();
     void _clear_prop_tasks();
     void _read_spef(spef::Spef &);
-    ;
+    
     void _verilog(vlog::Module &);
     void _timing(tau15::Timing &);
     void _read_sdc(sdc::SDC &);
