@@ -86,7 +86,7 @@ namespace ot
 
     float cal_arc_pba_timing(Point &, Point &, Split);
     void report_timing_pba(std::vector<Path> &);
-    void report_timing_pba_merge(std::vector<Path> &, float, int);
+    void report_timing_pba_merge(std::vector<Path> &, float);
 
     // Accessor
     void dump_graph(std::ostream &) const;

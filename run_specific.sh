@@ -20,5 +20,5 @@ simple
 for file in $case
     do
         echo $file
-        ./cmp_run.sh $dir $file 1000000 0.01f 10 $2
+        ./cmp_run.sh $dir $file 1000000 0.01f $2
     done

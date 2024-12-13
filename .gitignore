@@ -44,4 +44,5 @@ README
 *.log
 *.png
 *.txt
-cmp_run.sh
+# cmp_run.sh
+plot.py

@@ -4,6 +4,7 @@
 #include <ot/spef/spef.hpp>
 #include <ot/timer/pin.hpp>
 #include <ot/traits.hpp>
+#include <ot/timer/prima.hpp>
 
 namespace ot
 {
@@ -177,6 +178,13 @@ namespace ot
     std::variant<EmptyRct, Rct> _rct;
 
     std::optional<spef::Net> _spef_net;
+
+    bool _C_G_initialized{false};
+    MatrixXd _C; // capacitance matrix
+    MatrixXd _G; // conductance matrix
+    MatrixXd _B; // input port-to-node connectivity matrix
+    MatrixXd _D; // output port-to-node connectivity matrix
+    std::unordered_map<const RctNode *, size_t> _load_idx;
 
     bool _rc_timing_updated{false};
 

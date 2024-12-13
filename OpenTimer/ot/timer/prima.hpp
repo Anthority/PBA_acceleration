@@ -40,7 +40,7 @@ typedef Triplet<double> T;
 void Prima(MatrixXd &, MatrixXd &, MatrixXd &, MatrixXd &, MatrixXd &, MatrixXd &, MatrixXd &, MatrixXd &, int);
 
 VectorXd spMat_col(SpMat &, int);
-void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u, double h, std::vector<double> &y);
+void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u, double h, std::vector<double> &y,size_t idx);
 /* aux.hpp */
 void printMatrixXd(MatrixXd &);
 void printVectorXd(VectorXd &);

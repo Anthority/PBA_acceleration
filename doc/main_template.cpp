@@ -142,12 +142,12 @@ int main(int argc, char *argv[])
   if (acceptable_slew > 0)
   {
     acceptable_slew = std::stof(argv[3]);
-    size_t min_length = std::stoi(argv[4]);
-    std::cout << "acceptable_slew:" << acceptable_slew << "\tmin_length:" << min_length << std::endl;
+
+    std::cout << "acceptable_slew:" << acceptable_slew << std::endl;
 
     auto start_time_2 = std::chrono::high_resolution_clock::now();
 
-    timer.report_timing_pba_merge(paths, acceptable_slew, min_length);
+    timer.report_timing_pba_merge(paths, acceptable_slew);
 
     auto end_time_2 = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time_2 - start_time_2);

@@ -72,17 +72,8 @@ void Prima(MatrixXd &C_r, MatrixXd &G_r, MatrixXd &B_r, MatrixXd &D_r, MatrixXd 
 	// printMatrixXd
 }
 
-void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u, double h, vector<double>& y)
+void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u, double h, vector<double>& y,size_t idx)
 {
-	// cout << C.rows() << " " << C.cols() << endl;
-	// cout << G.rows() << " " << G.cols() << endl;
-	// cout << B.rows() << " " << B.cols() << endl;
-	// cout << D.rows() << " " << D.cols() << endl;
-	// cout << u.rows() << " " << u.cols() << endl;
-	// cout << x0.rows() << " " << x0.cols() << endl;
-
-	// vector<double> y(u.cols());
-
 	MatrixXd C_h = C / h;
 
 	MatrixXd A = G + C_h;
@@ -93,7 +84,6 @@ void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u
 	MatrixXd Dt = D.transpose();
 
 	JacobiSVD<MatrixXd> solver(A, ComputeThinU | ComputeThinV);
-	// cout<<A<<endl<<endl;
 
 	for (int t_i = 0; t_i < u.cols(); ++t_i)
 	{
@@ -101,7 +91,7 @@ void rc_tr_sim_d(MatrixXd &C, MatrixXd &G, MatrixXd &B, MatrixXd &D, MatrixXd &u
 
 		v = solver.solve(b);
 
-		y[t_i] = (Dt * v)(1, 0);
+		y[t_i] = (Dt * v)(idx, 0);
 	}
 }
 

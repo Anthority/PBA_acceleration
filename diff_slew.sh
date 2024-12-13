@@ -17,6 +17,6 @@ for file in $case
     echo $file
     for slew in $slews
         do
-            ./cmp_run.sh $dir $file $pathnum $slew 0
+            ./cmp_run.sh $dir $file $pathnum $slew
         done
     done

@@ -781,7 +781,7 @@ namespace ot
 	size_t first_if_elapsed_time = 0;
 	size_t second_if_elapsed_time = 0;
 
-	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew, int min_length)
+	void Timer::report_timing_pba_merge(std::vector<Path> &paths, float acceptable_slew)
 	{
 		OT_LOGI("start PBA merge mode");
 
@@ -814,6 +814,7 @@ namespace ot
 				path[i].pin.is_data_pin = true;
 
 				auto start_if1 = std::chrono::high_resolution_clock::now();
+				// 合并点是path上具有多个fanin的pin，path的第一个pin也是一个path_segment的起始点
 				if ((path[i].pin._fanin.size() > 2) || (i == 0))
 				{
 					auto end_if1 = std::chrono::high_resolution_clock::now();
