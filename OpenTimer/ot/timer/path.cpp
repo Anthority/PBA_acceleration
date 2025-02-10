@@ -844,9 +844,10 @@ namespace ot
 							for (auto &psg : path_segments[key])
 							{
 								// MAX下，psg.first按照从大到小排列
-								float slew_dif = std::abs(psg.first - pathseg_start.slew);
-								// if (slew_dif < 1e-9f)
-								// 	break;
+								// float slew_dif = std::abs(psg.first - pathseg_start.slew);
+								float slew_dif = psg.first - pathseg_start.slew;
+								if (slew_dif < 1e-9f)
+									break;
 
 								if (slew_dif < acceptable_slew + 1e-9f)
 								{

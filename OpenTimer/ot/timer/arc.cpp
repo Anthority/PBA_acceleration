@@ -112,8 +112,11 @@ namespace ot
 							{
 								net_size += net->rct()->num_nodes();
 								net_recal_num += 1;
+								
+								auto start = std::chrono::high_resolution_clock::now();
 
 								/* *************************************************************************************************************** */
+								/*
 								Rct *rct = std::get_if<Rct>(&net->_rct); // #nodes,+1是加上了input port的数量,不考虑电感的情况下
 								if (!net->_C_G_initialized)
 								{
@@ -188,8 +191,6 @@ namespace ot
 									net->_C_G_initialized = true;
 								}
 
-								auto start = std::chrono::high_resolution_clock::now();
-
 								// 仿真求解
 								float voltage = 1;
 								// 仿真两倍的si时间，精度是si的单位的1/1000
@@ -216,14 +217,14 @@ namespace ot
 
 								// std::cout<<"Slew ELM:"<< *(net->_slew(el, frf, si, _to))<<" Arnoldi:"<<*slew<<std::endl;
 								// std::cout<<"Delay ELM:"<< *(net->_delay(el, frf, _to))<<" Arnoldi:"<<*delay<<std::endl;
-
+								*/
 								/* *************************************************************************************************************** */
 
 								// 重新运行三次Elmore延时计算，来模拟Arnoldi方法的用时
 								// for (int i = 0; i < 3; i++)
 								// net->_recal_rc_pba_timing();
-								// slew = net->_slew(el, frf, si, _to);
-								// delay = net->_delay(el, frf, _to);
+								slew = net->_slew(el, frf, si, _to);
+								delay = net->_delay(el, frf, _to);
 
 								/* *************************************************************************************************************** */
 

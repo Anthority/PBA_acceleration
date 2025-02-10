@@ -34,7 +34,7 @@ CMakeLists.txt
 
 .idea
 .vscode
-*benchmark
+*benchmark*
 *backup*
 *build*
 log
